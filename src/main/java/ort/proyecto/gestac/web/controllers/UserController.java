@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import ort.proyecto.gestac.core.entidades.Area;
 import ort.proyecto.gestac.core.entidades.AreaDao;
+import ort.proyecto.gestac.core.entidades.PruebaSpring;
 import ort.proyecto.gestac.core.entidades.Sujeto;
 import ort.proyecto.gestac.core.entidades.SujetoDao;
 import ort.proyecto.gestac.core.entidades.User;
@@ -24,6 +25,9 @@ public class UserController {
 	private AreaDao areaDao;
 	@Autowired
 	private SujetoDao sujetoDao;
+	
+	@Autowired
+	private PruebaSpring prueba;
 
 	public void setUserDao(UserDao userDao) {
 		this.userDao = userDao;
