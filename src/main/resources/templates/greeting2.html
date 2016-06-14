@@ -1,0 +1,21 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Getting Started: Spring Boot CLI + Javascript</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <script src="webjars/jquery/3.0.0/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('p').animate({
+                fontSize: '48px'
+            }, "slow");
+            //alert("js!");
+        });
+    </script>
+    <link rel='stylesheet' href='/webjars/bootstrap/3.3.6/css/bootstrap.min.css'></link>
+</head>
+<body>
+	<h1>bootstrap?</h1>
+    <p th:text="'Hola ' + ${name} + '!'" />
+</body>
+</html>
