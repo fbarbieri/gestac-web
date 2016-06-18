@@ -51,6 +51,13 @@
 		    <version>3.3.6</version>
 		</dependency>
 		
+		<!-- Jade/Spring -->
+		<dependency>
+		    <groupId>net.sf.jade4spring</groupId>
+		    <artifactId>jade4spring</artifactId>
+		    <version>RELEASE</version>
+		</dependency>
+				
 		
 		<!-- Jade -->
 		<dependency>  
@@ -78,6 +85,13 @@
 		    <artifactId>jade-xml-codec</artifactId> 
 		    <version>1.10.0</version>  
 		</dependency>
+		
+		<!-- gson -->
+		<dependency>
+		    <groupId>com.google.code.gson</groupId>
+		    <artifactId>gson</artifactId>
+		    <version>2.6.2</version>
+		</dependency>
         
     </dependencies>
     
@@ -85,6 +99,10 @@
 	    <repository> 
 		    <id>tilab</id> 
 		    <url>http://jade.tilab.com/maven/</url> 
+		</repository>
+		<repository> 
+		    <id>jade4spring</id> 
+		    <url>http://jade4spring.sourceforge.net/m2repo/</url> 
 		</repository>
     </repositories>
 

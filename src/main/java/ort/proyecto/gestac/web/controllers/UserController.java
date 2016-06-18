@@ -1,36 +1,75 @@
 package ort.proyecto.gestac.web.controllers;
 
 import java.util.ArrayList;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import ort.proyecto.gestac.core.entidades.Area;
-import ort.proyecto.gestac.core.entidades.AreaDao;
-import ort.proyecto.gestac.core.entidades.PruebaSpring;
-import ort.proyecto.gestac.core.entidades.Sujeto;
-import ort.proyecto.gestac.core.entidades.SujetoDao;
-import ort.proyecto.gestac.core.entidades.User;
-import ort.proyecto.gestac.core.entidades.UserDao;
+import jade.wrapper.AgentContainer;
+import jade.core.Agent;
+import jade.core.Profile;
+import jade.core.ProfileImpl;
+import jade.core.Runtime;
+import jade.wrapper.AgentController;
+import net.sf.jade4spring.JadeBean;
+import ort.proyecto.gestac.core.entities.Area;
+import ort.proyecto.gestac.core.entities.AreaDao;
+import ort.proyecto.gestac.core.entities.AreaDataSource;
+import ort.proyecto.gestac.core.entities.PruebaSpring;
+import ort.proyecto.gestac.core.entities.Subject;
+import ort.proyecto.gestac.core.entities.SujetoDao;
+import ort.proyecto.gestac.core.entities.User;
+import ort.proyecto.gestac.core.entities.UserDao;
 
 @Controller
 public class UserController {
 
-	@Autowired
+//	@Autowired
 	private UserDao userDao;
-	@Autowired
+//	@Autowired
 	private AreaDao areaDao;
-	@Autowired
+//	@Autowired
 	private SujetoDao sujetoDao;
 	
 	@Autowired
 	private PruebaSpring prueba;
+	
+	@Autowired
+	private JadeBean jade;
+	
+//	@Autowired
+	private AreaDataSource areaDataSource;
 
-	public void setUserDao(UserDao userDao) {
-		this.userDao = userDao;
+	
+	@RequestMapping("/contenedor")
+	public String contenedor(){
+		try{
+//			Runtime jadeRuntime = Runtime.instance();
+//			Profile profile = new ProfileImpl();
+//			AgentContainer container = jadeRuntime.createMainContainer(profile);
+			
+//			System.out.println(container.getContainerName());
+//			AgentController controlador = container.createNewAgent("agentedesdecodigo", "ort.proyecto.gestac.core.agentes.bd.AgenteBaseDeDatos", null);
+//			controlador.start();
+			
+//			Agent agenteprueba = new ort.proyecto.gestac.core.agentes.bd.AgenteBaseDeDatos();
+//			jade.getJadeControllerContainer().acceptNewAgentAndStart("agentedesdecodigoencontenedorspring", agenteprueba);
+//			
+//			System.out.println(jade.getJadeControllerContainer().getContainerName());
+			
+		}catch(Exception e) {
+			System.out.println(e);
+			e.printStackTrace();
+		}
+		
+		
+		
+		return "greeting2";
 	}
 
 	@RequestMapping("/create")
@@ -39,7 +78,7 @@ public class UserController {
 		User user = null;
 		try {
 			user = new User(name);
-			userDao.save(user);
+//			userDao.save(user);
 		} catch (Exception ex) {
 			return "Error creating the user: " + ex.toString();
 		}
@@ -52,7 +91,7 @@ public class UserController {
 		try {
 			User user = new User();
 			user.setId(id);
-			userDao.delete(user);
+//			userDao.delete(user);
 		} catch (Exception ex) {
 			return "Error deleting the user: " + ex.toString();
 		}
@@ -67,22 +106,22 @@ public class UserController {
 			userId = String.valueOf(user.getId());
 			
 			Area area = new Area();
-			area.setNombre("nombre de area");
-			area.setDescripcion("descripcion de area");
+			area.setName("nombre de area");
+			area.setDescription("descripcion de area");
 			
-			Sujeto sujeto = new Sujeto();
+			Subject sujeto = new Subject();
 			sujeto.setName("nombre de sujeto");
 			
-			List<Sujeto> list = new ArrayList<Sujeto>();
+			Set<Subject> list = new LinkedHashSet<Subject>();
 			list.add(sujeto);
-			area.setSujetos(list);
+			area.setSubjects(list);
 			sujeto.setArea(area);
 			
-			areaDao.save(area);
-			sujetoDao.save(sujeto);
-			
-			Sujeto sdb = sujetoDao.findOne(1L);
-			Sujeto sdb2 = areaDao.findOne(1L).getSujetos().get(0);
+//			areaDao.save(area);
+//			sujetoDao.save(sujeto);
+//			
+//			Sujeto sdb = sujetoDao.findOne(1L);
+//			Sujeto sdb2 = areaDao.findOne(1L).getSujetos().iterator().next();//get(0);
 			
 			System.out.println(area);
 		} catch (Exception ex) {
@@ -95,13 +134,17 @@ public class UserController {
 	@ResponseBody
 	public String updateUser(long id, String name) {
 		try {
-			User user = userDao.findOne(id);
-			user.setName(name);
-			userDao.save(user);
+//			User user = userDao.findOne(id);
+//			user.setName(name);
+//			userDao.save(user);
 		} catch (Exception ex) {
 			return "Error updating the user: " + ex.toString();
 		}
 		return "User succesfully updated!";
+	}
+	
+	public void setUserDao(UserDao userDao) {
+		this.userDao = userDao;
 	}
 
 }

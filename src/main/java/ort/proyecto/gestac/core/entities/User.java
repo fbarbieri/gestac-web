@@ -1,4 +1,4 @@
-package ort.proyecto.gestac.core.entidades;
+package ort.proyecto.gestac.core.entities;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

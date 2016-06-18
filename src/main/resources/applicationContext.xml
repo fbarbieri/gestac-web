@@ -4,8 +4,30 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <bean id="gravedad" class="ort.proyecto.gestac.core.entidades.PruebaSpring">
+    <bean id="gravedad" class="ort.proyecto.gestac.core.entities.PruebaSpring">
     	<property name="dato" value="dato!"/>
     </bean>
+    
+    <bean id="jadeBean" class="net.sf.jade4spring.JadeBean" init-method="startContainer" lazy-init="false"
+			destroy-method="stopContainer">
+		<property name="autostartAgents">
+			<map>
+				<entry>
+					<key><value>DBAgent</value></key>
+					<ref bean="db.agent"/>
+				</entry>
+				<entry>
+					<key><value>InterfaceAgent</value></key>
+					<ref bean="interface.agent"/>
+				</entry>
+			</map>
+		</property>
+	</bean>
+
+	<bean id="db.agent" class="ort.proyecto.gestac.core.agents.db.DBAgent">
+	</bean>
+	
+	<bean id="interface.agent" class="ort.proyecto.gestac.core.agents.InterfaceAgent"></bean>
+
 
 </beans>

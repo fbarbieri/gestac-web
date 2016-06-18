@@ -1,4 +1,4 @@
-package ort.proyecto.gestac.core.entidades;
+package ort.proyecto.gestac.core.entities;
 
 public class PruebaSpring {
 	
