@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import ort.proyecto.gestac.core.agents.InterfaceAgent;
 import ort.proyecto.gestac.core.entities.Area;
 import ort.proyecto.gestac.core.entities.AreaDataSource;
@@ -41,6 +44,12 @@ public class SearchController {
 			
 			Area area2 = areaRepository.findOne(1L);
 			System.out.println(area2);
+			
+			area.setSubjects(subjects);
+			
+			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+			String json = gson.toJson(area);
+			System.out.println(json);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

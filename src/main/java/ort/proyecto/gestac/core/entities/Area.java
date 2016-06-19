@@ -10,6 +10,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 public class Area implements Serializable {
 	
@@ -18,14 +20,18 @@ public class Area implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Expose
 	@Id 
 	@GeneratedValue
 	private Long id;
 		
+	@Expose
 	private String name;
 	
+	@Expose
 	private String description;
 	
+	@Expose
 	@OneToMany(mappedBy="area", fetch = FetchType.EAGER)
 	private Set<Subject> subjects = new HashSet<>();
 

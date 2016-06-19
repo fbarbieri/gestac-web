@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.google.gson.annotations.Expose;
+
 @Entity
 public class Subject implements Serializable {
 	
@@ -15,10 +17,12 @@ public class Subject implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@Expose
 	@Id
 	@GeneratedValue
 	private Long id;
 
+	@Expose
 	private String name;
 	
 	@ManyToOne

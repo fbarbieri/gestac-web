@@ -25,9 +25,13 @@
 	</bean>
 
 	<bean id="db.agent" class="ort.proyecto.gestac.core.agents.db.DBAgent">
+<!-- 		<property name="classLoader" ref="get.classloader"/> -->
 	</bean>
 	
-	<bean id="interface.agent" class="ort.proyecto.gestac.core.agents.InterfaceAgent"></bean>
+	<bean id="interface.agent" class="ort.proyecto.gestac.core.agents.InterfaceAgent" depends-on="get.classloader">
+<!-- 		<property name="classLoader" ref="get.classloader"/> -->
+	</bean>
 
+	<bean id="get.classloader" class="ort.proyecto.gestac.GetClassLoader" factory-method="get" /> 
 
 </beans>

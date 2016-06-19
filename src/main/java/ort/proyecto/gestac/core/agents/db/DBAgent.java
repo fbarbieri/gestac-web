@@ -2,21 +2,19 @@ package ort.proyecto.gestac.core.agents.db;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import ort.proyecto.gestac.core.entities.Area;
-import ort.proyecto.gestac.core.entities.AreaDao;
 import ort.proyecto.gestac.core.entities.AreaRepository;
 import ort.proyecto.gestac.core.entities.PruebaSpring;
-import ort.proyecto.gestac.core.entities.SujetoDao;
 
 public class DBAgent extends Agent {
 	
@@ -26,10 +24,13 @@ public class DBAgent extends Agent {
 	@Autowired
 	private AreaRepository areaRepository;
 	
+	private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+	//private ClassLoader classLoader;
 	
 	@Override
 	protected void setup() {
 		super.setup();
+		//Thread.currentThread().setContextClassLoader(classLoader);
 		addBehaviour(new DBAgentBehaviour());
 	}
 	
@@ -49,10 +50,10 @@ public class DBAgent extends Agent {
             		List<Area> areas = areaRepository.findAll();
             		try {
             			System.out.println(areas.get(0).getSubjects().iterator().next().getName());
-            			reply.setContentObject(new ArrayList<>(areas));
-            			//String areasString = new Gson().toJson(areas);
+            			//reply.setContentObject(new ArrayList<>(areas));
+            			reply.setContent(gson.toJson(areas.toArray()));
             			send(reply);
-            		} catch (IOException e) {
+            		} catch (Exception e) {
                         e.printStackTrace();
                     }
             		break;
@@ -70,6 +71,10 @@ public class DBAgent extends Agent {
 			}
 		}
 
-	}	
+	}
+
+//	public void setClassLoader(ClassLoader classLoader) {
+//		this.classLoader = classLoader;
+//	}	
 	
 }
