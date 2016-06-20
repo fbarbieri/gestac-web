@@ -1,6 +1,7 @@
 package ort.proyecto.gestac.web.controllers;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,13 +61,26 @@ public class SearchController {
 	@RequestMapping("/search/areas")
 	public String getAreas(){
 		
-		interfaceAgent.getAreas();
+		List<Area> areas = interfaceAgent.getAreas();
+		
+		for(Area a : areas) {
+			System.out.println(a);
+			for (Subject s : a.getSubjects()) {
+				System.out.println(s);				
+			}
+		}
 		
 //		GuiEvent event = new GuiEvent(this, AgenteInterfaz.BUSCAR_TODAS_LAS_AREAS);
 //        agenteInterfaz.postGuiEvent(event);
         
 		
 		return "greeting2";
+	}
+	
+	@RequestMapping("/search")
+	public String search(){
+		
+		return "searchIssue";
 	}
 	
 }

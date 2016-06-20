@@ -78,6 +78,11 @@ public class Area implements Serializable {
 	public void setSubjects(Set<Subject> subjects) {
 		this.subjects = subjects;
 	}
+
+	@Override
+	public String toString() {
+		return "Area [id=" + id + ", name=" + name + ", description=" + description + ", subjects=" + subjects + "]";
+	}
 	
 	
 	

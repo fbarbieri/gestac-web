@@ -40,12 +40,14 @@ public class InterfaceAgent extends GuiAgent {
 			//List<Area> areas = (List<Area>) reply.getContentObject();
 	        Area[] areas = gson.fromJson(reply.getContent(), Area[].class);
 			//Thread.currentThread().getContextClassLoader().loadClass("ort.proyecto.gestac.core.entities.Area");
-			Area area = Arrays.asList(areas).get(0);
-			for (Subject s : area.getSubjects()) {
-				System.out.println(s);
+			if (areas!=null && areas.length>0) {
+				list = Arrays.asList(areas);
 			}
-	        System.out.println(areas[0].getSubjects().iterator().next().getName());
-	        System.out.println(areas);
+//			for (Subject s : area.getSubjects()) {
+//				System.out.println(s);
+//			}
+//	        System.out.println(areas[0].getSubjects().iterator().next().getName());
+//	        System.out.println(areas);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
