@@ -18,13 +18,13 @@ import jade.core.Runtime;
 import jade.wrapper.AgentController;
 import net.sf.jade4spring.JadeBean;
 import ort.proyecto.gestac.core.entities.Area;
-import ort.proyecto.gestac.core.entities.AreaDao;
-import ort.proyecto.gestac.core.entities.AreaDataSource;
 import ort.proyecto.gestac.core.entities.PruebaSpring;
 import ort.proyecto.gestac.core.entities.Subject;
-import ort.proyecto.gestac.core.entities.SujetoDao;
 import ort.proyecto.gestac.core.entities.User;
-import ort.proyecto.gestac.core.entities.UserDao;
+import ort.proyecto.gestac.core.entities.repository.AreaDao;
+import ort.proyecto.gestac.core.entities.repository.AreaDataSource;
+import ort.proyecto.gestac.core.entities.repository.SujetoDao;
+import ort.proyecto.gestac.core.entities.repository.UserDao;
 
 @Controller
 public class UserController {

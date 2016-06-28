@@ -13,8 +13,8 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import ort.proyecto.gestac.core.entities.Area;
-import ort.proyecto.gestac.core.entities.AreaRepository;
 import ort.proyecto.gestac.core.entities.PruebaSpring;
+import ort.proyecto.gestac.core.entities.repository.AreaRepository;
 
 public class DBAgent extends Agent {
 	

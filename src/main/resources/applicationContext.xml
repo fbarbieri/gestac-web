@@ -20,9 +20,15 @@
 					<key><value>InterfaceAgent</value></key>
 					<ref bean="interface.agent"/>
 				</entry>
+				<entry>
+					<key><value>DosComportamientosAgent</value></key>
+					<ref bean="doscomportamientos.agent"/>
+				</entry>
 			</map>
 		</property>
 	</bean>
+	
+	<bean id="doscomportamientos.agent" class="ort.proyecto.gestac.core.agents.AgenteDosComportamientos"></bean>
 
 	<bean id="db.agent" class="ort.proyecto.gestac.core.agents.db.DBAgent">
 <!-- 		<property name="classLoader" ref="get.classloader"/> -->

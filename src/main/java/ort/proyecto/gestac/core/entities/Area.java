@@ -34,13 +34,25 @@ public class Area implements Serializable {
 	@Expose
 	@OneToMany(mappedBy="area", fetch = FetchType.EAGER)
 	private Set<Subject> subjects = new HashSet<>();
+	
+	@Expose
+	@OneToMany(mappedBy="area", fetch = FetchType.EAGER)
+	private Set<Incident> incidents = new HashSet<>();
+	
+	@Expose
+	@OneToMany(mappedBy="area", fetch = FetchType.EAGER)
+	private Set<Source> sources = new HashSet<>();
 
-	public Area(Long id, String name, String description, Set<Subject> subjects) {
+	
+	public Area(Long id, String name, String description, Set<Subject> subjects, Set<Incident> incidents,
+			Set<Source> sources) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.description = description;
 		this.subjects = subjects;
+		this.incidents = incidents;
+		this.sources = sources;
 	}
 	
 	public Area() {
@@ -79,12 +91,22 @@ public class Area implements Serializable {
 		this.subjects = subjects;
 	}
 
-	@Override
-	public String toString() {
-		return "Area [id=" + id + ", name=" + name + ", description=" + description + ", subjects=" + subjects + "]";
+	public Set<Incident> getIncidents() {
+		return incidents;
 	}
-	
-	
+
+	public void setIncidents(Set<Incident> incidents) {
+		this.incidents = incidents;
+	}
+
+	public Set<Source> getSources() {
+		return sources;
+	}
+
+	public void setSources(Set<Source> sources) {
+		this.sources = sources;
+	}
+
 	
 	
 }

@@ -13,10 +13,10 @@ import com.google.gson.GsonBuilder;
 
 import ort.proyecto.gestac.core.agents.InterfaceAgent;
 import ort.proyecto.gestac.core.entities.Area;
-import ort.proyecto.gestac.core.entities.AreaDataSource;
-import ort.proyecto.gestac.core.entities.AreaRepository;
 import ort.proyecto.gestac.core.entities.Subject;
-import ort.proyecto.gestac.core.entities.SubjectRepository;
+import ort.proyecto.gestac.core.entities.repository.AreaDataSource;
+import ort.proyecto.gestac.core.entities.repository.AreaRepository;
+import ort.proyecto.gestac.core.entities.repository.SubjectRepository;
 
 @Controller
 public class SearchController {
@@ -34,7 +34,7 @@ public class SearchController {
 	public String initialize() {
 		try {
 			
-			Area area = new Area(1L, "area", "area", null);
+			Area area = new Area(1L, "area", "area", null, null, null);
 			
 			Subject subject = new Subject(1L, "subject", area);
 			Set<Subject> subjects = new HashSet<>();

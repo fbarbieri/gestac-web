@@ -1,4 +1,4 @@
-package ort.proyecto.gestac.core.entities;
+package ort.proyecto.gestac.core.entities.repository;
 
 import javax.persistence.EntityManager;
 
