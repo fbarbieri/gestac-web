@@ -14,11 +14,10 @@ import com.google.gson.GsonBuilder;
 import ort.proyecto.gestac.core.agents.InterfaceAgent;
 import ort.proyecto.gestac.core.entities.Area;
 import ort.proyecto.gestac.core.entities.Subject;
-import ort.proyecto.gestac.core.entities.repository.AreaDataSource;
 import ort.proyecto.gestac.core.entities.repository.AreaRepository;
 import ort.proyecto.gestac.core.entities.repository.SubjectRepository;
 
-@Controller
+//@Controller
 public class SearchController {
 
 	@Autowired
@@ -30,7 +29,7 @@ public class SearchController {
 	private SubjectRepository subjectRepository;
 	
 	
-	@RequestMapping("/initialize")
+//	@RequestMapping("/initialize")
 	public String initialize() {
 		try {
 			
@@ -58,7 +57,7 @@ public class SearchController {
 		return "greeting2";
 	}
 	
-	@RequestMapping("/search/areas")
+//	@RequestMapping("/search/areas")
 	public String getAreas(){
 		
 		List<Area> areas = interfaceAgent.getAreas();
@@ -77,7 +76,7 @@ public class SearchController {
 		return "greeting2";
 	}
 	
-	@RequestMapping("/search")
+//	@RequestMapping("/search")
 	public String search(){
 		
 		return "searchIssue";

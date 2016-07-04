@@ -26,7 +26,7 @@ import ort.proyecto.gestac.core.entities.repository.AreaDataSource;
 import ort.proyecto.gestac.core.entities.repository.SujetoDao;
 import ort.proyecto.gestac.core.entities.repository.UserDao;
 
-@Controller
+//@Controller
 public class UserController {
 
 //	@Autowired
@@ -46,7 +46,7 @@ public class UserController {
 	private AreaDataSource areaDataSource;
 
 	
-	@RequestMapping("/contenedor")
+//	@RequestMapping("/contenedor")
 	public String contenedor(){
 		try{
 //			Runtime jadeRuntime = Runtime.instance();
@@ -72,8 +72,8 @@ public class UserController {
 		return "greeting2";
 	}
 
-	@RequestMapping("/create")
-	@ResponseBody
+//	@RequestMapping("/create")
+//	@ResponseBody
 	public String create(String name) {
 		User user = null;
 		try {
@@ -85,8 +85,8 @@ public class UserController {
 		return "User succesfully created! (id = " + user.getId() + ")";
 	}
 
-	@RequestMapping("/delete")
-	@ResponseBody
+//	@RequestMapping("/delete")
+//	@ResponseBody
 	public String delete(long id) {
 		try {
 			User user = new User();
@@ -98,7 +98,7 @@ public class UserController {
 		return "User succesfully deleted!";
 	}
 
-	@RequestMapping("/get-by-name")
+//	@RequestMapping("/get-by-name")
 	public String getByEmail(String name) {
 		String userId;
 		try {
@@ -130,8 +130,8 @@ public class UserController {
 		return "The user id is: " + userId;
 	}
 
-	@RequestMapping("/update")
-	@ResponseBody
+//	@RequestMapping("/update")
+//	@ResponseBody
 	public String updateUser(long id, String name) {
 		try {
 //			User user = userDao.findOne(id);

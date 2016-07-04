@@ -7,6 +7,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 
 @Entity
@@ -22,6 +23,7 @@ public class Subject implements Serializable {
 	@Expose
 	private String name;
 	
+	@JsonIgnore
 	@ManyToOne
 	private Area area;
 

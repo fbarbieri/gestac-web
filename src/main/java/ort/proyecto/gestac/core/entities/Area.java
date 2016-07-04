@@ -107,6 +107,11 @@ public class Area implements Serializable {
 		this.sources = sources;
 	}
 
+	@Override
+	public String toString() {
+		return "Area [id=" + id + ", name=" + name + ", description=" + description + "]";
+	}
+
 	
 	
 }

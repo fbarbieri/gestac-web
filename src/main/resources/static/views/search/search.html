@@ -1,0 +1,18 @@
+<!-- <a class="btn btn-success btn-lg" href="" role="button" ng-click="add()">Nuevo</a> -->
+<div>
+	<form name="searchParameters">
+		<label for="areasSelect">Seleccione un area:</label>
+		<select name="areasSelect" id="areasSelect" size=5 
+			ng-options="option.name for option in data.areas track by option.id"
+			ng-model="data.selectedArea"
+			ng-change="areaSelected()"></select>
+			
+		<label for="subjectSelect">Seleccione un sujeto:</label>
+		<select name="subjectSelect" id="subjectSelect" size=5 
+			ng-options="option.name for option in data.subjects track by option.id"
+			ng-model="data.selectedSubject"></select>
+	</form>
+	<tt>Seleccionado...{{data.selectedArea}}</tt>
+	<tt>Seleccionado...{{data.selectedSubject}}</tt>
+</div>
+<div ui-grid="gridOptions" ui-grid-cellNav ui-grid-pinning class="grid"></div>

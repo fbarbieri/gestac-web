@@ -25,7 +25,7 @@ public class AgenteDosComportamientos extends Agent {
 		@Override
 		public void action() {
 			try {
-				System.out.println(super.toString() + " - comportamiento uno");
+//				System.out.println(super.toString() + " - comportamiento uno");
 				Thread.sleep(200);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
@@ -40,7 +40,7 @@ public class AgenteDosComportamientos extends Agent {
 		@Override
 		public void action() {
 			try {
-				System.out.println(super.toString() + " - comportamiento dos");
+//				System.out.println(super.toString() + " - comportamiento dos");
 				Thread.sleep(3000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

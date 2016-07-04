@@ -1,0 +1,28 @@
+body{
+  padding: 0;
+}
+.grid {
+	
+  width: 100%;
+  height: 100%;
+}
+
+.menu-panel{
+	position:absolute;
+	width:20vw;
+	height:90vh;
+	top:5vh
+}
+
+.menu-panel .nav{
+	width:15vw;
+	margin-left:2vw;
+}
+.container{
+	position:absolute;
+	width:80vw;
+	height:90vh;
+	top:5vh;
+	left:20vw;
+	text-align: center;
+}
