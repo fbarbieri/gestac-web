@@ -33,6 +33,16 @@ angular
 	        }
 	      }
       })
+      .when('/areasABM', {
+          templateUrl: 'views/areas/area.html',
+          controller: 'AreasListCtrl',
+          controllerAs: 'areasCtrl',
+          resolve: {
+  	        areasList: function (Areas) {
+  	          return Areas.query();
+  	        }
+  	      }
+        })
       .otherwise({
         redirectTo: '/'
       });

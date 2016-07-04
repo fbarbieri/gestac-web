@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.google.gson.annotations.Expose;
 
 @Entity
@@ -31,6 +32,7 @@ public class Incident {
 	@OneToMany(mappedBy="incident", fetch = FetchType.EAGER)
 	private Set<Gravity> gravities = new HashSet<>();
 	
+	@JsonIgnore
 	@ManyToOne
 	private Area area;
 	
@@ -49,6 +51,30 @@ public class Incident {
 
 	public void setArea(Area area) {
 		this.area = area;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public Set<Gravity> getGravities() {
+		return gravities;
+	}
+
+	public void setGravities(Set<Gravity> gravities) {
+		this.gravities = gravities;
 	}
 	
 	
