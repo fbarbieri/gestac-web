@@ -12,23 +12,23 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.gson.annotations.Expose;
+//import com.google.gson.annotations.Expose;
 
 @Entity
 public class Incident {
 
-	@Expose
+//	@Expose
 	@Id 
 	@GeneratedValue
 	private Long id;
 	
-	@Expose
+//	@Expose
 	private String name;
 	
-	@Expose
+//	@Expose
 	private String description;
 	
-	@Expose
+//	@Expose
 	@OneToMany(mappedBy="incident", fetch = FetchType.EAGER)
 	private Set<Gravity> gravities = new HashSet<>();
 	

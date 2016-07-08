@@ -5,12 +5,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
-import com.google.gson.annotations.Expose;
+//import com.google.gson.annotations.Expose;
 
 @Entity
 public class Source {
 
-	@Expose
+//	@Expose
 	@Id 
 	@GeneratedValue
 	private Long id;

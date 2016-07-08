@@ -1,12 +1,10 @@
 package ort.proyecto.gestac.core.agents;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jade.core.AID;
 import jade.gui.GuiAgent;
@@ -14,14 +12,13 @@ import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Area;
-import ort.proyecto.gestac.core.entities.Subject;
+import ort.proyecto.gestac.core.entities.Issue;
 
 public class InterfaceAgent extends GuiAgent {
 
 	private static final long serialVersionUID = 1L;
 	
-	private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-	//private ClassLoader classLoader;
+	private ObjectMapper jsonMapper = new ObjectMapper();
 	
 	@Override
 	protected void setup() {
@@ -38,7 +35,7 @@ public class InterfaceAgent extends GuiAgent {
 	        send(message);
 	        ACLMessage reply = blockingReceive();
 			//List<Area> areas = (List<Area>) reply.getContentObject();
-	        Area[] areas = gson.fromJson(reply.getContent(), Area[].class);
+	        Area[] areas = jsonMapper.readValue(reply.getContent(), Area[].class);
 			//Thread.currentThread().getContextClassLoader().loadClass("ort.proyecto.gestac.core.entities.Area");
 			if (areas!=null && areas.length>0) {
 				list = Arrays.asList(areas);
@@ -48,6 +45,23 @@ public class InterfaceAgent extends GuiAgent {
 //			}
 //	        System.out.println(areas[0].getSubjects().iterator().next().getName());
 //	        System.out.println(areas);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public List<Issue> findIssues(String areaId, String subjectId, String incidentId, String gravityId) {
+		List<Issue> list = null;
+		try {
+			ACLMessage message = crearMensaje("IssueSearchAgent");
+			message.setContent("getIssues&"+areaId+"&"+subjectId+"&"+incidentId+"&"+gravityId);
+	        send(message);
+	        ACLMessage reply = blockingReceive();
+	        Issue[] issues = jsonMapper.readValue(reply.getContent(), Issue[].class);
+			if (issues!=null && issues.length>0) {
+				list = Arrays.asList(issues);
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

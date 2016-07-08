@@ -24,20 +24,22 @@
 					<key><value>DosComportamientosAgent</value></key>
 					<ref bean="doscomportamientos.agent"/>
 				</entry>
+				<entry>
+					<key><value>IssueSearchAgent</value></key>
+					<ref bean="issue.search.agent"/>
+				</entry>
 			</map>
 		</property>
 	</bean>
 	
 	<bean id="doscomportamientos.agent" class="ort.proyecto.gestac.core.agents.AgenteDosComportamientos"></bean>
 
-	<bean id="db.agent" class="ort.proyecto.gestac.core.agents.db.DBAgent">
-<!-- 		<property name="classLoader" ref="get.classloader"/> -->
-	</bean>
+	<bean id="db.agent" class="ort.proyecto.gestac.core.agents.db.DBAgent"/>
 	
-	<bean id="interface.agent" class="ort.proyecto.gestac.core.agents.InterfaceAgent" depends-on="get.classloader">
-<!-- 		<property name="classLoader" ref="get.classloader"/> -->
-	</bean>
+	<bean id="interface.agent" class="ort.proyecto.gestac.core.agents.InterfaceAgent"/>
+	
+	<bean id="issue.search.agent" class="ort.proyecto.gestac.core.agents.IssueSearchAgent"/>
 
-	<bean id="get.classloader" class="ort.proyecto.gestac.GetClassLoader" factory-method="get" /> 
+<!-- 	<bean id="get.classloader" class="ort.proyecto.gestac.GetClassLoader" factory-method="get" />  -->
 
 </beans>

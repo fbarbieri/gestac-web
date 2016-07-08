@@ -6,8 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
@@ -24,8 +23,9 @@ public class DBAgent extends Agent {
 	@Autowired
 	private AreaRepository areaRepository;
 	
-	private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
-	//private ClassLoader classLoader;
+	//private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+	
+	private ObjectMapper jsonMapper = new ObjectMapper();
 	
 	@Override
 	protected void setup() {
@@ -47,11 +47,9 @@ public class DBAgent extends Agent {
             switch (operation){
             	case DBAgentOperations.FIND_ALL_AREAS:
             		ACLMessage reply = message.createReply();
-            		List<Area> areas = areaRepository.findAll();
+            		List<Area> areas = areaRepository.findAllByOrderByNameAsc();
             		try {
-            			System.out.println(areas.get(0).getSubjects().iterator().next().getName());
-            			//reply.setContentObject(new ArrayList<>(areas));
-            			reply.setContent(gson.toJson(areas.toArray()));
+            			reply.setContent(jsonMapper.writeValueAsString(areas.toArray()));
             			send(reply);
             		} catch (Exception e) {
                         e.printStackTrace();

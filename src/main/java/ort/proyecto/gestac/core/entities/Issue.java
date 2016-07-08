@@ -10,31 +10,31 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
-import com.google.gson.annotations.Expose;
+//import com.google.gson.annotations.Expose;
 
 @Entity
 public class Issue {
 
-	@Expose
+//	@Expose
 	@Id 
 	@GeneratedValue
 	private Long id;
 	
-	@Expose
+//	@Expose
 	private String title;
 	
-	@Expose
+//	@Expose
 	private String description;
 	
-	@Expose
+//	@Expose
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Subject> subjects = new HashSet<>();
 	
-	@Expose
+//	@Expose
 	@ManyToMany(fetch = FetchType.EAGER)
 	private Set<Incident> incidents = new HashSet<>();
 	
-	@Expose
+//	@Expose
 	@ManyToOne
 	private Gravity gravity;
 	

@@ -8,19 +8,19 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.gson.annotations.Expose;
+//import com.google.gson.annotations.Expose;
 
 @Entity
 public class Subject implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	@Expose
+//	@Expose
 	@Id
 	@GeneratedValue
 	private Long id;
 
-	@Expose
+//	@Expose
 	private String name;
 	
 	@JsonIgnore

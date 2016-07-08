@@ -3,7 +3,7 @@
 	<form name="searchParameters" class="form-inline">
 		<div class="form-group">
 			<label for="areasSelect">Seleccione un area: </label>
-			<select name="areasSelect" id="areasSelect" size=5 class="form-control"
+			<select name="areasSelect" id="areasSelect" size=5 class="form-control" required="required"
 				ng-options="option.name for option in data.areas track by option.id"
 				ng-model="data.selectedArea"
 				ng-change="areaSelected()"></select>
@@ -11,21 +11,41 @@
 		
 		<div class="form-group">	
 			<label for="subjectSelect">Seleccione un sujeto: </label>
-			<select name="subjectSelect" id="subjectSelect" size=5 class="form-control"
+			<select name="subjectSelect" id="subjectSelect" size=5 class="form-control" required="required"
 				ng-options="option.name for option in data.subjects track by option.id"
 				ng-model="data.selectedSubject"></select>
 		</div>
 			
 		<div class="form-group">	
 			<label for="incidentSelect">Seleccione un incidente: </label>
-			<select name="incidentSelect" id="incidentSelect" size=5 class="form-control"
+			<select name="incidentSelect" id="incidentSelect" size=5 class="form-control" required="required"
 				ng-options="option.name for option in data.incidents track by option.id"
-				ng-model="data.selectedIncident"></select>
+				ng-model="data.selectedIncident"
+				ng-change="incidentSelected()"></select>
 		</div>
+		
+		<div class="form-group">	
+			<label for="gravitySelect">Seleccione una gravedad: </label>
+			<select name="gravitySelect" id="gravitySelect" size=5 class="form-control" required="required"
+				ng-options="option.description for option in data.gravities track by option.id"
+				ng-model="data.selectedGravity"></select>
+		</div>
+		
+		<br><br>
+		<tt>Area: {{data.selectedArea}}</tt>
+		<br><br>
+		<tt>Sujeto: {{data.selectedSubject}}</tt>
+		<br><br>
+		<tt>Incidente: {{data.selectedIncident}}</tt>
+		<br><br>
+		<tt>Gravedad: {{data.selectedGravity}}</tt>
+		
+		<br><br>
+		<button type="button" class='btn btn-primary btn-lg' ng-click="searchIssue()">Buscar</button>
+		<br>
+		
+		<br><br>
+		<tt>result: {{result}}</tt>
 	</form>
-	<tt>Area: {{data.selectedArea}}</tt>
-	<br><br>
-	<tt>Sujeto: {{data.selectedSubject}}</tt>
-	<br><br>
-	<tt>Incidente: {{data.selectedIncident}}</tt>
+	
 </div>
