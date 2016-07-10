@@ -5,7 +5,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.ControllerException;
 
-public class IssueAgent extends Agent {
+public class IssueAgent extends GestacAgent {
 
 	private String areaId;
 	private String subjectId;
@@ -19,6 +19,12 @@ public class IssueAgent extends Agent {
 		addBehaviour(new myBehaviour());
 	}
 	
+	@Override
+	protected void takeDown() {
+		System.out.println("takedown!");
+		super.takeDown();
+	}
+	
 	/**
 	 * según los datos que haya, llamar a dbagent
 	 * @return
@@ -30,9 +36,14 @@ public class IssueAgent extends Agent {
 			try {
 				ACLMessage message = blockingReceive();
 				System.out.println("### - IssueAgent, contenedor: " + this.myAgent.getContainerController().getContainerName());
+				System.out.println("### - IssueAgent, mensaje de: " + message.getSender().getLocalName() + " conversación: " + message.getConversationId());
+				ACLMessage reply = message.createReply();
+				send(reply);
 			} catch (ControllerException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
+			} finally {
+				myAgent.doDelete();
 			}
 		}
 		
@@ -70,8 +81,7 @@ public class IssueAgent extends Agent {
 		this.subjectId = subjectId;
 		this.incidentId = incidentId;
 		this.gravityId = gravityId;
-	}
-	
+	}	
 	
 	
 }
