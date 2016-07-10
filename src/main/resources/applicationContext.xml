@@ -42,4 +42,6 @@
 
 <!-- 	<bean id="get.classloader" class="ort.proyecto.gestac.GetClassLoader" factory-method="get" />  -->
 
+	<bean id="issue.search.repo" class="ort.proyecto.gestac.core.entities.repository.IssueSearchRepositoryImpl"></bean>
+
 </beans>

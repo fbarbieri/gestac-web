@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jade.core.AID;
@@ -16,6 +18,8 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.AgentController;
 import ort.proyecto.gestac.core.entities.Issue;
+import ort.proyecto.gestac.core.entities.repository.IssueRepository;
+import ort.proyecto.gestac.core.entities.repository.IssueSearchRepository;
 
 public class IssueSearchAgent extends GestacAgent {
 	
@@ -30,6 +34,12 @@ public class IssueSearchAgent extends GestacAgent {
 	private Map<String, List<Issue>> thirdResults = new HashMap<>();
 	
 	private Map<String, Integer> replies = new HashMap<>();
+	
+	@Autowired
+	private IssueRepository issueRepository;
+	
+	@Autowired
+	private IssueSearchRepository issueSearch;
 	
 	
 	@Override
@@ -63,7 +73,7 @@ public class IssueSearchAgent extends GestacAgent {
 							replies.put(conversationId, 0);
 							
 							//agregar el primer agente
-							IssueAgent issueAgentSubjectIncidentGravity = new IssueAgent(parameters[1], parameters[2], parameters[3], parameters[4]);
+							IssueAgent issueAgentSubjectIncidentGravity = new IssueAgent(parameters[1], parameters[2], parameters[3], parameters[4], issueSearch);
 							this.myAgent.getContainerController().acceptNewAgent("IssueAgent&"+conversationId+"&1", 
 									issueAgentSubjectIncidentGravity).start();
 							//enviar mensaje a primer agente
@@ -71,7 +81,7 @@ public class IssueSearchAgent extends GestacAgent {
 							send(messageSearchSubjectIncidentGravity);
 
 							//agregar el segundo agente
-							IssueAgent issueAgentSubjectIncident= new IssueAgent(parameters[1], parameters[2], parameters[3], null);
+							IssueAgent issueAgentSubjectIncident= new IssueAgent(parameters[1], parameters[2], parameters[3], null, issueSearch);
 							this.myAgent.getContainerController().acceptNewAgent("IssueAgent&"+conversationId+"&2", 
 									issueAgentSubjectIncident).start();
 							//enviar mensaje a segundo agente
@@ -79,7 +89,7 @@ public class IssueSearchAgent extends GestacAgent {
 							send(messageSearchSubjectIncident);
 							
 							//agregar el tercer agente
-							IssueAgent issueAgentSubjectGravity= new IssueAgent(parameters[1], parameters[2], null, parameters[4]);
+							IssueAgent issueAgentSubjectGravity= new IssueAgent(parameters[1], parameters[2], null, parameters[4], issueSearch);
 							this.myAgent.getContainerController().acceptNewAgent("IssueAgent&"+conversationId+"&3", 
 									issueAgentSubjectGravity).start();
 							//enviar mensaje a tercer agente
