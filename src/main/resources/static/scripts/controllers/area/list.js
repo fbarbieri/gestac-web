@@ -17,10 +17,10 @@ angular.module('app')
 			    showGridFooter: true
 			  };
 			  $scope.gridOptions.columnDefs = [
-			    { name: 'name',width:'640', label:"Nombre",allowCellFocus : false },
-			    { name: 'description',width:'640', label:"Descripcion",allowCellFocus : false },
-			    { name: 'edit', width:'100', cellTemplate:'<a href="" ng-click="grid.appScope.editRow(row.entity)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>'},
-			    { name: 'remove', width:'100',cellTemplate:'<a href="" ng-click="grid.appScope.removeRow(row,row.entity)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>'},
+			    { name: 'name',/*width:'640', */label:"Nombre",allowCellFocus : false },
+			    { name: 'description',/*width:'640', */label:"Descripcion",allowCellFocus : false },
+			    { name: 'edit', /*width:'100', */cellTemplate:'<a href="" ng-click="grid.appScope.editRow(row.entity)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>'},
+			    { name: 'remove', /*width:'100',*/cellTemplate:'<a href="" ng-click="grid.appScope.removeRow(row,row.entity)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>'},
 			  ];
 			 
 			  
@@ -39,7 +39,7 @@ angular.module('app')
 			  $scope.add=function(){
 				  var modalInstance = $uibModal.open({
 			    			      animation: $scope.animationsEnabled,
-			    			      templateUrl: '/views/area/edit.html',
+			    			      templateUrl: '/views/areas/edit.html',
 			    			      controller: 'AreasEditCtrl',
 			    			      size: 'large',
 			    			      resolve: {
@@ -62,7 +62,7 @@ angular.module('app')
 			  $scope.editRow=function(item){
 				  var modalInstance = $uibModal.open({
 			    			      animation: $scope.animationsEnabled,
-			    			      templateUrl: '/views/area/edit.html',
+			    			      templateUrl: '/views/areas/edit.html',
 			    			      controller: 'AreasEditCtrl',
 			    			      size: 'large',
 			    			      resolve: {
