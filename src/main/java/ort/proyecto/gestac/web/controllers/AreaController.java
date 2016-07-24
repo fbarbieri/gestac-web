@@ -3,6 +3,8 @@ package ort.proyecto.gestac.web.controllers;
 import java.util.Collection;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +28,8 @@ public class AreaController {
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
     public Collection<Area> getAll() {
+		Logger logger = LoggerFactory.getLogger("ort.proyecto.gestac.web.controllers.AreaController");
+		logger.error("prueba de log de error");
 //		List<Area> list = areaRepository.findAll();
 //		for (Area a : list) {
 //			System.out.println(a);

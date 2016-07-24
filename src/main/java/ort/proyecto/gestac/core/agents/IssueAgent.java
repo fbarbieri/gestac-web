@@ -1,5 +1,7 @@
 package ort.proyecto.gestac.core.agents;
 
+import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +13,7 @@ import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.wrapper.ControllerException;
+import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.repository.IssueRepository;
 import ort.proyecto.gestac.core.entities.repository.IssueSearchRepository;
@@ -55,13 +58,15 @@ public class IssueAgent extends GestacAgent {
 					if (subjectId!=null && subjectId.length()>0 && 
 							incidentId!=null && incidentId.length()>0 && 
 							gravityId!=null && gravityId.length()>0) {
-						result = issueSearch.getIssuesBySubjectIncidentGravity(Long.parseLong(subjectId), Long.parseLong(incidentId), Long.parseLong(gravityId));						
+						result = messageToDB(DBAgentOperations.GET_ISSUES_SUBJECT_INCIDENT_GRAVITY+"&"+subjectId+"&"+incidentId+"&"+gravityId);
 					} else if (subjectId!=null && subjectId.length()>0 && 
 							incidentId!=null && incidentId.length()>0) {
-						result = issueSearch.getIssuesBySubjectIncident(Long.parseLong(subjectId), Long.parseLong(incidentId));
+						//result = issueSearch.getIssuesBySubjectIncident(Long.parseLong(subjectId), Long.parseLong(incidentId));
+						result = messageToDB(DBAgentOperations.GET_ISSUES_SUBJECT_INCIDENT+"&"+subjectId+"&"+incidentId);
 					} else if (subjectId!=null && subjectId.length()>0 && 
 							gravityId!=null && gravityId.length()>0) {
-						result = issueSearch.getIssuesBySubjectGravity(Long.parseLong(subjectId), Long.parseLong(gravityId));
+						//result = issueSearch.getIssuesBySubjectGravity(Long.parseLong(subjectId), Long.parseLong(gravityId));
+						result = messageToDB(DBAgentOperations.GET_ISSUES_SUBJECT_GRAVITY+"&"+subjectId+"&"+gravityId);
 					}
 				}
 //				System.out.println("### - IssueAgent, contenedor: " + this.myAgent.getContainerController().getContainerName());
@@ -77,6 +82,24 @@ public class IssueAgent extends GestacAgent {
 			}
 		}
 		
+		private List<Issue> messageToDB(String content) {
+			try {
+				List<Issue> result = null;
+				ACLMessage query = createMessage("IssueDBAgent");
+				query.setContent(content);
+				send(query);
+				ACLMessage reply = blockingReceive();
+				Issue[] issues = jsonMapper.readValue(reply.getContent(), Issue[].class);
+				if (issues!=null && issues.length>0) {
+					result = Arrays.asList(issues);
+				}				
+				return result;
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+				return null;
+			}
+		}
 	}
 	
 	

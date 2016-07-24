@@ -114,7 +114,7 @@ public class IssueSearchAgent extends GestacAgent {
 							replies.put(conversationId, quantity+1);
 							
 							//agrego los resultados
-							List<Issue> contentResult = new ArrayList<>();//Arrays.asList(jsonMapper.readValue(content, Issue[].class));
+							List<Issue> contentResult = Arrays.asList(jsonMapper.readValue(content, Issue[].class));
 							switch(message.getSender().getLocalName().substring(message.getSender().getLocalName().length()-1)){
 							case "1":
 								firstResults.get(conversationId).addAll(contentResult);
@@ -131,10 +131,18 @@ public class IssueSearchAgent extends GestacAgent {
 							if (replies.get(conversationId).equals(3)) {
 								System.out.println("llegaron todas las respuestas, "  + message.getConversationId());
 								List<Issue> finalResults = mergeResults(conversationId);
+								replies.remove(conversationId);
+								firstResults.remove(conversationId);
+								secondResults.remove(conversationId);
+								thirdResults.remove(conversationId);
 								//enviar respuestas
 								ACLMessage replyToInterface = createMessage("InterfaceAgent", conversationId);
 								replyToInterface.setContent(jsonMapper.writeValueAsString(finalResults.toArray()));
 								send(replyToInterface);
+								
+								/**
+								 * TODO borrar listas!
+								 */
 							}
 						}
 					}
@@ -162,7 +170,7 @@ public class IssueSearchAgent extends GestacAgent {
 	
 	protected List<Issue> mergeResults(String conversationId) {
 		List<Issue> merged = new ArrayList<>();
-		List<String> addedIds = new ArrayList<>();
+		List<Long> addedIds = new ArrayList<>();
 		
 		HashMap<String, List<Issue>> results = new HashMap<>();
 		results.put(conversationId, firstResults.get(conversationId));
@@ -172,6 +180,7 @@ public class IssueSearchAgent extends GestacAgent {
 		for (Issue i : results.get(conversationId)) {
 			if (!addedIds.contains(i.getId())) {
 				merged.add(i);
+				addedIds.add(i.getId());
 			}
 		}
 		return merged;

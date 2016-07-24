@@ -24,6 +24,7 @@ angular.module('app')
 		  
 		  $scope.data.incidents=sa.incidents;
 		  $scope.data.selectedIncident=sa.incidents[0];
+		  $scope.data.gravities=$scope.data.selectedIncident.gravities;
 		  $scope.data.selectedGravity=$scope.data.selectedIncident.gravities[0];
 	  }
 	  
@@ -37,9 +38,11 @@ angular.module('app')
 		  var urlParams = ''+$scope.data.selectedArea.id+'/'+$scope.data.selectedSubject.id+'/'+$scope.data.selectedIncident.id+'/'+$scope.data.selectedGravity.id;
 		  $http.get('/search/getIssuesForAreaSubjectIncidentGravity/'+urlParams).then(function(data) {
 			  console.log(data);
-	          alert(data);  
-			  $scope.greeting = data;
-	        });
+			  $scope.data.searchedIssues = data.data;
+			  if ($scope.data.searchedIssues!=null) {
+					$scope.data.displayIssue = $scope.data.searchedIssues[0];
+				}
+	        });  	  
 	  }
 	  
   });

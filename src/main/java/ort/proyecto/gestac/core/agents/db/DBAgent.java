@@ -12,8 +12,10 @@ import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import ort.proyecto.gestac.core.entities.Area;
+import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.PruebaSpring;
 import ort.proyecto.gestac.core.entities.repository.AreaRepository;
+import ort.proyecto.gestac.core.entities.repository.IssueSearchRepository;
 
 public class DBAgent extends Agent {
 	
@@ -23,7 +25,8 @@ public class DBAgent extends Agent {
 	@Autowired
 	private AreaRepository areaRepository;
 	
-	//private Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
+	@Autowired
+	private IssueSearchRepository issueSearch;
 	
 	private ObjectMapper jsonMapper = new ObjectMapper();
 	
@@ -43,21 +46,32 @@ public class DBAgent extends Agent {
 			ACLMessage message = blockingReceive();
             String content = message.getContent();
             String[] parameters = content.split("&");
-            int operation = Integer.valueOf(parameters[0]);
+            String operation = parameters[0];
             switch (operation){
             	case DBAgentOperations.FIND_ALL_AREAS:
-            		ACLMessage reply = message.createReply();
+//            		ACLMessage reply = message.createReply();
             		List<Area> areas = areaRepository.findAllByOrderByNameAsc();
-            		try {
-            			reply.setContent(jsonMapper.writeValueAsString(areas.toArray()));
-            			send(reply);
-            		} catch (Exception e) {
-                        e.printStackTrace();
-                    }
+//            		try {
+//            			reply.setContent(jsonMapper.writeValueAsString(areas.toArray()));
+//            			send(reply);
+//            		} catch (Exception e) {
+//                        e.printStackTrace();
+//                    }
+            		sendReply(areas, message);
             		break;
             }
 			
 			
+		}
+	
+		private void sendReply(List data, ACLMessage messageToReplyTo) {
+			ACLMessage reply = messageToReplyTo.createReply();
+			try {
+    			reply.setContent(jsonMapper.writeValueAsString(data.toArray()));
+    			send(reply);
+    		} catch (Exception e) {
+                e.printStackTrace();
+            }
 		}
 		
 		private void presentarse() {

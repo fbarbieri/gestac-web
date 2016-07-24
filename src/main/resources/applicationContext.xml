@@ -17,6 +17,10 @@
 					<ref bean="db.agent"/>
 				</entry>
 				<entry>
+					<key><value>IssueDBAgent</value></key>
+					<ref bean="issue.db.agent"/>
+				</entry>
+				<entry>
 					<key><value>InterfaceAgent</value></key>
 					<ref bean="interface.agent"/>
 				</entry>
@@ -39,6 +43,8 @@
 	<bean id="interface.agent" class="ort.proyecto.gestac.core.agents.InterfaceAgent"/>
 	
 	<bean id="issue.search.agent" class="ort.proyecto.gestac.core.agents.IssueSearchAgent"/>
+	
+	<bean id="issue.db.agent" class="ort.proyecto.gestac.core.agents.db.IssueDBAgent"/>
 
 <!-- 	<bean id="get.classloader" class="ort.proyecto.gestac.GetClassLoader" factory-method="get" />  -->
 

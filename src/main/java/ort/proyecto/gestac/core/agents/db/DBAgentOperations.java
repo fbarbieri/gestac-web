@@ -2,6 +2,12 @@ package ort.proyecto.gestac.core.agents.db;
 
 public class DBAgentOperations {
 	
-	public static final int FIND_ALL_AREAS = 1;
+	public static final String FIND_ALL_AREAS = "findAllAreas";
+	
+	public static final String GET_ISSUES_SUBJECT_INCIDENT_GRAVITY = "getIssuesBySubjectIncidentGravity";
+	
+	public static final String GET_ISSUES_SUBJECT_INCIDENT = "getIssuesBySubjectIncident";
+	
+	public static final String GET_ISSUES_SUBJECT_GRAVITY = "getIssuesBySubjectGravity";
 	
 }
