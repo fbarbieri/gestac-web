@@ -5,3 +5,4 @@
 target/
 node_modules/
 src/main/resources/static/bower_components/
+/APDescription.txt
