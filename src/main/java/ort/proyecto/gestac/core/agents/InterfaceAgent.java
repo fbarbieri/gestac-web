@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jade.core.AID;
@@ -13,10 +16,13 @@ import jade.lang.acl.ACLMessage;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Area;
 import ort.proyecto.gestac.core.entities.Issue;
+import ort.proyecto.gestac.core.entities.Knowledge;
 
 public class InterfaceAgent extends GuiAgent {
-
+	
 	private static final long serialVersionUID = 1L;
+	
+	Logger logger = LoggerFactory.getLogger("ort.proyecto.gestac.core.agents.InterfaceAgent");
 	
 	private ObjectMapper jsonMapper = new ObjectMapper();
 	
@@ -26,26 +32,24 @@ public class InterfaceAgent extends GuiAgent {
 		//Thread.currentThread().setContextClassLoader(classLoader);
 	}
 	
+//	public Knowledge getBestKnowledge(String issueId) {
+//		ACLMessage message = createMessage("KnowledgeAgent");
+//	}
+	
 	@SuppressWarnings("unchecked")
 	public List<Area> getAreas() {
 		List<Area> list = null;
 		try {
-			ACLMessage message = crearMensaje("DBAgent");
+			ACLMessage message = createMessage("DBAgent");
 			message.setContent(String.valueOf(DBAgentOperations.FIND_ALL_AREAS));
 	        send(message);
 	        ACLMessage reply = blockingReceive();
-			//List<Area> areas = (List<Area>) reply.getContentObject();
 	        Area[] areas = jsonMapper.readValue(reply.getContent(), Area[].class);
-			//Thread.currentThread().getContextClassLoader().loadClass("ort.proyecto.gestac.core.entities.Area");
 			if (areas!=null && areas.length>0) {
 				list = Arrays.asList(areas);
 			}
-//			for (Subject s : area.getSubjects()) {
-//				System.out.println(s);
-//			}
-//	        System.out.println(areas[0].getSubjects().iterator().next().getName());
-//	        System.out.println(areas);
 		} catch (Exception e) {
+			logger.error("Error getting Areas from agents, " + e.getMessage(), e);
 			e.printStackTrace();
 		}
 		return list;
@@ -54,7 +58,7 @@ public class InterfaceAgent extends GuiAgent {
 	public List<Issue> findIssues(String areaId, String subjectId, String incidentId, String gravityId) {
 		List<Issue> list = null;
 		try {
-			ACLMessage message = crearMensaje("IssueSearchAgent");
+			ACLMessage message = createMessage("IssueSearchAgent");
 			message.setContent("getIssues&"+areaId+"&"+subjectId+"&"+incidentId+"&"+gravityId);
 	        send(message);
 	        ACLMessage reply = blockingReceive();
@@ -63,12 +67,13 @@ public class InterfaceAgent extends GuiAgent {
 				list = Arrays.asList(issues);
 			}
 		} catch (Exception e) {
+			logger.error("Error finding issues from agents, " + e.getMessage(), e);
 			e.printStackTrace();
 		}
 		return list;
 	}
 	
-	private ACLMessage crearMensaje(String agentName) {
+	private ACLMessage createMessage(String agentName) {
         ACLMessage message = new ACLMessage(ACLMessage.INFORM);
         AID idAgente = new AID(agentName, AID.ISLOCALNAME);
         message.addReceiver(idAgente);

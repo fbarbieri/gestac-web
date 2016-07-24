@@ -52,7 +52,7 @@ public class SearchController {
 			@PathVariable("gravityId") String gravityId) {
 
 		List<Issue> issues = new ArrayList<Issue>();
-		issues.add(new Issue());
+//		issues.add(new Issue());
 		issues = interfaceAgent.findIssues(areaId, subjectId, incidentId, gravityId);
 		
 		return issues;

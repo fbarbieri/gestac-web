@@ -45,6 +45,15 @@ angular.module('app')
 	        });  	  
 	  }
 	  
+	  $scope.getBestKnowledgeForIssue = function() {
+		  //$http.get('/search/test').then(function(data) {
+		  var urlParams = ''+$scope.data.displayIssue.id;
+		  $http.get('/knowledge/bestForIssue/'+urlParams).then(function(data) {
+			  console.log(data);
+			  $scope.data.displayKnowledge = data.data;
+	        });  	  
+	  }
+	  
   });
   
   
