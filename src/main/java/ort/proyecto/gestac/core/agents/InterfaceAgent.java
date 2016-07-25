@@ -1,5 +1,6 @@
 package ort.proyecto.gestac.core.agents;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -32,16 +33,25 @@ public class InterfaceAgent extends GuiAgent {
 		//Thread.currentThread().setContextClassLoader(classLoader);
 	}
 	
-//	public Knowledge getBestKnowledge(String issueId) {
-//		ACLMessage message = createMessage("KnowledgeAgent");
-//	}
+	public Knowledge getBestKnowledge(String issueId) {
+		Knowledge knowledge = null;
+		ACLMessage message = createMessage("KnowledgeAgent", "getBestKnowledge"+"&"+issueId);
+		send(message);
+		ACLMessage reply = blockingReceive();
+		try {
+			knowledge = jsonMapper.readValue(reply.getContent(), Knowledge.class);
+		} catch (IOException e) {
+			logger.error("Error getting best knowledge for issue " + issueId, e);
+			e.printStackTrace();
+		}
+		return knowledge;
+	}
 	
 	@SuppressWarnings("unchecked")
 	public List<Area> getAreas() {
 		List<Area> list = null;
 		try {
-			ACLMessage message = createMessage("DBAgent");
-			message.setContent(String.valueOf(DBAgentOperations.FIND_ALL_AREAS));
+			ACLMessage message = createMessage("DBAgent", String.valueOf(DBAgentOperations.FIND_ALL_AREAS));
 	        send(message);
 	        ACLMessage reply = blockingReceive();
 	        Area[] areas = jsonMapper.readValue(reply.getContent(), Area[].class);
@@ -58,8 +68,7 @@ public class InterfaceAgent extends GuiAgent {
 	public List<Issue> findIssues(String areaId, String subjectId, String incidentId, String gravityId) {
 		List<Issue> list = null;
 		try {
-			ACLMessage message = createMessage("IssueSearchAgent");
-			message.setContent("getIssues&"+areaId+"&"+subjectId+"&"+incidentId+"&"+gravityId);
+			ACLMessage message = createMessage("IssueSearchAgent", "getIssues&"+areaId+"&"+subjectId+"&"+incidentId+"&"+gravityId);
 	        send(message);
 	        ACLMessage reply = blockingReceive();
 	        Issue[] issues = jsonMapper.readValue(reply.getContent(), Issue[].class);
@@ -73,11 +82,12 @@ public class InterfaceAgent extends GuiAgent {
 		return list;
 	}
 	
-	private ACLMessage createMessage(String agentName) {
+	private ACLMessage createMessage(String agentName, String content) {
         ACLMessage message = new ACLMessage(ACLMessage.INFORM);
         AID idAgente = new AID(agentName, AID.ISLOCALNAME);
         message.addReceiver(idAgente);
         message.setConversationId(UUID.randomUUID().toString());
+        message.setContent(content);
         return message;
     }
 	

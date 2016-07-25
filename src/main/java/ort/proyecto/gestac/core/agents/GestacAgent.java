@@ -39,4 +39,14 @@ public class GestacAgent extends Agent {
         }
 	}
 	
+	protected void sendReply(String data, ACLMessage messageToReplyTo) {
+		ACLMessage reply = messageToReplyTo.createReply();
+		try {
+			reply.setContent(data);
+			send(reply);
+		} catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
+	
 }

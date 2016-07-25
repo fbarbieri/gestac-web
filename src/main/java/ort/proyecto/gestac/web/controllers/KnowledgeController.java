@@ -19,10 +19,10 @@ public class KnowledgeController {
 	@RequestMapping(value = "/bestForIssue/{issueId}", method = RequestMethod.GET)
 	public Knowledge getBestKnowledgeForIssue(@PathVariable("issueId") String issueId) {
 		
-//		Knowledge best = interfaceAgent.getBestKnowledge(issueId);
+		Knowledge best = interfaceAgent.getBestKnowledge(issueId);
 		
-//		return best;
-		return null;
+		return best;
+		
 	}
 
 }

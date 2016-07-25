@@ -36,6 +36,10 @@
 					<key><value>KnowledgeAgent</value></key>
 					<ref bean="knowledge.agent"/>				
 				</entry>
+				<entry>
+					<key><value>KnowledgeDBAgent</value></key>
+					<ref bean="knowledge.db.agent" />
+				</entry>
 			</map>
 		</property>
 	</bean>
@@ -59,9 +63,13 @@
 		</constructor-arg>
 		<!-- le paso esto? o le cableo directamente el comportamiento? por ahora esto. -->
 	</bean>
+	
+	<bean id="knowledge.db.agent" class="ort.proyecto.gestac.core.agents.db.KnowledgeDBAgent"/>
 
 <!-- 	<bean id="get.classloader" class="ort.proyecto.gestac.GetClassLoader" factory-method="get" />  -->
 
 	<bean id="issue.search.repo" class="ort.proyecto.gestac.core.entities.repository.IssueSearchRepositoryImpl"></bean>
+	
+	<bean id="knowledge.datasource" class="ort.proyecto.gestac.core.entities.repository.KnowledgeDataSourceImpl"></bean>
 
 </beans>
