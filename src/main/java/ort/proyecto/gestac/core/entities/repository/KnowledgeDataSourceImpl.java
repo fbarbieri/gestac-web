@@ -17,7 +17,7 @@ public class KnowledgeDataSourceImpl implements KnowledgeDataSource {
 	public Knowledge getBestKnowledgeForIssue(String issueId) {
 		
 		IssueBestKnowledge best = (IssueBestKnowledge) em.createQuery("select best from IssueBestKnowledge as best "
-				+ "where issue.id?=1").
+				+ "where issue.id=?1").
 				setParameter(1, Long.parseLong(issueId)).
 				getSingleResult();
 		

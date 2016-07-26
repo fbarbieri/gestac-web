@@ -55,7 +55,7 @@ public class KnowledgeAgent extends GestacAgent {
 					toDB.setContent(DBAgentOperations.GET_BEST_KNOWLEDGE_FOR_ISSUE+"&"+parameters[1]);
 					send(toDB);
 					ACLMessage fromDB = blockingReceive();
-					sendReply(toDB.getContent(), message);
+					sendReply(fromDB.getContent(), message);
 				}
 			} else {
 				block();
