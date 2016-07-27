@@ -63,6 +63,19 @@
 				ng-click="getBestKnowledgeForIssue()">Ver mejor conocimiento asociado</button>
 			<br>
 		</div>
+		
+		<br><br>
+		<div ng-if="data.displayKnowledge!=null">
+			<div class="panel panel-default">
+				<div class="panel-heading">
+					<h3 class="panel-title" align="left">Mejor conocimiento asociado</h3>
+				</div>
+				<div class="panel-body" align="left">
+					{{data.displayKnowledge.description}}</div>
+			</div>
+
+			<br><br>
+		</div>
 	</form>
 	
 </div>
