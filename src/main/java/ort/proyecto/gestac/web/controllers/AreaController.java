@@ -26,9 +26,10 @@ public class AreaController {
 	@Autowired
 	private AreaRepository areaRepository;
 	
+	Logger logger = LoggerFactory.getLogger("ort.proyecto.gestac.web.controllers.AreaController");
+	
 	@RequestMapping(value = "", method = RequestMethod.GET)
     public Collection<Area> getAll() {
-		Logger logger = LoggerFactory.getLogger("ort.proyecto.gestac.web.controllers.AreaController");
 		logger.error("prueba de log de error");
 //		List<Area> list = areaRepository.findAll();
 //		for (Area a : list) {

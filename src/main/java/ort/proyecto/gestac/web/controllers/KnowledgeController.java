@@ -24,5 +24,12 @@ public class KnowledgeController {
 		return best;
 		
 	}
+	
+	@RequestMapping(value = "/addEvaluationToKnowledge/{knowledgeId}/{simplicity}/{usedTime}/{reuse}", method = RequestMethod.GET)
+	public boolean addEvaluationToKnowledge(@PathVariable("simplicity") String simplicity, String usedTime, String reuse) {
+		
+		return true;
+		
+	}
 
 }

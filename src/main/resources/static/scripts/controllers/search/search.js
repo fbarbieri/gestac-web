@@ -8,7 +8,7 @@
  * Controller of the gestacWebApp
  */
 angular.module('app')
-  .controller('SearchCtrl', function ($scope,$rootScope,$uibModal,$http,areasList,Areas,Subjects) {
+  .controller('SearchCtrl', function ($scope,$rootScope,$uibModal,$http,areasList,Areas,Subjects,$location,$window) {
 	  
 	  $rootScope.entity="Gestac";
 	  
@@ -54,6 +54,53 @@ angular.module('app')
 	        });  	  
 	  }
 	  
+	  $scope.doEvaluation = function() {
+		  var urlParams = ''+$scope.data.displayKnowledge.id+'/'+$scope.data.selectedSimplicity+'/'+$scope.data.selectedUsedTime+'/'+$scope.data.selectedReuse;
+		  $http.get('/knowledge/addEvaluationToKnowledge/'+urlParams).then(function(data) {
+			  console.log(data);
+			  if (data.data==true) {
+				  $scope.open();
+			  }
+	        });
+	  }
+	  
+	  $scope.open = function() {
+		  
+		  var modalInstance = $uibModal.open({
+			 animation:false,
+			 templateUrl:'/views/modal.html',
+			 controller:'ModalInstanceCtrl',
+			 size:'large',
+			 resolve: {
+		        item: {
+		          text:"Evaluación agregada correctamente",
+		          title:"Evaluación"
+		        }
+		      }
+		  });
+		  
+		  modalInstance.result.then(function(){
+			  $window.location.reload();
+		  });
+		  
+	  };
+	  
+	  
   });
   
+angular.module('app')
+	.controller('ModalInstanceCtrl', function($scope, $uibModalInstance, item){
+	
+	$scope.item=item;
+		
+	$scope.ok = function(){
+		$uibModalInstance.close();
+	};
+	
+	$scope.cancel = function(){
+		$uibModalInstance.dismiss('cancel');
+	};
+		
+});
+
   
