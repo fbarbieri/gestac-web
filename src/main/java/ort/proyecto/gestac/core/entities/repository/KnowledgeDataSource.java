@@ -6,4 +6,6 @@ public interface KnowledgeDataSource {
 	
 	public Knowledge getBestKnowledgeForIssue(String issueId);
 
+	public void addEvaluationToKnowledge(String knowledgeId, String simplicity, String usedTime, String reuse);
+
 }

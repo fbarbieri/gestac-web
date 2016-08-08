@@ -22,6 +22,10 @@ public class Knowledge {
 	
 	@OneToMany(mappedBy="knowledge", fetch = FetchType.EAGER)
 	private Set<KnowledgeEvaluation> evaluations;
+	
+	private int consideredEvaluations;
+	
+	private int totalEvaluations;
 
 	
 	public Knowledge(Long id) {
@@ -47,6 +51,30 @@ public class Knowledge {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Set<KnowledgeEvaluation> getEvaluations() {
+		return evaluations;
+	}
+
+	public void setEvaluations(Set<KnowledgeEvaluation> evaluations) {
+		this.evaluations = evaluations;
+	}
+
+	public int getConsideredEvaluations() {
+		return consideredEvaluations;
+	}
+
+	public void setConsideredEvaluations(int consideredEvaluations) {
+		this.consideredEvaluations = consideredEvaluations;
+	}
+
+	public int getTotalEvaluations() {
+		return totalEvaluations;
+	}
+
+	public void setTotalEvaluations(int totalEvaluations) {
+		this.totalEvaluations = totalEvaluations;
 	}
 	
 }

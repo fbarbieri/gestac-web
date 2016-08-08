@@ -43,6 +43,10 @@ public class KnowledgeDBAgent extends GestacAgent {
             		Knowledge knowledge = dataSource.getBestKnowledgeForIssue(parameters[1]);
             		sendReply(knowledge, message);
             		break;
+            	case DBAgentOperations.ADD_KNOWLEDGE_EVALUATION:
+            		dataSource.addEvaluationToKnowledge(parameters[1], parameters[2],
+            				parameters[3], parameters[4]);
+            		break;
             }
 		}
 		

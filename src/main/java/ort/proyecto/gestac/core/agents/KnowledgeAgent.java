@@ -51,11 +51,18 @@ public class KnowledgeAgent extends GestacAgent {
 				String operation = parameters[0];
 				switch (operation){
 				case "getBestKnowledge":
-					ACLMessage toDB = createMessage("KnowledgeDBAgent");
-					toDB.setContent(DBAgentOperations.GET_BEST_KNOWLEDGE_FOR_ISSUE+"&"+parameters[1]);
-					send(toDB);
+					ACLMessage bestKnowledgeMessage = createMessage("KnowledgeDBAgent");
+					bestKnowledgeMessage.setContent(DBAgentOperations.GET_BEST_KNOWLEDGE_FOR_ISSUE+"&"+parameters[1]);
+					send(bestKnowledgeMessage);
 					ACLMessage fromDB = blockingReceive();
 					sendReply(fromDB.getContent(), message);
+					break;
+				case "addKnowledgeEvaluation":
+					ACLMessage addKnowledgeMessage = createMessage("KnowledgeDBAgent");
+					addKnowledgeMessage.setContent(DBAgentOperations.ADD_KNOWLEDGE_EVALUATION+
+							"&"+parameters[1]+"&"+parameters[2]+"&"+parameters[3]+"&"+parameters[4]);
+					send(addKnowledgeMessage);
+					break;
 				}
 			} else {
 				block();

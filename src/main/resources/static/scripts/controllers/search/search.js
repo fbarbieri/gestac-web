@@ -56,7 +56,7 @@ angular.module('app')
 	  
 	  $scope.doEvaluation = function() {
 		  $scope.data.evaluationError = null;
-		  var urlParams = ''+$scope.data.displayKnowledge.id+'/'+$scope.data.selectedSimplicity+'/'+$scope.data.selectedUsedTime+'/'+$scope.data.selectedReuse;
+		  var urlParams = ''+$scope.data.displayKnowledge.id+'/'+$scope.data.selectedSimplicity+'/'+$scope.data.selectedUsedTime+'/'+$scope.data.selectedReuse+'/';
 		  $http.get('/knowledge/addEvaluationToKnowledge/'+urlParams).then(function(data) {
 			  console.log(data);
 			  if (data.data==true) {

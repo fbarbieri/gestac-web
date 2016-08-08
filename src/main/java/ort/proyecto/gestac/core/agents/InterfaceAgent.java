@@ -18,6 +18,7 @@ import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Area;
 import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.Knowledge;
+import ort.proyecto.gestac.core.entities.KnowledgeEvaluation;
 
 public class InterfaceAgent extends GuiAgent {
 	
@@ -31,6 +32,15 @@ public class InterfaceAgent extends GuiAgent {
 	protected void setup() {
 		super.setup();
 		//Thread.currentThread().setContextClassLoader(classLoader);
+	}
+	
+	public void addKnowledgeEvaluation(KnowledgeEvaluation evaluation) {
+		ACLMessage message = createMessage("KnowledgeAgent", "addKnowledgeEvaluation"
+				+"&"+evaluation.getKnowledge().getId()
+				+"&"+evaluation.getSimplicity()
+				+"&"+evaluation.getUsedTime()
+				+"&"+evaluation.getReuse());
+		send(message);
 	}
 	
 	public Knowledge getBestKnowledge(String issueId) {
