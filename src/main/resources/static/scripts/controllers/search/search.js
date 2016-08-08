@@ -55,16 +55,19 @@ angular.module('app')
 	  }
 	  
 	  $scope.doEvaluation = function() {
+		  $scope.data.evaluationError = null;
 		  var urlParams = ''+$scope.data.displayKnowledge.id+'/'+$scope.data.selectedSimplicity+'/'+$scope.data.selectedUsedTime+'/'+$scope.data.selectedReuse;
 		  $http.get('/knowledge/addEvaluationToKnowledge/'+urlParams).then(function(data) {
 			  console.log(data);
 			  if (data.data==true) {
-				  $scope.open();
+				  $scope.open("Evaluación", "Evaluación agregada correctamente");
+			  } else {
+				  $scope.data.evaluationError = "Debe seleccionar opciones válidas de evaluación";
 			  }
 	        });
 	  }
 	  
-	  $scope.open = function() {
+	  $scope.open = function(modalTitle, modalText) {
 		  
 		  var modalInstance = $uibModal.open({
 			 animation:false,
@@ -73,8 +76,8 @@ angular.module('app')
 			 size:'large',
 			 resolve: {
 		        item: {
-		          text:"Evaluación agregada correctamente",
-		          title:"Evaluación"
+		          text:modalText,
+		          title:modalTitle
 		        }
 		      }
 		  });
@@ -87,20 +90,5 @@ angular.module('app')
 	  
 	  
   });
-  
-angular.module('app')
-	.controller('ModalInstanceCtrl', function($scope, $uibModalInstance, item){
-	
-	$scope.item=item;
-		
-	$scope.ok = function(){
-		$uibModalInstance.close();
-	};
-	
-	$scope.cancel = function(){
-		$uibModalInstance.dismiss('cancel');
-	};
-		
-});
 
   

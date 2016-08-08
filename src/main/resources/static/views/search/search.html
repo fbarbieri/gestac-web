@@ -76,67 +76,115 @@
 				{{data.displayKnowledge.description}}</div>
 		</div>
 
-		<br><br>
+		<br><br>	
+		
+<!-- 		<form name="evaluationSimplicity"> -->
+<!-- 			<div class="form-group"> -->
+<!-- 				<label>Simplicidad:</label><br> -->
+<!-- 				<label> -->
+<!-- 					<input type="radio" value="0.25" ng-model="data.selectedSimplicity">Baja				 -->
+<!-- 				</label><br> -->
+<!-- 				<label> -->
+<!-- 					<input type="radio" value="0.5" ng-model="data.selectedSimplicity">Media Baja				 -->
+<!-- 				</label><br> -->
+<!-- 				<label> -->
+<!-- 					<input type="radio" value="0.75" ng-model="data.selectedSimplicity">Media Alta				 -->
+<!-- 				</label><br> -->
+<!-- 				<label> -->
+<!-- 					<input type="radio" value="1" ng-model="data.selectedSimplicity">Alta	 -->
+<!-- 				</label><br> -->
+<!-- 			</div> -->
+<!-- 		</form> -->
+		
+<!-- 		<form name="evaluationUsedTime"> -->
+<!-- 			<div class="form-group"> -->
+<!-- 				<label>Tiempo utilizado:</label><br> -->
+<!-- 				<label> -->
+<!-- 					<input type="radio" value="0.25" ng-model="data.selectedUsedTime"><15 min.				 -->
+<!-- 				</label><br> -->
+<!-- 				<label> -->
+<!-- 					<input type="radio" value="0.5" ng-model="data.selectedUsedTime">15 min - 1 hora				 -->
+<!-- 				</label><br> -->
+<!-- 				<label> -->
+<!-- 					<input type="radio" value="0.75" ng-model="data.selectedUsedTime">1 - 2 horas				 -->
+<!-- 				</label><br> -->
+<!-- 				<label> -->
+<!-- 					<input type="radio" value="1" ng-model="data.selectedUsedTime">>2 horas	 -->
+<!-- 				</label><br> -->
+<!-- 			</div> -->
+<!-- 		</form> -->
+		
+<!-- 		<form name="evaluationReuse"> -->
+<!-- 			<div class="form-group"> -->
+<!-- 				<label>Reuso:</label><br> -->
+<!-- 				<label> -->
+<!-- 					<input type="radio" value="0.25" ng-model="data.selectedReuse" required="required">0 - 1 vez				 -->
+<!-- 				</label><br> -->
+<!-- 				<label> -->
+<!-- 					<input type="radio" value="0.5" ng-model="data.selectedReuse" required="required">2 - 5 veces				 -->
+<!-- 				</label><br> -->
+<!-- 				<label> -->
+<!-- 					<input type="radio" value="0.75" ng-model="data.selectedReuse" required="required">6 - 10 veces				 -->
+<!-- 				</label><br> -->
+<!-- 				<label> -->
+<!-- 					<input type="radio" value="1" ng-model="data.selectedReuse" required="required">>10 veces	 -->
+<!-- 				</label><br> -->
+<!-- 			</div> -->
+<!-- 		</form> -->
 		
 		<div>Por favor, evalue el conocimiento</div>
-		
 		<form name="evaluationSimplicity">
 			<div class="form-group">
+				<div ng-if="data.evaluationError!=null">
+					<p class="bg-danger">{{data.evaluationError}}</p>
+				</div>
+			
 				<label>Simplicidad:</label><br>
 				<label>
-					<input type="radio" value="0.25" ng-model="data.selectedSimplicity">Baja				
+					<input type="radio" value="0.25" ng-model="data.selectedSimplicity" required="required">Baja				
 				</label><br>
 				<label>
-					<input type="radio" value="0.5" ng-model="data.selectedSimplicity">Media Baja				
+					<input type="radio" value="0.5" ng-model="data.selectedSimplicity" required="required">Media Baja				
 				</label><br>
 				<label>
-					<input type="radio" value="0.75" ng-model="data.selectedSimplicity">Media Alta				
+					<input type="radio" value="0.75" ng-model="data.selectedSimplicity" required="required">Media Alta				
 				</label><br>
 				<label>
-					<input type="radio" value="1" ng-model="data.selectedSimplicity">Alta	
+					<input type="radio" value="1" ng-model="data.selectedSimplicity" required="required">Alta	
 				</label><br>
-			</div>
-		</form>
-		
-		<form name="evaluationUsedTime">
-			<div class="form-group">
+				
 				<label>Tiempo utilizado:</label><br>
 				<label>
-					<input type="radio" value="0.25" ng-model="data.selectedUsedTime"><15 min.				
+					<input type="radio" value="0.25" ng-model="data.selectedUsedTime" required="required"><15 min.				
 				</label><br>
 				<label>
-					<input type="radio" value="0.5" ng-model="data.selectedUsedTime">15 min - 1 hora				
+					<input type="radio" value="0.5" ng-model="data.selectedUsedTime" required="required">15 min - 1 hora				
 				</label><br>
 				<label>
-					<input type="radio" value="0.75" ng-model="data.selectedUsedTime">1 - 2 horas				
+					<input type="radio" value="0.75" ng-model="data.selectedUsedTime" required="required">1 - 2 horas				
 				</label><br>
 				<label>
-					<input type="radio" value="1" ng-model="data.selectedUsedTime">>2 horas	
+					<input type="radio" value="1" ng-model="data.selectedUsedTime" required="required">>2 horas	
 				</label><br>
-			</div>
-		</form>
-		
-		<form name="evaluationReuse">
-			<div class="form-group">
+				
 				<label>Reuso:</label><br>
 				<label>
-					<input type="radio" value="0.25" ng-model="data.selectedReuse">0 - 1 vez				
+					<input type="radio" value="0.25" ng-model="data.selectedReuse" required="required">0 - 1 vez				
 				</label><br>
 				<label>
-					<input type="radio" value="0.5" ng-model="data.selectedReuse">2 - 5 veces				
+					<input type="radio" value="0.5" ng-model="data.selectedReuse" required="required">2 - 5 veces				
 				</label><br>
 				<label>
-					<input type="radio" value="0.75" ng-model="data.selectedReuse">6 - 10 veces				
+					<input type="radio" value="0.75" ng-model="data.selectedReuse" required="required">6 - 10 veces				
 				</label><br>
 				<label>
-					<input type="radio" value="1" ng-model="data.selectedReuse">>10 veces	
+					<input type="radio" value="1" ng-model="data.selectedReuse" required="required">>10 veces	
 				</label><br>
 			</div>
+			<br>
+			<button type="button" class='btn btn-primary btn-lg' ng-click="doEvaluation()">Evaluar</button>
+			<br><br>
 		</form>
-			
-		<br><br>
-		<button type="button" class='btn btn-primary btn-lg' ng-click="doEvaluation()">Evaluar</button>
-		<br>
 			
 		
 	</div>
