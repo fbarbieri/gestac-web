@@ -34,31 +34,53 @@ public class KnowledgeDBAgent extends GestacAgent {
 		public void action() {
 			//presentarse();
 			
-			ACLMessage message = blockingReceive();
-            String content = message.getContent();
-            String[] parameters = content.split("&");
-            String operation = parameters[0];
-            switch (operation){
-            	case DBAgentOperations.GET_BEST_KNOWLEDGE_FOR_ISSUE:
-            		Knowledge knowledge = dataSource.getBestKnowledgeForIssue(parameters[1]);
-            		sendReply(knowledge, message);
-            		break;
-            	case DBAgentOperations.ADD_KNOWLEDGE_EVALUATION:
-            		dataSource.addEvaluationToKnowledge(parameters[1], parameters[2],
-            				parameters[3], parameters[4]);
-            		break;
-            }
+			ACLMessage message = receive();
+			if (message!=null) {
+				String content = message.getContent();
+	            String[] parameters = content.split("&");
+	            String operation = parameters[0];
+	            switch (operation){
+	            	case DBAgentOperations.GET_BEST_KNOWLEDGE_FOR_ISSUE:
+	            		Knowledge knowledge = dataSource.getBestKnowledgeForIssue(parameters[1]);
+	            		sendReply(knowledge, message);
+	            		break;
+	            	case DBAgentOperations.ADD_KNOWLEDGE_EVALUATION:
+	            		dataSource.addEvaluationToKnowledge(parameters[1], parameters[2],
+	            				parameters[3], parameters[4]);
+	            		break;
+	            	case DBAgentOperations.SEARCH_KNOWLEDGES_TO_UPDATE:
+	            		List<Knowledge> toUpdate = dataSource.searchKnowledgesToUpdate();
+	            		sendReply(toUpdate, message);
+	            		break;
+	            }
+			} else {
+				block();
+			}
+//			ACLMessage message = blockingReceive();
+            
 		}
 		
-		private void sendReply(Knowledge data, ACLMessage messageToReplyTo) {
+		private void sendReply(Object data, ACLMessage messageToReplyTo) {
 			ACLMessage reply = messageToReplyTo.createReply();
 			try {
-    			reply.setContent(jsonMapper.writeValueAsString(data));
+				if (data!=null) {
+					reply.setContent(jsonMapper.writeValueAsString(data));					
+				}
     			send(reply);
     		} catch (Exception e) {
                 e.printStackTrace();
             }
 		}
+		
+//		private void sendReply(List<Knowledge> data, ACLMessage messageToReplyTo) {
+//			ACLMessage reply = messageToReplyTo.createReply();
+//			try {
+//    			reply.setContent(jsonMapper.writeValueAsString(data));
+//    			send(reply);
+//    		} catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//		}
 	}
 	
 }

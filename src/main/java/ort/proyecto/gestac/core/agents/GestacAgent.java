@@ -48,5 +48,9 @@ public class GestacAgent extends Agent {
             e.printStackTrace();
         }
 	}
+
+	public ObjectMapper getJsonMapper() {
+		return jsonMapper;
+	}
 	
 }

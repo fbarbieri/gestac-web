@@ -14,4 +14,6 @@ public class DBAgentOperations {
 	
 	public static final String ADD_KNOWLEDGE_EVALUATION = "addKnowledgeEvaluation";
 	
+	public static final String SEARCH_KNOWLEDGES_TO_UPDATE = "searchKnowledgesToUpdate";
+	
 }

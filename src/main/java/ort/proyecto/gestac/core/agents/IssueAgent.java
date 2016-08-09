@@ -9,13 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.wrapper.ControllerException;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Issue;
-import ort.proyecto.gestac.core.entities.repository.IssueRepository;
 import ort.proyecto.gestac.core.entities.repository.IssueSearchRepository;
 
 public class IssueAgent extends GestacAgent {

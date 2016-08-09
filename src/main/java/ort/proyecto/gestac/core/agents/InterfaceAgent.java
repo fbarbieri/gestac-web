@@ -14,6 +14,7 @@ import jade.core.AID;
 import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Area;
 import ort.proyecto.gestac.core.entities.Issue;
@@ -34,36 +35,13 @@ public class InterfaceAgent extends GuiAgent {
 		//Thread.currentThread().setContextClassLoader(classLoader);
 	}
 	
-	public void addKnowledgeEvaluation(KnowledgeEvaluation evaluation) {
-		ACLMessage message = createMessage("KnowledgeAgent", "addKnowledgeEvaluation"
-				+"&"+evaluation.getKnowledge().getId()
-				+"&"+evaluation.getSimplicity()
-				+"&"+evaluation.getUsedTime()
-				+"&"+evaluation.getReuse());
-		send(message);
-	}
-	
-	public Knowledge getBestKnowledge(String issueId) {
-		Knowledge knowledge = null;
-		ACLMessage message = createMessage("KnowledgeAgent", "getBestKnowledge"+"&"+issueId);
-		send(message);
-		ACLMessage reply = blockingReceive();
-		try {
-			knowledge = jsonMapper.readValue(reply.getContent(), Knowledge.class);
-		} catch (IOException e) {
-			logger.error("Error getting best knowledge for issue " + issueId, e);
-			e.printStackTrace();
-		}
-		return knowledge;
-	}
-	
 	@SuppressWarnings("unchecked")
 	public List<Area> getAreas() {
 		List<Area> list = null;
 		try {
 			ACLMessage message = createMessage("DBAgent", String.valueOf(DBAgentOperations.FIND_ALL_AREAS));
 	        send(message);
-	        ACLMessage reply = blockingReceive();
+	        ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
 	        Area[] areas = jsonMapper.readValue(reply.getContent(), Area[].class);
 			if (areas!=null && areas.length>0) {
 				list = Arrays.asList(areas);
@@ -80,7 +58,7 @@ public class InterfaceAgent extends GuiAgent {
 		try {
 			ACLMessage message = createMessage("IssueSearchAgent", "getIssues&"+areaId+"&"+subjectId+"&"+incidentId+"&"+gravityId);
 	        send(message);
-	        ACLMessage reply = blockingReceive();
+	        ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
 	        Issue[] issues = jsonMapper.readValue(reply.getContent(), Issue[].class);
 			if (issues!=null && issues.length>0) {
 				list = Arrays.asList(issues);
@@ -90,6 +68,29 @@ public class InterfaceAgent extends GuiAgent {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	public Knowledge getBestKnowledge(String issueId) {
+		Knowledge knowledge = null;
+		ACLMessage message = createMessage("KnowledgeAgent", "getBestKnowledge"+"&"+issueId);
+		send(message);
+		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
+		try {
+			knowledge = jsonMapper.readValue(reply.getContent(), Knowledge.class);
+		} catch (IOException e) {
+			logger.error("Error getting best knowledge for issue " + issueId, e);
+			e.printStackTrace();
+		}
+		return knowledge;
+	}
+	
+	public void addKnowledgeEvaluation(KnowledgeEvaluation evaluation) {
+		ACLMessage message = createMessage("KnowledgeAgent", "addKnowledgeEvaluation"
+				+"&"+evaluation.getKnowledge().getId()
+				+"&"+evaluation.getSimplicity()
+				+"&"+evaluation.getUsedTime()
+				+"&"+evaluation.getReuse());
+		send(message);
 	}
 	
 	private ACLMessage createMessage(String agentName, String content) {

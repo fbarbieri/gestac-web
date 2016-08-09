@@ -1,15 +1,19 @@
 package ort.proyecto.gestac.core.agents;
 
-import java.util.Arrays;
 import java.util.List;
 
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
+import jade.lang.acl.MessageTemplate;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 
 public class KnowledgeAgent extends GestacAgent {
 
 	private static final long serialVersionUID = 1L;
+	
+//	public final String SEARCH_TO_UPDATE = "searchToUpdate";
+//	public final String UPDATE = "update";
+//	public final String QUERY = "query";
 
 	private List<String> modes;
 	
@@ -21,27 +25,28 @@ public class KnowledgeAgent extends GestacAgent {
 		super();
 	}
 	
-	public KnowledgeAgent(String... modes) {
-		super();
-		this.modes = Arrays.asList(modes);
-	}
+//	public KnowledgeAgent(String... modes) {
+//		super();
+//		this.modes = Arrays.asList(modes);
+//	}
 	
 	@Override
 	protected void setup() {
-		if (modes!=null && modes.size()>0) {
-			if (modes.contains("refresh")) {
-//				addBehaviour(new RefreshKnowledgeScoreBehaviour());
-			}
-			if (modes.contains("query")) {
-				addBehaviour(new SearchBehaviour());
-			}
-//			if (mode.equals("update")) {
+//		if (modes!=null && modes.size()>0) {
+//			if (modes.contains(SEARCH_TO_UPDATE)) {
+//				addBehaviour(new SearchKnowledgesToUpdateBehaviour(this, tickerInterval));
+//			}
+//			if (modes.contains(QUERY)) {
+//				addBehaviour(new QueryBehaviour());
+//			}
+//			if (mode.equals(UPDATE)) {
 //				addBehaviour(b);
 //			}
-		}
+//		}
+		addBehaviour(new QueryBehaviour());
 	}
 	
-	class SearchBehaviour extends CyclicBehaviour {
+	class QueryBehaviour extends CyclicBehaviour {
 
 		@Override
 		public void action() {
@@ -54,7 +59,7 @@ public class KnowledgeAgent extends GestacAgent {
 					ACLMessage bestKnowledgeMessage = createMessage("KnowledgeDBAgent");
 					bestKnowledgeMessage.setContent(DBAgentOperations.GET_BEST_KNOWLEDGE_FOR_ISSUE+"&"+parameters[1]);
 					send(bestKnowledgeMessage);
-					ACLMessage fromDB = blockingReceive();
+					ACLMessage fromDB = blockingReceive(MessageTemplate.MatchConversationId(bestKnowledgeMessage.getConversationId()));
 					sendReply(fromDB.getContent(), message);
 					break;
 				case "addKnowledgeEvaluation":

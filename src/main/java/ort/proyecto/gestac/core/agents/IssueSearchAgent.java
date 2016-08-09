@@ -104,10 +104,6 @@ public class IssueSearchAgent extends GestacAgent {
 						if (replies.get(conversationId)!=null){
 							//llegó una respuesta válida
 							
-							/**
-							 * ordenar?
-							 */
-							
 							//sumo la cantidad de respuestas
 							int quantity = replies.get(conversationId);
 							replies.remove(conversationId);
@@ -131,6 +127,7 @@ public class IssueSearchAgent extends GestacAgent {
 							if (replies.get(conversationId).equals(3)) {
 								System.out.println("llegaron todas las respuestas, "  + message.getConversationId());
 								List<Issue> finalResults = mergeResults(conversationId);
+								//limpiar resultados
 								replies.remove(conversationId);
 								firstResults.remove(conversationId);
 								secondResults.remove(conversationId);
@@ -139,10 +136,6 @@ public class IssueSearchAgent extends GestacAgent {
 								ACLMessage replyToInterface = createMessage("InterfaceAgent", conversationId);
 								replyToInterface.setContent(jsonMapper.writeValueAsString(finalResults.toArray()));
 								send(replyToInterface);
-								
-								/**
-								 * TODO borrar listas!
-								 */
 							}
 						}
 					}

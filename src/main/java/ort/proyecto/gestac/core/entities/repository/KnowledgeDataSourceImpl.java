@@ -29,6 +29,20 @@ public class KnowledgeDataSourceImpl implements KnowledgeDataSource {
 		 * TODO seguir acá!
 		 */
 	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Knowledge> searchKnowledgesToUpdate() {
+		//SEARCH_KNOWLEDGES_TO_UPDATE
+		List<Knowledge> result = null;
+		result = em.createQuery("select toUpdate from Knowledge as toUpdate "
+				+ "where consideredEvaluations<totalEvaluations").getResultList();
+		
+		if (result.size()==0) {
+			result = null;
+		}
+		
+		return result;
+	}
 
 	@Override
 	@Transactional
@@ -38,11 +52,11 @@ public class KnowledgeDataSourceImpl implements KnowledgeDataSource {
 				Double.parseDouble(simplicity), Double.parseDouble(usedTime), Double.parseDouble(reuse));
 		knowledge.getEvaluations().add(evaluation);
 		em.persist(evaluation);
-		em.flush();
 		
 		knowledge.setTotalEvaluations(knowledge.getTotalEvaluations()+1);
 		em.merge(knowledge);
-		em.flush();
 	}
+	
+	
 	
 }
