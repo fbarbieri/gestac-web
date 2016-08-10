@@ -24,8 +24,17 @@ public class Knowledge {
 	@OneToMany(mappedBy="knowledge", fetch = FetchType.EAGER)
 	private Set<KnowledgeEvaluation> evaluations;
 	
+	/**
+	 * no bidireccional, por independencia de datos
+	 */
 	@ManyToOne
 	private Source source;
+	
+	/**
+	 * no bidireccional, por independencia de datos
+	 */
+	@ManyToOne
+	private Issue issue;
 	
 	private double knowledgeScore;
 	
@@ -97,6 +106,14 @@ public class Knowledge {
 
 	public void setKnowledgeScore(double knowledgeScore) {
 		this.knowledgeScore = knowledgeScore;
+	}
+
+	public Issue getIssue() {
+		return issue;
+	}
+
+	public void setIssue(Issue issue) {
+		this.issue = issue;
 	}
 	
 }

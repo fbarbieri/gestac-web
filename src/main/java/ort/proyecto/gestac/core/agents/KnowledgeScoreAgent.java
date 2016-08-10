@@ -39,15 +39,22 @@ public class KnowledgeScoreAgent extends GestacAgent {
 	}
 	
 	class UpdateKnowledgeBehaviour extends OneShotBehaviour {
-
+		/**
+		 * para todo este proceso no espero respuestas, solo mando cosas y asumo que se hacen.
+		 */
+		
 		@Override
 		public void action() {
 			try {
 				ACLMessage request = blockingReceive(MessageTemplate.MatchReplyWith("updatedScore"));
 				Knowledge knowledge = getJsonMapper().readValue(request.getContent(), Knowledge.class);
-				for (KnowledgeEvaluation evaluation : knowledge.getEvaluations()) {
-					knowledge.setKnowledgeScore(KnowledgeScoreHelper.calculateScore(knowledge));
-				}
+				knowledge.setKnowledgeScore(KnowledgeScoreHelper.calculateScore(knowledge));
+				knowledge.setConsideredEvaluations(knowledge.getEvaluations().size());
+				
+				//guardar knowledge actualizado.
+				
+				//enviar mensaje a fuente para actualizarse.
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -96,6 +103,11 @@ public class KnowledgeScoreAgent extends GestacAgent {
 //							//enviar mensaje a primer agente
 //							ACLMessage messageSearchSubjectIncidentGravity = createMessage("IssueAgent&"+conversationId+"&1", conversationId);
 //							send(messageSearchSubjectIncidentGravity);
+						}
+						if (toUpdate!=null && toUpdate.size()>0) {
+							/*
+							 * actualizar mejor conocimiento para issue.
+							 */
 						}
 					}
 				} catch (IOException e) {
