@@ -7,13 +7,15 @@ import java.util.List;
 import com.sun.jmx.snmp.Timestamp;
 
 import jade.core.Agent;
+import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.wrapper.StaleProxyException;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
-import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.Knowledge;
+import ort.proyecto.gestac.core.entities.KnowledgeEvaluation;
+import ort.proyecto.gestac.core.entities.score.KnowledgeScoreHelper;
 
 public class KnowledgeScoreAgent extends GestacAgent {
 	
@@ -31,12 +33,30 @@ public class KnowledgeScoreAgent extends GestacAgent {
 	protected void setup() {
 		if (mode.equals("ticker")) {
 			addBehaviour(new SearchKnowledgesToUpdateBehaviour(this, tickerInterval));			
-		} else {
-			
+		} else if (mode.equals("update")){
+			addBehaviour(new UpdateKnowledgeBehaviour());
 		}
 	}
 	
-	
+	class UpdateKnowledgeBehaviour extends OneShotBehaviour {
+
+		@Override
+		public void action() {
+			try {
+				ACLMessage request = blockingReceive(MessageTemplate.MatchReplyWith("updatedScore"));
+				Knowledge knowledge = getJsonMapper().readValue(request.getContent(), Knowledge.class);
+				for (KnowledgeEvaluation evaluation : knowledge.getEvaluations()) {
+					knowledge.setKnowledgeScore(KnowledgeScoreHelper.calculateScore(knowledge));
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+				this.myAgent.doDelete();				
+			}
+		}
+		
+	}
 
 	class SearchKnowledgesToUpdateBehaviour extends TickerBehaviour {
 		
@@ -47,10 +67,9 @@ public class KnowledgeScoreAgent extends GestacAgent {
 		}
 		
 		@Override
-		protected void onTick() {
-			System.out.println("################### tick, " + new Timestamp(System.currentTimeMillis()));
-			
+		protected void onTick() {			
 			if (!updateOnCourse) {
+				System.out.println("################### tick, " + new Timestamp(System.currentTimeMillis()));
 				try {
 					ACLMessage message = createMessage("KnowledgeDBAgent");
 					message.setContent(DBAgentOperations.SEARCH_KNOWLEDGES_TO_UPDATE);
@@ -66,7 +85,9 @@ public class KnowledgeScoreAgent extends GestacAgent {
 							KnowledgeScoreAgent scoreAgent = new KnowledgeScoreAgent("update");
 							this.myAgent.getContainerController().acceptNewAgent("KnowledgeScoreAgent"+knowledge.getId(), 
 									scoreAgent).start();
-							ACLMessage scoreMessage = createMessage(getJsonMapper().writeValueAsString(knowledge));
+							ACLMessage scoreMessage = createMessage("KnowledgeScoreAgent"+knowledge.getId());
+							scoreMessage.setContent(getJsonMapper().writeValueAsString(knowledge));
+							scoreMessage.setReplyWith("updatedScore");
 							send(scoreMessage);
 //							//agregar el primer agente
 //							IssueAgent issueAgentSubjectIncidentGravity = new IssueAgent(parameters[1], parameters[2], parameters[3], parameters[4], issueSearch);

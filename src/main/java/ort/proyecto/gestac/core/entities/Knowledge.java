@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 //import com.google.gson.annotations.Expose;
@@ -22,6 +23,11 @@ public class Knowledge {
 	
 	@OneToMany(mappedBy="knowledge", fetch = FetchType.EAGER)
 	private Set<KnowledgeEvaluation> evaluations;
+	
+	@ManyToOne
+	private Source source;
+	
+	private double knowledgeScore;
 	
 	private int consideredEvaluations;
 	
@@ -75,6 +81,22 @@ public class Knowledge {
 
 	public void setTotalEvaluations(int totalEvaluations) {
 		this.totalEvaluations = totalEvaluations;
+	}
+
+	public Source getSource() {
+		return source;
+	}
+
+	public void setSource(Source source) {
+		this.source = source;
+	}
+
+	public double getKnowledgeScore() {
+		return knowledgeScore;
+	}
+
+	public void setKnowledgeScore(double knowledgeScore) {
+		this.knowledgeScore = knowledgeScore;
 	}
 	
 }

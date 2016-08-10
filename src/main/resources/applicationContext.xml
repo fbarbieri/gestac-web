@@ -63,16 +63,12 @@
 	
 	<bean id="issue.db.agent" class="ort.proyecto.gestac.core.agents.db.IssueDBAgent"/>
 	
-	<bean id="knowledge.agent" class="ort.proyecto.gestac.core.agents.KnowledgeAgent">
-<!-- 		<constructor-arg> -->
-<!-- 			<list> -->
-<!-- 				<value>query</value> -->
-<!-- 			</list> -->
-<!-- 		</constructor-arg> -->
-<!-- 		<property name="tickerInterval" value="${tickerInterval}"></property> -->
-	</bean>
+	<bean id="knowledge.agent" class="ort.proyecto.gestac.core.agents.KnowledgeAgent"/>
 	
 	<bean id="knowledge.score.agent" class="ort.proyecto.gestac.core.agents.KnowledgeScoreAgent">
+		<constructor-arg>
+			<value>ticker</value>
+		</constructor-arg>
 		<property name="tickerInterval" value="${tickerInterval}"></property>
 	</bean>
 	
