@@ -11,5 +11,7 @@ public interface KnowledgeDataSource {
 	public void addEvaluationToKnowledge(String knowledgeId, String simplicity, String usedTime, String reuse);
 	
 	public List<Knowledge> searchKnowledgesToUpdate();
+	
+	public void update(Knowledge knowledge);
 
 }

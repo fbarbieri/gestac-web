@@ -57,6 +57,12 @@ public class KnowledgeDataSourceImpl implements KnowledgeDataSource {
 		em.merge(knowledge);
 	}
 	
+	@Override
+	@Transactional
+	public void update(Knowledge knowledge) {
+		em.merge(knowledge);
+	}
+	
 	
 	
 }

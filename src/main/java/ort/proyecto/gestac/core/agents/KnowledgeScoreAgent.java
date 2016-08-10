@@ -52,6 +52,10 @@ public class KnowledgeScoreAgent extends GestacAgent {
 				knowledge.setConsideredEvaluations(knowledge.getEvaluations().size());
 				
 				//guardar knowledge actualizado.
+				ACLMessage updateKnowledge = createMessage("KnowledgeDBAgent");
+				updateKnowledge.setContent(DBAgentOperations.UPDATE_KNOWLEDGE+
+						"&"+getJsonMapper().writeValueAsString(knowledge));
+				send(updateKnowledge);
 				
 				//enviar mensaje a fuente para actualizarse.
 				
@@ -105,9 +109,8 @@ public class KnowledgeScoreAgent extends GestacAgent {
 //							send(messageSearchSubjectIncidentGravity);
 						}
 						if (toUpdate!=null && toUpdate.size()>0) {
-							/*
-							 * actualizar mejor conocimiento para issue.
-							 */
+							//un ticker distinto, que valide que no exista en knowledge uno con más puntaje que el que está ahora en 
+							//issue_best_knowledge?
 						}
 					}
 				} catch (IOException e) {

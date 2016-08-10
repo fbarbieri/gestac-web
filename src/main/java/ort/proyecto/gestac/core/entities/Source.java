@@ -7,6 +7,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 //import com.google.gson.annotations.Expose;
 
 @Entity
@@ -17,6 +19,7 @@ public class Source {
 	@GeneratedValue
 	private Long id;
 	
+	@JsonIgnore
 	@ManyToOne
 	private Area area;
 	

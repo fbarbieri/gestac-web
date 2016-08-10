@@ -16,4 +16,6 @@ public class DBAgentOperations {
 	
 	public static final String SEARCH_KNOWLEDGES_TO_UPDATE = "searchKnowledgesToUpdate";
 	
+	public static final String UPDATE_KNOWLEDGE = "updateKnowledge";
+	
 }

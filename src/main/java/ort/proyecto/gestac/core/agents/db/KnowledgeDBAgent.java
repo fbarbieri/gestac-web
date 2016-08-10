@@ -1,5 +1,6 @@
 package ort.proyecto.gestac.core.agents.db;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,8 @@ public class KnowledgeDBAgent extends GestacAgent {
 	            String operation = parameters[0];
 	            switch (operation){
 	            	case DBAgentOperations.GET_BEST_KNOWLEDGE_FOR_ISSUE:
-	            		Knowledge knowledge = dataSource.getBestKnowledgeForIssue(parameters[1]);
-	            		sendReply(knowledge, message);
+	            		Knowledge bestKnowledge = dataSource.getBestKnowledgeForIssue(parameters[1]);
+	            		sendReply(bestKnowledge, message);
 	            		break;
 	            	case DBAgentOperations.ADD_KNOWLEDGE_EVALUATION:
 	            		dataSource.addEvaluationToKnowledge(parameters[1], parameters[2],
@@ -51,6 +52,14 @@ public class KnowledgeDBAgent extends GestacAgent {
 	            	case DBAgentOperations.SEARCH_KNOWLEDGES_TO_UPDATE:
 	            		List<Knowledge> toUpdate = dataSource.searchKnowledgesToUpdate();
 	            		sendReply(toUpdate, message);
+	            		break;
+	            	case DBAgentOperations.UPDATE_KNOWLEDGE:
+						try {
+							Knowledge update = getJsonMapper().readValue(parameters[1], Knowledge.class);
+							dataSource.update(update);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
 	            		break;
 	            }
 			} else {
