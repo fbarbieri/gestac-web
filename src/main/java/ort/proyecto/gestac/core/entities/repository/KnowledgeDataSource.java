@@ -14,4 +14,6 @@ public interface KnowledgeDataSource {
 	
 	public void update(Knowledge knowledge);
 
+	public void updateBestKnowledgesForIssues();
+
 }

@@ -32,7 +32,8 @@ public class KnowledgeScoreAgent extends GestacAgent {
 	@Override
 	protected void setup() {
 		if (mode.equals("ticker")) {
-			addBehaviour(new SearchKnowledgesToUpdateBehaviour(this, tickerInterval));			
+			addBehaviour(new SearchKnowledgesToUpdateBehaviour(this, tickerInterval));
+			addBehaviour(new SearchBestKnowledgeBehaviour(this, tickerInterval));
 		} else if (mode.equals("update")){
 			addBehaviour(new UpdateKnowledgeBehaviour());
 		}
@@ -71,67 +72,66 @@ public class KnowledgeScoreAgent extends GestacAgent {
 
 	class SearchKnowledgesToUpdateBehaviour extends TickerBehaviour {
 		
-		private boolean updateOnCourse = false;
-		
 		public SearchKnowledgesToUpdateBehaviour(Agent agent, long interval) {
 			super(agent, interval);
 		}
 		
 		@Override
 		protected void onTick() {			
-			if (!updateOnCourse) {
-				System.out.println("################### tick, " + new Timestamp(System.currentTimeMillis()));
-				try {
-					ACLMessage message = createMessage("KnowledgeDBAgent");
-					message.setContent(DBAgentOperations.SEARCH_KNOWLEDGES_TO_UPDATE);
-					send(message);
-					ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
-					if (reply.getContent()!=null) {
-						updateOnCourse = true;
-						List<Knowledge> toUpdate = Arrays.asList(getJsonMapper().readValue(reply.getContent(), Knowledge[].class));
-						for (Knowledge knowledge : toUpdate) {
-							//resuelvo acá o instancio nuevos agentes?
-							//la gracia de instanciar agentes es paralelismo...
-							
-							KnowledgeScoreAgent scoreAgent = new KnowledgeScoreAgent("update");
-							this.myAgent.getContainerController().acceptNewAgent("KnowledgeScoreAgent"+knowledge.getId(), 
-									scoreAgent).start();
-							ACLMessage scoreMessage = createMessage("KnowledgeScoreAgent"+knowledge.getId());
-							scoreMessage.setContent(getJsonMapper().writeValueAsString(knowledge));
-							scoreMessage.setReplyWith("updatedScore");
-							send(scoreMessage);
-//							//agregar el primer agente
-//							IssueAgent issueAgentSubjectIncidentGravity = new IssueAgent(parameters[1], parameters[2], parameters[3], parameters[4], issueSearch);
-//							this.myAgent.getContainerController().acceptNewAgent("IssueAgent&"+conversationId+"&1", 
-//									issueAgentSubjectIncidentGravity).start();
-//							//enviar mensaje a primer agente
-//							ACLMessage messageSearchSubjectIncidentGravity = createMessage("IssueAgent&"+conversationId+"&1", conversationId);
-//							send(messageSearchSubjectIncidentGravity);
-						}
-						if (toUpdate!=null && toUpdate.size()>0) {
-							//un ticker distinto, que valide que no exista en knowledge uno con más puntaje que el que está ahora en 
-							//issue_best_knowledge?
-						}
+			//System.out.println("################### tick, " + new Timestamp(System.currentTimeMillis()));
+			try {
+				ACLMessage message = createMessage("KnowledgeDBAgent");
+				message.setContent(DBAgentOperations.SEARCH_KNOWLEDGES_TO_UPDATE);
+				send(message);
+				ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
+				if (reply.getContent()!=null) {
+					List<Knowledge> toUpdate = Arrays.asList(getJsonMapper().readValue(reply.getContent(), Knowledge[].class));
+					for (Knowledge knowledge : toUpdate) {
+						
+						KnowledgeScoreAgent scoreAgent = new KnowledgeScoreAgent("update");
+						this.myAgent.getContainerController().acceptNewAgent("KnowledgeScoreAgent"+knowledge.getId(), 
+								scoreAgent).start();
+						ACLMessage scoreMessage = createMessage("KnowledgeScoreAgent"+knowledge.getId());
+						scoreMessage.setContent(getJsonMapper().writeValueAsString(knowledge));
+						scoreMessage.setReplyWith("updatedScore");
+						send(scoreMessage);
 					}
-				} catch (IOException e) {
-					e.printStackTrace();
-				} catch (StaleProxyException e) {
-					e.printStackTrace();
+					if (toUpdate!=null && toUpdate.size()>0) {
+						//un ticker distinto, que valide que no exista en knowledge uno con más puntaje que el que está ahora en 
+						//issue_best_knowledge?
+					}
 				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (StaleProxyException e) {
+				e.printStackTrace();
+			}				
+		}
+	}
+		
+	class SearchBestKnowledgeBehaviour extends TickerBehaviour {
+		
+		public SearchBestKnowledgeBehaviour(Agent agent, long interval) {
+			super(agent, interval);
+		}
+		
+		@Override
+		public void onStart() {
+			super.onStart();
+			try {
+				Thread.sleep(tickerInterval/2);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-//			ACLMessage reply = receive(pendingResponse);
-//			if (reply!=null) {
-//				System.out.println("reply " + reply);
-//				pendingResponse = null;
-//			} else {
-//				if (pendingResponse==null) {
-//					ACLMessage message = createMessage("KnowledgeDBAgent");
-//					message.setContent(DBAgentOperations.SEARCH_KNOWLEDGES_TO_UPDATE);
-//					pendingResponse = MessageTemplate.MatchConversationId(message.getConversationId());
-//					send(message);
-//					block();
-//				}
-//			}				
+		}
+		
+		@Override
+		protected void onTick() {			
+			//System.out.println("################### tick best, " + new Timestamp(System.currentTimeMillis()));
+			
+			ACLMessage message = createMessage("KnowledgeDBAgent");
+			message.setContent(DBAgentOperations.SEARCH_AND_UPDATE_BEST_KNOWLEDGES_FOR_ISSUES);
+			send(message);				
 		}
 		
 	}

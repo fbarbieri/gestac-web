@@ -18,4 +18,6 @@ public class DBAgentOperations {
 	
 	public static final String UPDATE_KNOWLEDGE = "updateKnowledge";
 	
+	public static final String SEARCH_AND_UPDATE_BEST_KNOWLEDGES_FOR_ISSUES = "searchAndUpdateBestKnowledgeForIssue";
+	
 }

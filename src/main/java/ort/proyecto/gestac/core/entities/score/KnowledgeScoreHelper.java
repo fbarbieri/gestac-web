@@ -1,5 +1,7 @@
 package ort.proyecto.gestac.core.entities.score;
 
+import java.math.BigDecimal;
+
 import ort.proyecto.gestac.core.entities.Knowledge;
 import ort.proyecto.gestac.core.entities.KnowledgeEvaluation;
 
@@ -18,7 +20,7 @@ public class KnowledgeScoreHelper {
 		
 		finalScore = finalScore / totalEvaluations;
 		
-		return finalScore;
+		return new BigDecimal(finalScore).setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
 	}
 
 }

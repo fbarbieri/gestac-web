@@ -61,6 +61,9 @@ public class KnowledgeDBAgent extends GestacAgent {
 							e.printStackTrace();
 						}
 	            		break;
+	            	case DBAgentOperations.SEARCH_AND_UPDATE_BEST_KNOWLEDGES_FOR_ISSUES:
+	            		dataSource.updateBestKnowledgesForIssues();
+	            		break;
 	            }
 			} else {
 				block();

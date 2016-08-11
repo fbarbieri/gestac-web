@@ -31,10 +31,6 @@ public class AreaController {
 	@RequestMapping(value = "", method = RequestMethod.GET)
     public Collection<Area> getAll() {
 		logger.error("prueba de log de error");
-//		List<Area> list = areaRepository.findAll();
-//		for (Area a : list) {
-//			System.out.println(a);
-//		}
 		List<Area> areas = interfaceAgent.getAreas();
 		return areas;
     }
