@@ -20,6 +20,7 @@ import ort.proyecto.gestac.core.entities.Area;
 import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.Knowledge;
 import ort.proyecto.gestac.core.entities.KnowledgeEvaluation;
+import ort.proyecto.gestac.core.entities.Source;
 
 public class InterfaceAgent extends GuiAgent {
 	
@@ -35,7 +36,6 @@ public class InterfaceAgent extends GuiAgent {
 		//Thread.currentThread().setContextClassLoader(classLoader);
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Area> getAreas() {
 		List<Area> list = null;
 		try {
@@ -48,6 +48,23 @@ public class InterfaceAgent extends GuiAgent {
 			}
 		} catch (Exception e) {
 			logger.error("Error getting Areas from agents, " + e.getMessage(), e);
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	public List<Source> getSources() {
+		List<Source> list = null;	
+		try {
+			ACLMessage message = createMessage("SourceDBAgent", DBAgentOperations.FIND_ALL_SOURCES);
+			send(message);
+			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
+			Source[] sources = jsonMapper.readValue(reply.getContent(), Source[].class);
+			if (sources!=null && sources.length>0) {
+				list = Arrays.asList(sources);
+			}
+		} catch (IOException e) {
+			logger.error("Error getting sources form agents, " + e.getMessage(),e);
 			e.printStackTrace();
 		}
 		return list;

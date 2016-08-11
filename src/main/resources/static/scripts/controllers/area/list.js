@@ -50,6 +50,10 @@ angular.module('app')
 			    			    });
 
 			    			    modalInstance.result.then(function (item) {
+//			    			    	item.source = {
+//			    			    			name: 'namedesource',
+//			    			    			mail: 'maildesource'
+//			    			    	}
 			    			    	item.$save().then(function (area) {
 			    			    		 $scope.refreshRows();
 			    					  });

@@ -26,9 +26,10 @@ public class Source {
 	private String name;
 	
 	private String mail;
-	/**
-	 * TODO completar
-	 */
+	
+	private String userName;
+	
+	private String password;
 	
 	private Timestamp updated;
 	
@@ -37,6 +38,15 @@ public class Source {
 	private boolean onUpdate;
 
 	
+	public Source(String name) {
+		super();
+		this.name = name;
+	}
+	
+	public Source() {
+		super();
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -69,6 +79,22 @@ public class Source {
 		this.mail = mail;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
 	public Timestamp getUpdated() {
 		return updated;
 	}
@@ -92,6 +118,8 @@ public class Source {
 	public void setOnUpdate(boolean onUpdate) {
 		this.onUpdate = onUpdate;
 	}
+	
+	
 	
 	
 	

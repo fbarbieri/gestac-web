@@ -4,6 +4,8 @@ public class DBAgentOperations {
 	
 	public static final String FIND_ALL_AREAS = "findAllAreas";
 	
+	public static final String FIND_ALL_SOURCES = "findAllSources";
+	
 	public static final String GET_ISSUES_SUBJECT_INCIDENT_GRAVITY = "getIssuesBySubjectIncidentGravity";
 	
 	public static final String GET_ISSUES_SUBJECT_INCIDENT = "getIssuesBySubjectIncident";

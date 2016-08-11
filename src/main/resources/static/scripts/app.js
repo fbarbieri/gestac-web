@@ -41,12 +41,15 @@ angular.module(
 			}
 		}
 	}).when('/manageSources', {
-		templateUrl : 'views/source/source.html',
+		templateUrl : 'views/sources/source.html',
 		controller : 'SourceListCtrl',
 		controllerAs : 'sourceCtrl',
 		resolve : {
 			sourcesList : function(Sources) {
 				return Sources.query();
+			},
+			areasList : function(Areas) {
+				return Areas.query();
 			}
 		}
 	}).otherwise({

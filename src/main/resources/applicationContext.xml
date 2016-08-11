@@ -49,6 +49,10 @@
 					<key><value>KnowledgeDBAgent</value></key>
 					<ref bean="knowledge.db.agent" />
 				</entry>
+				<entry>
+					<key><value>SourceDBAgent</value></key>
+					<ref bean="source.db.agent"/>
+				</entry>
 			</map>
 		</property>
 	</bean>
@@ -79,5 +83,7 @@
 	<bean id="issue.search.repo" class="ort.proyecto.gestac.core.entities.repository.IssueSearchRepositoryImpl"></bean>
 	
 	<bean id="knowledge.datasource" class="ort.proyecto.gestac.core.entities.repository.KnowledgeDataSourceImpl"></bean>
+	
+	<bean id="source.db.agent" class="ort.proyecto.gestac.core.agents.db.SourceDBAgent"/>
 
 </beans>

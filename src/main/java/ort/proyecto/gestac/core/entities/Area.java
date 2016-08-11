@@ -9,6 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 //import com.google.gson.annotations.Expose;
 
@@ -112,6 +113,4 @@ public class Area implements Serializable {
 		return "Area [id=" + id + ", name=" + name + ", description=" + description + "]";
 	}
 
-	
-	
 }
