@@ -5,24 +5,24 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-//import com.google.gson.annotations.Expose;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 public class Gravity {
 
-//	@Expose
 	@Id 
 	@GeneratedValue
 	private Long id;
 	
-//	@Expose
 	private String description;
 	
-//	@Expose
 	private double value;
 	
-	@JsonIgnore
+	@JsonBackReference
 	@ManyToOne
 	private Incident incident;
 

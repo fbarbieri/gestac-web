@@ -11,36 +11,33 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
-//import com.google.gson.annotations.Expose;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 public class Area implements Serializable {
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 
-//	@Expose
 	@Id 
 	@GeneratedValue
 	private Long id;
 		
-//	@Expose
 	private String name;
 	
-//	@Expose
 	private String description;
 	
-//	@Expose
+	@JsonManagedReference
 	@OneToMany(mappedBy="area", fetch = FetchType.EAGER)
 	private Set<Subject> subjects = new HashSet<>();
 	
-//	@Expose
+	@JsonManagedReference
 	@OneToMany(mappedBy="area", fetch = FetchType.EAGER)
 	private Set<Incident> incidents = new HashSet<>();
 	
-//	@Expose
+	@JsonManagedReference
 	@OneToMany(mappedBy="area", fetch = FetchType.EAGER)
 	private Set<Source> sources = new HashSet<>();
 

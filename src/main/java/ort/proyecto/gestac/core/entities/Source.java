@@ -7,19 +7,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-//import com.google.gson.annotations.Expose;
-
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 public class Source {
 
-//	@Expose
 	@Id 
 	@GeneratedValue
 	private Long id;
 	
-	@JsonIgnore
+	@JsonBackReference
 	@ManyToOne
 	private Area area;
 	

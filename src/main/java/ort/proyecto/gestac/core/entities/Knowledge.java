@@ -9,18 +9,21 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-//import com.google.gson.annotations.Expose;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 @Entity
 public class Knowledge {
 
-//	@Expose
 	@Id 
 	@GeneratedValue
 	private Long id;
 	
 	private String description;
 	
+	@JsonManagedReference
 	@OneToMany(mappedBy="knowledge", fetch = FetchType.EAGER)
 	private Set<KnowledgeEvaluation> evaluations;
 	
