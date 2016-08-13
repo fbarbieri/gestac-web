@@ -8,6 +8,7 @@ import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jade.core.AID;
@@ -68,6 +69,35 @@ public class InterfaceAgent extends GuiAgent {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	public boolean sourceExists(Source source) {
+		ACLMessage message = createMessage("SourceDBAgent", 
+				DBAgentOperations.FIND_SOURCE_BY_NAME_MAIL + "&" + source.getName() + "&" + source.getMail());
+		send(message);
+		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
+		if (reply.getContent()==null || reply.getContent().equals("")) {
+			return false;
+		} else {
+			return true;			
+		}
+	}
+	
+	public boolean saveSource(Source source) {
+		ACLMessage message;
+		try {
+			message = createMessage("SourceDBAgent", DBAgentOperations.SAVE_SOURCE + "&" + jsonMapper.writeValueAsString(source));
+			send(message);
+			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
+			if (reply.getContent()!=null && reply.getContent().equals(DBAgentOperations.OK)) {
+				return true;
+			} else {
+				return false;			
+			}
+		} catch (JsonProcessingException e) {
+			e.printStackTrace();
+			return false;
+		}
 	}
 	
 	public List<Issue> findIssues(String areaId, String subjectId, String incidentId, String gravityId) {

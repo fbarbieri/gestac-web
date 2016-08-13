@@ -39,6 +39,18 @@ public class GestacAgent extends Agent {
         }
 	}
 	
+	protected void sendReply(Object data, ACLMessage messageToReplyTo) {
+		ACLMessage reply = messageToReplyTo.createReply();
+		try {
+			if (data!=null) {
+				reply.setContent(jsonMapper.writeValueAsString(data));				
+			}
+			send(reply);
+		} catch (Exception e) {
+            e.printStackTrace();
+        }
+	}
+	
 	protected void sendReply(String data, ACLMessage messageToReplyTo) {
 		ACLMessage reply = messageToReplyTo.createReply();
 		try {

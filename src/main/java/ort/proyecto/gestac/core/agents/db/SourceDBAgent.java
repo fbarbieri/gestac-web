@@ -1,5 +1,6 @@
 package ort.proyecto.gestac.core.agents.db;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -41,6 +42,23 @@ public class SourceDBAgent extends GestacAgent {
 	        		List<Source> allSources = sourceRepository.findAllByOrderByNameAsc();
 	            	sendReply(allSources, message);
 	        		break;
+	            case DBAgentOperations.FIND_SOURCE_BY_NAME_MAIL:
+	            	Source source = sourceRepository.findByNameAndMail(parameters[1],parameters[2]);
+	            	sendReply(source, message);
+	            	break;
+	            case DBAgentOperations.SAVE_SOURCE:
+	            	Source saved = null;
+	            	try {
+						saved = sourceRepository.save(getJsonMapper().readValue(parameters[1], Source.class));
+					} catch (IOException e) {
+						logger.error("Error saving source " + parameters[1], e);
+					}
+	            	if (saved!=null){
+	            		sendReply(DBAgentOperations.OK, message);
+	            	} else {
+	            		sendReply(DBAgentOperations.ERROR, message);
+	            	}
+	            	break;
 	            }
 			} else {
 				block();

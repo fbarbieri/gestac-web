@@ -18,6 +18,7 @@ angular.module('app')
 	  }
 	  
 	  $scope.accept=function(){
+		  //$scope.item.ownEvaluationTotal = (Number($scope.item.workExperience) + Number($scope.item.areaEducation) + Number($scope.item.title))/Number(3);
 		  $uibModalInstance.close($scope.item);
 	  }
 	  

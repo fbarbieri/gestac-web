@@ -1,6 +1,7 @@
 package ort.proyecto.gestac.web.controllers;
 
 import java.net.InterfaceAddress;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -18,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import ort.proyecto.gestac.core.agents.InterfaceAgent;
 import ort.proyecto.gestac.core.entities.Area;
 import ort.proyecto.gestac.core.entities.Source;
+import ort.proyecto.gestac.core.entities.score.SourceScoreHelper;
 
 @RestController
 @RequestMapping("/sources")
@@ -32,10 +34,19 @@ public class SourceController {
     public ResponseEntity<Source> createUser(@RequestBody Source source) {
         if(source.getName()==null)
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);	
-//        if (areas.containsKey(area.getName()))
-//            return new ResponseEntity<>(HttpStatus.CONFLICT);
-//        
-//        areas.put(area.getName(),area);
+        
+        if (!interfaceAgent.sourceExists(source)) {
+        	SourceScoreHelper.calculateAndSetEvaluationTotal(source);
+        	source.setScoreTotal(source.getOwnEvaluationTotal());
+        	Timestamp updated = new Timestamp(System.currentTimeMillis());
+        	source.setUpdated(updated);
+        	source.setEvaluationUpdated(updated);
+        	
+        	interfaceAgent.saveSource(source);
+        } else {
+        	return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+  
   
         return new ResponseEntity<Source>(source, HttpStatus.CREATED);
     }

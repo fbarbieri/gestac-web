@@ -1,5 +1,6 @@
 <div class="panel panel-default">
 	<div class="panel-heading">{{title}}</div>
+
 	<div class="panel-body">
 		<div class="row">
 			<div class="col-sm-12">
@@ -49,7 +50,107 @@
 				</div>
 			</div>
 		</div>
-		<br>
+		<br><br>
+		
+		<form name="evaluationSimplicity">
+			<div class="form-group">
+<!-- 				<div ng-if="data.evaluationError!=null"> -->
+<!-- 					<br> -->
+<!-- 					<p class="bg-danger">{{data.evaluationError}}</p> -->
+<!-- 					<br> -->
+<!-- 				</div> -->
+			
+				<label class="radio-inline">Experiencia laboral:</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.25" ng-model="item.workExperience" required="required">0 a 2 a&ntilde;os				
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.5" ng-model="item.workExperience" required="required">2 a 5 a&ntilde;os				
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.75" ng-model="item.workExperience" required="required">5 a 10 a&ntilde;os				
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="1" ng-model="item.workExperience" required="required">10 a&ntilde;os o m&aacute;s
+				</label>
+				
+				<br><br>
+				
+				<label class="radio-inline">Formaci&oacute;n en el &aacute;rea:</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.25" ng-model="item.areaEducation" required="required">Autodidacta				
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.5" ng-model="item.areaEducation" required="required">T&eacute;cnico				
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.75" ng-model="item.areaEducation" required="required">Profesional			
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="1" ng-model="item.areaEducation" required="required">Con postgrados
+				</label>
+				
+				<br><br>
+				
+				<label class="radio-inline">Posici&oacute;n:</label>
+				<label class="radio-inline">
+					<input type="radio" value="0" ng-model="item.title" required="required">Empleado junior	
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.25" ng-model="item.title" required="required">Empleado senior				
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.5" ng-model="item.title" required="required">Jefe			
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.75" ng-model="item.title" required="required">Gerente				
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="1" ng-model="item.title" required="required">Directivo	
+				</label>
+				
+				<br><br>
+				
+				<h4>Percepci&oacute;n</h4>
+				<br>
+				
+				<label class="radio-inline">Sentido com&uacute;n:</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.25" ng-model="item.perceptionCommonSense" required="required">¿?				
+				</label>
+				
+				<br><br>
+				
+				<label class="radio-inline">Met&oacute;dico / Ordenado:</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.25" ng-model="item.perceptionOrder" required="required">¿?				
+				</label>
+				
+				<br><br>
+				
+				<label class="radio-inline">Inter&eacute;s en el &aacute;rea:</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.25" ng-model="item.perceptionInterest" required="required">¿?				
+				</label>
+				
+				<br><br>
+				
+				<label class="radio-inline">Capacidad de trabajo:</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.25" ng-model="item.perceptionWorkCapacity" required="required">¿?				
+				</label>
+
+				<br><br>
+
+				<label class="radio-inline">Capacidad de trabajo en grupo:</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.25" ng-model="item.perceptionGroupWorkCapacity" required="required">¿?				
+				</label>
+				
+			</div>
+			<br>
+		</form>
+		
 	<div class="row">
 		<div class="col-sm-3"></div>
 		<div class="col-sm-3">

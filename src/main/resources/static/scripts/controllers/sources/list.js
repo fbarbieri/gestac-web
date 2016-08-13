@@ -32,7 +32,7 @@ angular.module('app')
 			  	animation : $scope.animationsEnabled,
 			  	templateUrl : '/views/sources/new.html',
 			  	controller : 'SourcesNewCtrl',
-			  	size : 'large',
+			  	size : 'lg',
 			  	resolve : {
 			  			item : function(Sources) {
 			  				return new Sources();
@@ -53,6 +53,31 @@ angular.module('app')
 				}, function() {
 					console.log('Modal dismissed at: ' + new Date());
 				});
+	  }
+	  
+	  $scope.editRow=function(item){
+		  var modalInstance = $uibModal.open({
+		      animation: $scope.animationsEnabled,
+		      templateUrl: '/views/sources/new.html',
+		      controller: 'SourcesNewCtrl',
+		      size: 'lg',
+		      resolve: {
+		    	item : function() {
+		    		return item;
+	  			},
+	  			areas : function(Areas) {
+	  				return areasList;
+	  			}
+		      }
+		    });
+
+		    modalInstance.result.then(function (selectedItem) {
+		      selectedItem.$update().then(function (source) {
+		    	  $scope.refreshRows();
+			  });
+		    }, function () {
+		      console.log('Modal dismissed at: ' + new Date());
+		    });
 	  }
 	  
 // var setAreasToSources = function() {
