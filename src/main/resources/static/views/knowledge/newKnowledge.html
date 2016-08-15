@@ -1,0 +1,17 @@
+<h1>Nuevo conocimiento</h1>
+
+<div ng-if="currentSource!=null">
+
+	<div>{{currentSource.name}}</div>
+	
+</div>
+
+
+<div ng-if="noBestSource!=null">
+
+	<div>
+		<p class="bg-danger">No es la mejor fuente, no puede ingresar conocimientos</p>
+		<button type="button" class='btn btn-default btn-lg' ng-click="back()">Volver</button>
+	</div>
+	
+</div>

@@ -52,6 +52,18 @@ angular.module(
 				return Areas.query();
 			}
 		}
+	}).when('/newKnowledge', {
+		templateUrl : 'views/knowledge/newKnowledge.html',
+		controller : 'NewKnowledgeCtrl',
+		controllerAs : 'knowledgeCtrl',
+		resolve : {
+			sourcesList : function(Sources) {
+				return Sources.query();
+			},
+			areasList : function(Areas) {
+				return Areas.query();
+			}
+		}
 	}).otherwise({
 		redirectTo : '/'
 	});

@@ -1,6 +1,7 @@
 package ort.proyecto.gestac.core.agents;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -52,6 +53,21 @@ public class InterfaceAgent extends GuiAgent {
 			e.printStackTrace();
 		}
 		return list;
+	}
+	
+	public Source loginSource(String userName, String password) {
+		Source source = null;
+		try {
+			ACLMessage message = createMessage("SourceDBAgent", DBAgentOperations.GET_SOURCE_BY_LOGIN + "&" + userName + "&" + password);
+			send(message);
+			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
+			if (reply.getContent()!=null) {
+				source = jsonMapper.readValue(reply.getContent(), Source.class);				
+			}
+		} catch (IOException e) {
+			logger.error("Error getting/parsing source by login, username: " + userName);
+		}
+		return source;
 	}
 	
 	public List<Source> getSources() {
@@ -129,6 +145,48 @@ public class InterfaceAgent extends GuiAgent {
 			e.printStackTrace();
 		}
 		return knowledge;
+	}
+	
+	public List<Issue> isBestSourceForHisArea(String sourceId) {
+		Area area = null;
+		ACLMessage message = createMessage("SourceAgent", "getAreaIfSourceIsBest"+"&"+sourceId);
+		send(message);
+		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
+		try {
+			area = jsonMapper.readValue(reply.getContent(), Area.class);
+		} catch (Exception e) {
+			logger.error("Error getting best source for area, source: " + sourceId, e);
+			e.printStackTrace();
+		}
+		
+		//si tengo un área, es que esta fuente es la mejor para esa area.
+		
+		if (area!=null) {
+			List<Issue> issuesToAnwser = interfaceAgent.getIssuesForSource(sourceId, area.getId());
+			if (issuesToAnser!=null) {
+				return issuesToAnwser;
+			} else {
+				return new ArrayList<Issue>();
+			}
+		} else {
+			return null; //no es mejor fuente
+		}
+		
+		
+//		if (source!=null) {
+//			List<Issue> issuesToAnwser = interfaceAgent.getIssuesForAgent();
+//			
+//			if (issuesToAnwser!=null) {
+//				return issuesToAnwser;
+//			} else {
+//				new ArrayList();
+//			}
+//		} else {
+//			return null;
+//		}
+		
+		
+		return null;
 	}
 	
 	public void addKnowledgeEvaluation(KnowledgeEvaluation evaluation) {

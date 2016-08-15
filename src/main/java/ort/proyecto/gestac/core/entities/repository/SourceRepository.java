@@ -15,4 +15,6 @@ public interface SourceRepository extends JpaRepository<Source, Long> {
 	
 	Source findByNameAndMail(String name, String mail);
 	
+	Source findByUserNameAndPassword(String userName, String password);
+	
 }

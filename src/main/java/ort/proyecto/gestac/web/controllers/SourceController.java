@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -18,6 +19,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ort.proyecto.gestac.core.agents.InterfaceAgent;
 import ort.proyecto.gestac.core.entities.Area;
+import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.Source;
 import ort.proyecto.gestac.core.entities.score.SourceScoreHelper;
 
@@ -29,6 +31,33 @@ public class SourceController {
 	private InterfaceAgent interfaceAgent;
 	
 	private ObjectMapper jsonMapper = new ObjectMapper();
+	
+	
+	@RequestMapping(value = "/isBestSource/{sourceId}", method = RequestMethod.GET)
+    public Collection<Issue> isBestSource(@PathVariable("sourceId") String sourceId) {
+        if(sourceId==null || sourceId.equals("")) {
+        	return null;
+        }
+        
+        List<Issue> issuesToAnswer = interfaceAgent.isBestSourceForHisArea(sourceId);
+        
+        return issuesToAnswer;
+        
+//        if (!interfaceAgent.sourceExists(source)) {
+//        	SourceScoreHelper.calculateAndSetEvaluationTotal(source);
+//        	source.setScoreTotal(source.getOwnEvaluationTotal());
+//        	Timestamp updated = new Timestamp(System.currentTimeMillis());
+//        	source.setUpdated(updated);
+//        	source.setEvaluationUpdated(updated);
+//        	
+//        	interfaceAgent.saveSource(source);
+//        } else {
+//        	return new ResponseEntity<>(HttpStatus.CONFLICT);
+//        }
+  
+  
+//        return new ResponseEntity<Source>(source, HttpStatus.CREATED);
+    }
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
     public ResponseEntity<Source> createUser(@RequestBody Source source) {

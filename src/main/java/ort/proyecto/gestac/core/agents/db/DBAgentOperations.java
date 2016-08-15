@@ -29,5 +29,9 @@ public class DBAgentOperations {
 	public static final String FIND_SOURCE_BY_NAME_MAIL = "findSourceByNameMail";
 	
 	public static final String SAVE_SOURCE = "saveSource";
+
+	public static final String GET_SOURCE_BY_LOGIN = "getSourceByLogin";
+	
+	public static final String GET_AREA_FOR_BEST_SOURCE = "getAreaForBestSource";
 	
 }
