@@ -12,4 +12,6 @@ public interface IssueSearchRepository {
 	
 	public List<Issue> getIssuesBySubjectGravity(long subjectId, long gravityId);
 	
+	public List<Issue> getIssuesWithoutKnowledgeForSource(long sourceId, long areaId);
+	
 }

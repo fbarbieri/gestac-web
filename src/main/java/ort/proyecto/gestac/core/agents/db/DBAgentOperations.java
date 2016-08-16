@@ -34,4 +34,8 @@ public class DBAgentOperations {
 	
 	public static final String GET_AREA_FOR_BEST_SOURCE = "getAreaForBestSource";
 	
+	public static final String GET_ISSUES_FOR_SOURCE_WITHOUT_KNOWLEDGE = "getIssuesForSourceWithoutKnowledge";
+	
+	public static final String ADD_KNOWLEDGE = "addKnowledge";
+	
 }

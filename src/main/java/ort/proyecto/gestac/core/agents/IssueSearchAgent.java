@@ -2,21 +2,18 @@ package ort.proyecto.gestac.core.agents;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jade.core.AID;
-import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.wrapper.AgentController;
+import jade.lang.acl.MessageTemplate;
+import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.repository.IssueRepository;
 import ort.proyecto.gestac.core.entities.repository.IssueSearchRepository;
@@ -96,6 +93,7 @@ public class IssueSearchAgent extends GestacAgent {
 							ACLMessage messageSearchSubjectGravity = createMessage("IssueAgent&"+conversationId+"&3", conversationId);
 							send(messageSearchSubjectGravity);
 							
+							break;
 						}
 						
 					} 

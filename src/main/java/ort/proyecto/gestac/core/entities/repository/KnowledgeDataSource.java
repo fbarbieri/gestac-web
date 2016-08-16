@@ -12,7 +12,7 @@ public interface KnowledgeDataSource {
 	
 	public List<Knowledge> searchKnowledgesToUpdate();
 	
-	public void update(Knowledge knowledge);
+	public Knowledge update(Knowledge knowledge);
 
 	public void updateBestKnowledgesForIssues();
 

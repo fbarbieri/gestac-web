@@ -57,9 +57,15 @@
 					<key><value>SourceAgent</value></key>
 					<ref bean="source.agent"/>
 				</entry>
+				<entry>
+					<key><value>IssueManagementSearchAgent</value></key>
+					<ref bean="issue.management.search.agent"/>
+				</entry>
 			</map>
 		</property>
 	</bean>
+	
+	<bean id="issue.management.search.agent" class="ort.proyecto.gestac.core.agents.IssueManagementSearchAgent"></bean>
 	
 	<bean id="doscomportamientos.agent" class="ort.proyecto.gestac.core.agents.AgenteDosComportamientos"></bean>
 

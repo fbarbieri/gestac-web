@@ -45,6 +45,11 @@ public class IssueDBAgent extends GestacAgent {
         				Long.parseLong(parameters[2]));
         		sendReply(issuesSubjectGravity, message);
         		break;
+        	case DBAgentOperations.GET_ISSUES_FOR_SOURCE_WITHOUT_KNOWLEDGE:
+        		List<Issue> issuesForSource = issueSearch.getIssuesWithoutKnowledgeForSource(Long.parseLong(parameters[1]), 
+        				Long.parseLong(parameters[2]));
+        		sendReply(issuesForSource, message);
+        		break;
             }
 		}
 		

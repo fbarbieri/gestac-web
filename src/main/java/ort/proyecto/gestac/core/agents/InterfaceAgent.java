@@ -28,7 +28,7 @@ public class InterfaceAgent extends GuiAgent {
 	
 	private static final long serialVersionUID = 1L;
 	
-	Logger logger = LoggerFactory.getLogger("ort.proyecto.gestac.core.agents.InterfaceAgent");
+	private Logger logger = LoggerFactory.getLogger("ort.proyecto.gestac.core.agents.InterfaceAgent");
 	
 	private ObjectMapper jsonMapper = new ObjectMapper();
 	
@@ -153,17 +153,18 @@ public class InterfaceAgent extends GuiAgent {
 		send(message);
 		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
 		try {
-			area = jsonMapper.readValue(reply.getContent(), Area.class);
+			if (reply.getContent()!=null) {
+				area = jsonMapper.readValue(reply.getContent(), Area.class);				
+			}
 		} catch (Exception e) {
 			logger.error("Error getting best source for area, source: " + sourceId, e);
-			e.printStackTrace();
 		}
 		
 		//si tengo un área, es que esta fuente es la mejor para esa area.
 		
 		if (area!=null) {
-			List<Issue> issuesToAnwser = interfaceAgent.getIssuesForSource(sourceId, area.getId());
-			if (issuesToAnser!=null) {
+			List<Issue> issuesToAnwser = getIssuesForSourceWithoutKnowledge(Long.parseLong(sourceId), area.getId());
+			if (issuesToAnwser!=null) {
 				return issuesToAnwser;
 			} else {
 				return new ArrayList<Issue>();
@@ -171,22 +172,35 @@ public class InterfaceAgent extends GuiAgent {
 		} else {
 			return null; //no es mejor fuente
 		}
-		
-		
-//		if (source!=null) {
-//			List<Issue> issuesToAnwser = interfaceAgent.getIssuesForAgent();
-//			
-//			if (issuesToAnwser!=null) {
-//				return issuesToAnwser;
-//			} else {
-//				new ArrayList();
-//			}
-//		} else {
-//			return null;
-//		}
-		
-		
-		return null;
+	}
+	
+	public List<Issue> getIssuesForSourceWithoutKnowledge(long sourceId, long areaId) {
+		List<Issue> result = null;
+		ACLMessage message = createMessage("IssueManagementSearchAgent", "getIssuesForSourceWithoutKnowledge"+"&"+sourceId+"&"+areaId);
+		send(message);
+		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
+		try {
+			if (reply.getContent()!=null) {
+				result = Arrays.asList(jsonMapper.readValue(reply.getContent(), Issue[].class));				
+			}
+		} catch (Exception e) {
+			logger.error("Error getting best source for area, source: " + sourceId, e);
+		}
+		return result;
+	}
+	
+	public Long addKnowledge(Knowledge toSave) {
+		Long newId = -1L;
+		try {
+			ACLMessage newKnowledge = createMessage("KnowledgeAgent", "addKnowledge"
+					+ "&" + jsonMapper.writeValueAsString(toSave));
+			send(newKnowledge);
+			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(newKnowledge.getConversationId()));
+			newId = Long.parseLong(reply.getContent());
+		} catch (JsonProcessingException e) {
+			logger.error("Error converting from Knowledge to Json, id: " + toSave.getId(), e);
+		}	
+		return newId;
 	}
 	
 	public void addKnowledgeEvaluation(KnowledgeEvaluation evaluation) {
@@ -212,6 +226,8 @@ public class InterfaceAgent extends GuiAgent {
 		System.out.println(ev.getType());
 		System.out.println(ev.getSource());
 	}
+
+	
 
 //	public void setClassLoader(ClassLoader classLoader) {
 //		this.classLoader = classLoader;

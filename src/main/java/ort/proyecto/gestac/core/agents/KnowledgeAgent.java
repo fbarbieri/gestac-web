@@ -68,6 +68,13 @@ public class KnowledgeAgent extends GestacAgent {
 							"&"+parameters[1]+"&"+parameters[2]+"&"+parameters[3]+"&"+parameters[4]);
 					send(addKnowledgeMessage);
 					break;
+				case "addKnowledge":
+					ACLMessage addKnowledge = createMessage("KnowledgeDBAgent");
+					addKnowledge.setContent(DBAgentOperations.ADD_KNOWLEDGE + "&" + parameters[1]);
+					send(addKnowledge);
+					ACLMessage addKnowledgeReply = blockingReceive(MessageTemplate.MatchConversationId(addKnowledge.getConversationId()));
+					sendReply(addKnowledgeReply.getContent(), message);
+					break;
 				}
 			} else {
 				block();

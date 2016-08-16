@@ -34,12 +34,6 @@ public class IssueAgent extends GestacAgent {
 		addBehaviour(new myBehaviour());
 	}
 	
-	@Override
-	protected void takeDown() {
-		System.out.println("takedown!");
-		super.takeDown();
-	}
-	
 	/**
 	 * según los datos que haya, llamar a dbagent
 	 * @return

@@ -3,6 +3,8 @@ package ort.proyecto.gestac.core.agents.db;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +19,8 @@ import ort.proyecto.gestac.core.entities.repository.KnowledgeDataSource;
 public class KnowledgeDBAgent extends GestacAgent {
 	
 	private static final long serialVersionUID = 1L;
+	
+	private Logger logger = LoggerFactory.getLogger(KnowledgeDBAgent.class);
 	
 	@Autowired
 	private KnowledgeDataSource dataSource;
@@ -63,6 +67,14 @@ public class KnowledgeDBAgent extends GestacAgent {
 	            		break;
 	            	case DBAgentOperations.SEARCH_AND_UPDATE_BEST_KNOWLEDGES_FOR_ISSUES:
 	            		dataSource.updateBestKnowledgesForIssues();
+	            		break;
+	            	case DBAgentOperations.ADD_KNOWLEDGE:
+						try {
+							Knowledge added = dataSource.update(jsonMapper.readValue(parameters[1], Knowledge.class));
+							sendReply(added.getId(), message);
+						} catch (IOException e) {
+							logger.error("Error parsing json to Knowledge, " + parameters[1], e);
+						}
 	            		break;
 	            }
 			} else {

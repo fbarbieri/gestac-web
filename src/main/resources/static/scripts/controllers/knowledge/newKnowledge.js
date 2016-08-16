@@ -12,13 +12,34 @@ angular.module('app')
 	  
 	  $scope.data={
 			  areas: areasList,
-	  }
+	  };
+	  
+	  $scope.newKnowledge={};
+	  $scope.newKnowledgeEvaluation={};
 	  
 	  $scope.back = function() {
 		  var home = $window.location.host + "/#";
 		  $location.path('/#');
-	  }
+	  };
 	  
+	  var refresh = function() {
+		  var urlParams = ''+$scope.currentSource.id;
+		  $http.get('/sources/isBestSource/'+urlParams).then(function(data) {
+			  if (data.data=='') {
+				  //no es la mejor fuente para el área, mensaje y volver
+				  $scope.noBestSource = "No es la mejor fuente para su área, no puede ingresar conocimientos";
+			  } else {
+				  $scope.issuesNoKnowledge = data.data;
+			  }
+			  
+			  
+			  if (data.data!='') { //es mejor fuente para área, y vienen los problemas sin respuesta o con respuesta de otro
+				  $scope.open("Evaluación", "Evaluación agregada correctamente");
+			  } else {
+				  
+			  }
+	        });
+	  }
 	 
 	  $scope.openLogin = function() {
 		  
@@ -38,15 +59,7 @@ angular.module('app')
 		  modalInstance.result.then(function(item){
 			  $scope.currentSource = item;
 			  
-			  var urlParams = ''+$scope.currentSource.id;
-			  $http.get('/sources/isBestSource/'+urlParams).then(function(data) {
-				  if (data.data!=null) { //es mejor fuente para área, y vienen los problemas sin respuesta o con respuesta de otro
-					  $scope.open("Evaluación", "Evaluación agregada correctamente");
-				  } else {
-					  //no es la mejor fuente para el área, mensaje y volver
-					  $scope.noBestSource = "No es la mejor fuente para su área, no puede ingresar conocimientos";
-				  }
-		        });
+			  refresh();
 			  
 		  }, function(){
 			  console.log('Modal dismissed at: ' + new Date());
@@ -54,6 +67,27 @@ angular.module('app')
 			  $location.path('/#');
 		  });		  
 		  
+	  };
+	  
+	  $scope.selectIssue = function(item){
+		  $scope.selectedIssue=item;
+	  };
+	  
+	  $scope.saveKnowledge = function() {
+		  $http.post('/knowledge/newKnowledge/', {
+			  knowledge:$scope.newKnowledge,
+			  evaluation:$scope.newKnowledgeEvaluation,
+			  issue:$scope.selectedIssue,
+			  source:$scope.currentSource
+		  }).then(function(data) {
+			  if (data.data!=null) {
+				  $scope.newKnowledgeError = false;
+				  $scope.selectedIssue = null;
+				  refresh();				  
+			  } else {
+				  $scope.newKnowledgeError=true;
+			  }
+		  });
 	  };
 	  
 	  $scope.openLogin();

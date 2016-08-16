@@ -8,10 +8,105 @@
 
 
 <div ng-if="noBestSource!=null">
-
 	<div>
 		<p class="bg-danger">No es la mejor fuente, no puede ingresar conocimientos</p>
-		<button type="button" class='btn btn-default btn-lg' ng-click="back()">Volver</button>
+		<br>
+		<button type="button" class='btn btn-link btn-lg' ng-click="back()">Volver</button>
 	</div>
-	
 </div>
+<div ng-if="noBestSource==null">
+	<div>
+		<br><br><br>
+		<div class="panel panel-default" align="left">
+			<div class="panel-heading" align="left">Problemas <mark>sin</mark> conocimiento asociado</a>
+			</div>
+			<div class="panel-body" align="left">
+				<div class="list-group" align="left">
+<!-- 					<a ng-repeat="item in issuesNoKnowledge" ng-href="#" class="list-group-item"> -->
+					<a ng-repeat="item in issuesNoKnowledge" ng-click="selectIssue(item)" class="list-group-item">
+						<div>{{item.title}}</div>
+					</a>
+				</div>
+			</div>
+		</div>
+		
+		<div ng-if="selectedIssue!=null" class="panel panel-default">
+			<div class="panel-heading" align="left">{{selectedIssue.title}}</a>
+			</div>
+			<div class="panel-body">
+				<div class="panel-body" align="left">{{selectedIssue.description}}</div>
+				<br>
+				<p align="left">Ingrese el conocimiento</p>
+				<textarea id="inputKnowledge" type="text" ng-model="newKnowledge.description" class="form-control" 
+					align="left" rows="5"></textarea>
+			</div>
+			
+			<form name="evaluationSimplicity">
+				<div class="form-group">
+					<div ng-if="data.evaluationError!=null">
+						<br>
+						<p class="bg-danger">{{evaluationError}}</p>
+						<br>
+					</div>
+				
+					<label class="radio-inline">Simplicidad:</label>
+					<label class="radio-inline">
+						<input type="radio" value="0.25" ng-model="newKnowledgeEvaluation.simplicity" required="required">Complejo				
+					</label>
+					<label class="radio-inline">
+						<input type="radio" value="0.5" ng-model="newKnowledgeEvaluation.simplicity" required="required">Un poco complejo				
+					</label>
+					<label class="radio-inline">
+						<input type="radio" value="0.75" ng-model="newKnowledgeEvaluation.simplicity" required="required">Un poco simple				
+					</label>
+					<label class="radio-inline">
+						<input type="radio" value="1" ng-model="newKnowledgeEvaluation.simplicity" required="required">Simple
+					</label>
+					
+					<br><br>
+					
+					<label class="radio-inline">Tiempo utilizado:</label>
+					<label class="radio-inline">
+						<input type="radio" value="1" ng-model="newKnowledgeEvaluation.usedTime" required="required"><15 min.				
+					</label>
+					<label class="radio-inline">
+						<input type="radio" value="0.75" ng-model="newKnowledgeEvaluation.usedTime" required="required">15 min - 1 hora				
+					</label>
+					<label class="radio-inline">
+						<input type="radio" value="0.5" ng-model="newKnowledgeEvaluation.usedTime" required="required">1 - 2 horas				
+					</label>
+					<label class="radio-inline">
+						<input type="radio" value="0.25" ng-model="newKnowledgeEvaluation.usedTime" required="required">>2 horas	
+					</label>
+					
+					<br><br>
+					
+					<label class="radio-inline">Reuso:</label>
+					<label class="radio-inline">
+						<input type="radio" value="0.25" ng-model="newKnowledgeEvaluation.reuse" required="required">0 - 1 vez				
+					</label>
+					<label class="radio-inline">
+						<input type="radio" value="0.5" ng-model="newKnowledgeEvaluation.reuse" required="required">2 - 5 veces				
+					</label>
+					<label class="radio-inline">
+						<input type="radio" value="0.75" ng-model="newKnowledgeEvaluation.reuse" required="required">6 - 10 veces				
+					</label>
+					<label class="radio-inline">
+						<input type="radio" value="1" ng-model="newKnowledgeEvaluation.reuse" required="required">>10 veces	
+					</label>
+				</div>
+				<div ng-if="newKnowledgeError==true">
+					<br>	
+					<p class="bg-danger">Falta ingresar datos para poder agregar el conocimiento</p>
+				</div>
+				<br>
+				<button type="button" class='btn btn-success btn-lg' ng-click="saveKnowledge()">Agregar conocimiento</button>
+				<br><br>
+			</form>
+		</div>
+		
+		
+	</div>
+</div>
+
+

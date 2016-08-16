@@ -74,4 +74,19 @@ public class IssueSearchRepositoryImpl implements IssueSearchRepository {
 		
 		return list;
 	}
+	
+	public List<Issue> getIssuesWithoutKnowledgeForSource(long sourceId, long areaId) {
+		
+//		List<Object> withKnowledge = 
+//				em.createQuery("select k.issue from Knowledge as k where k.issue is not null and k.source.id=?1").setParameter(1, new Long(sourceId)).getResultList();
+
+		List<Issue> list = em.createQuery("select issue from Issue as issue join issue.subjects subjects "
+				+ "where subjects.area.id=?1 "
+				+ " and issue.id not in (select k.issue.id from Knowledge as k where k.issue is not null)")
+				.setParameter(1, new Long(areaId)).getResultList();
+		
+//		List<Issue> list = em.createQuery("select issue from Issue as issue "
+//				+ "where issue.subjects").getResultList();
+		return list;
+	}
 }
