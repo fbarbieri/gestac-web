@@ -133,6 +133,21 @@ public class InterfaceAgent extends GuiAgent {
 		return list;
 	}
 	
+	public List<Issue> getIssuesWithKnowledgeForSourceArea(String sourceId, String areaId) {
+		List<Issue> result = null;
+		ACLMessage message = createMessage("IssueManagementSearchAgent", "getIssuesForSourceWithKnowledgeByOtherSource"+"&"+sourceId+"&"+areaId);
+		send(message);
+		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
+		try {
+			if (reply.getContent()!=null) {
+				result = Arrays.asList(jsonMapper.readValue(reply.getContent(), Issue[].class));				
+			}
+		} catch (Exception e) {
+			logger.error("Error getting issues for source with knowledge by other source, source: " + sourceId, e);
+		}
+		return result;
+	}
+	
 	public Knowledge getBestKnowledge(String issueId) {
 		Knowledge knowledge = null;
 		ACLMessage message = createMessage("KnowledgeAgent", "getBestKnowledge"+"&"+issueId);
@@ -147,7 +162,7 @@ public class InterfaceAgent extends GuiAgent {
 		return knowledge;
 	}
 	
-	public List<Issue> isBestSourceForHisArea(String sourceId) {
+	private Area getAreaSourceIsBestFor(String sourceId) {
 		Area area = null;
 		ACLMessage message = createMessage("SourceAgent", "getAreaIfSourceIsBest"+"&"+sourceId);
 		send(message);
@@ -159,7 +174,12 @@ public class InterfaceAgent extends GuiAgent {
 		} catch (Exception e) {
 			logger.error("Error getting best source for area, source: " + sourceId, e);
 		}
+		return area;
+	}
+	
+	public List<Issue> isBestSourceForHisArea(String sourceId) {
 		
+		Area area = getAreaSourceIsBestFor(sourceId);		
 		//si tengo un área, es que esta fuente es la mejor para esa area.
 		
 		if (area!=null) {
@@ -226,6 +246,8 @@ public class InterfaceAgent extends GuiAgent {
 		System.out.println(ev.getType());
 		System.out.println(ev.getSource());
 	}
+
+	
 
 	
 

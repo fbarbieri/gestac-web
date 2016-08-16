@@ -14,4 +14,6 @@ public interface IssueSearchRepository {
 	
 	public List<Issue> getIssuesWithoutKnowledgeForSource(long sourceId, long areaId);
 	
+	public List<Issue> getIssuesWithKnowledgeByOther(long sourceId, long areaId);
+	
 }

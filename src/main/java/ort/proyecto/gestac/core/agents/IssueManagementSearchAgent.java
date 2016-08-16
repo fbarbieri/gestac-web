@@ -31,6 +31,15 @@ public class IssueManagementSearchAgent extends GestacAgent {
 					ACLMessage fromDB = blockingReceive(MessageTemplate.MatchConversationId(issuesForSourceMessage.getConversationId()));
 					sendReply(fromDB.getContent(), message);
 					break;
+				case "getIssuesForSourceWithKnowledgeByOtherSource":
+					ACLMessage issuesForSourceWithKnowledgeMessage = createMessage("IssueDBAgent");
+					issuesForSourceWithKnowledgeMessage.setContent(DBAgentOperations.GET_ISSUES_WITH_KNOWLEDGE_BY_OTHER_SOURCE+
+							"&"+parameters[1]+"&"+parameters[2]);
+					send(issuesForSourceWithKnowledgeMessage);
+					ACLMessage issuesForSourceWithKnowledgeReply = blockingReceive(MessageTemplate.MatchConversationId(
+							issuesForSourceWithKnowledgeMessage.getConversationId()));
+					sendReply(issuesForSourceWithKnowledgeReply.getContent(), message);
+					break;
 				}
 			} else {
 				block();

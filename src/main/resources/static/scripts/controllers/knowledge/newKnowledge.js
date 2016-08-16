@@ -30,14 +30,23 @@ angular.module('app')
 				  $scope.noBestSource = "No es la mejor fuente para su área, no puede ingresar conocimientos";
 			  } else {
 				  $scope.issuesNoKnowledge = data.data;
+				  for (var i=0;i<areasList.length;i++) {
+					  var area = areasList[i];
+					  for (var j=0;j<area.sources.length;j++) {
+						  if ($scope.currentSource.id == area.sources[j].id) {
+							  $scope.currentSource.area = area;
+							  break;
+						  }
+					  }
+				  }
 			  }
-			  
-			  
-			  if (data.data!='') { //es mejor fuente para área, y vienen los problemas sin respuesta o con respuesta de otro
-				  $scope.open("Evaluación", "Evaluación agregada correctamente");
-			  } else {
-				  
-			  }
+	        });
+	  }
+	  
+	  $scope.getIssuesWithKnowledge = function() {
+		  var urlParams = ''+$scope.currentSource.id+'/'+$scope.currentSource.area.id+'/';
+		  $http.get('/sources/getIssuesWithKnowledge/'+urlParams).then(function(data) {
+			 
 	        });
 	  }
 	 

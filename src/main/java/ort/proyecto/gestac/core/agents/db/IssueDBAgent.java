@@ -50,6 +50,11 @@ public class IssueDBAgent extends GestacAgent {
         				Long.parseLong(parameters[2]));
         		sendReply(issuesForSource, message);
         		break;
+        	case DBAgentOperations.GET_ISSUES_WITH_KNOWLEDGE_BY_OTHER_SOURCE:
+        		List<Issue> issuesWithKnowledge = issueSearch.getIssuesWithKnowledgeByOther(Long.parseLong(parameters[1]), 
+        				Long.parseLong(parameters[2]));
+        		sendReply(issuesWithKnowledge, message);
+        		break;
             }
 		}
 		

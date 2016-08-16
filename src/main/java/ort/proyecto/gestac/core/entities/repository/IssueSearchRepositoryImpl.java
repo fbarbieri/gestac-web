@@ -75,6 +75,7 @@ public class IssueSearchRepositoryImpl implements IssueSearchRepository {
 		return list;
 	}
 	
+	@SuppressWarnings("unchecked")
 	public List<Issue> getIssuesWithoutKnowledgeForSource(long sourceId, long areaId) {
 		
 //		List<Object> withKnowledge = 
@@ -87,6 +88,15 @@ public class IssueSearchRepositoryImpl implements IssueSearchRepository {
 		
 //		List<Issue> list = em.createQuery("select issue from Issue as issue "
 //				+ "where issue.subjects").getResultList();
+		return list;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Issue> getIssuesWithKnowledgeByOther(long sourceId, long areaId) {
+		List<Issue> list = em.createQuery("select issue from Issue as issue join issue.subjects subjects "
+				+ "where subjects.area.id=?1 "
+				+ " and issue.id not in (select k.issue.id from Knowledge as k where k.source.id=?2 or k.issue is null)")
+				.setParameter(1, new Long(areaId)).setParameter(2, new Long(areaId)).getResultList();
 		return list;
 	}
 }
