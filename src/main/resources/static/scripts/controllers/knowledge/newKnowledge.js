@@ -44,9 +44,14 @@ angular.module('app')
 	  }
 	  
 	  $scope.getIssuesWithKnowledge = function() {
+		  $scope.noIssuesWithKnowledgeByOthers = false;
 		  var urlParams = ''+$scope.currentSource.id+'/'+$scope.currentSource.area.id+'/';
 		  $http.get('/sources/getIssuesWithKnowledge/'+urlParams).then(function(data) {
-			 
+			 if (data.data!='') {
+				 $scope.issuesWithKnowledgeByOthers = data.data;
+			 } else {
+				 $scope.noIssuesWithKnowledgeByOthers = true;
+			 }
 	        });
 	  }
 	 

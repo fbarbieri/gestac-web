@@ -48,19 +48,6 @@ public class IssueSearchRepositoryImpl implements IssueSearchRepository {
 	@SuppressWarnings("unchecked")
 	@Override
 	public List<Issue> getIssuesBySubjectIncidentGravity(long subjectId, long incidentId, long gravityId) {
-//		Issue i = (Issue) em.find(Issue.class, Long.parseLong("1"));
-//		
-//		List<Issue> l = em.createQuery("select issue from Issue as issue where issue.id=?1").
-//				setParameter(1, new Long(2)).getResultList();
-//		
-//		List<Issue> l2 = em.createQuery("select issue from Issue as issue where issue.gravity.id=?1").
-//				setParameter(1, new Long(1)).getResultList();
-//		
-//		List<Issue> l3 = em.createQuery("select issue from Issue as issue "
-//				+ "left join issue.subjects as subject "
-//				+ "where subject.id=?1").
-//				setParameter(1, new Long(3)).getResultList();
-		
 		List<Issue> list = em.createQuery("select issue from Issue as issue "
 				+ "left join issue.subjects as subject "
 				+ "left join issue.incidents as incident "
@@ -77,17 +64,11 @@ public class IssueSearchRepositoryImpl implements IssueSearchRepository {
 	
 	@SuppressWarnings("unchecked")
 	public List<Issue> getIssuesWithoutKnowledgeForSource(long sourceId, long areaId) {
-		
-//		List<Object> withKnowledge = 
-//				em.createQuery("select k.issue from Knowledge as k where k.issue is not null and k.source.id=?1").setParameter(1, new Long(sourceId)).getResultList();
-
 		List<Issue> list = em.createQuery("select issue from Issue as issue join issue.subjects subjects "
 				+ "where subjects.area.id=?1 "
 				+ " and issue.id not in (select k.issue.id from Knowledge as k where k.issue is not null)")
 				.setParameter(1, new Long(areaId)).getResultList();
 		
-//		List<Issue> list = em.createQuery("select issue from Issue as issue "
-//				+ "where issue.subjects").getResultList();
 		return list;
 	}
 	
@@ -95,8 +76,11 @@ public class IssueSearchRepositoryImpl implements IssueSearchRepository {
 	public List<Issue> getIssuesWithKnowledgeByOther(long sourceId, long areaId) {
 		List<Issue> list = em.createQuery("select issue from Issue as issue join issue.subjects subjects "
 				+ "where subjects.area.id=?1 "
-				+ " and issue.id not in (select k.issue.id from Knowledge as k where k.source.id=?2 or k.issue is null)")
-				.setParameter(1, new Long(areaId)).setParameter(2, new Long(areaId)).getResultList();
+				+ " and issue.id in (select k.issue.id from Knowledge as k where k.issue is not null)"
+				+ " and issue.id not in (select k.issue.id from Knowledge as k where k.issue is not null and k.source.id=?2)")
+				.setParameter(1, new Long(areaId))
+				.setParameter(2, new Long(sourceId))
+				.getResultList();
 		return list;
 	}
 }
