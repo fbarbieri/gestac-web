@@ -72,13 +72,35 @@ public class SourceController {
     }
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<Source> createUser(@RequestBody Source source) {
+    public ResponseEntity<Source> createSource(@RequestBody Source source) {
         if(source.getName()==null)
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);	
         
         if (!interfaceAgent.sourceExists(source)) {
-        	SourceScoreHelper.calculateAndSetEvaluationTotal(source);
+        	source.setPerceptionTotal(SourceScoreHelper.calculatePerceptionTotal(source));
+        	source.setOwnEvaluationTotal(SourceScoreHelper.calculateOwnEvaluationTotal(source));
         	source.setScoreTotal(source.getOwnEvaluationTotal());
+        	Timestamp updated = new Timestamp(System.currentTimeMillis());
+        	source.setUpdated(updated);
+        	source.setEvaluationUpdated(updated);
+        	
+        	interfaceAgent.saveSource(source);
+        } else {
+        	return new ResponseEntity<>(HttpStatus.CONFLICT);
+        }
+  
+  
+        return new ResponseEntity<Source>(source, HttpStatus.CREATED);
+    }
+	
+	@RequestMapping(value = "", method = RequestMethod.PUT)
+    public ResponseEntity<Source> updateSource(@RequestBody Source source) {
+        if(source.getName()==null)
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);	
+        
+        if (!interfaceAgent.sourceExists(source)) {
+        	source.setPerceptionTotal(SourceScoreHelper.calculatePerceptionTotal(source));
+        	source.setOwnEvaluationTotal(SourceScoreHelper.calculateOwnEvaluationTotal(source));
         	Timestamp updated = new Timestamp(System.currentTimeMillis());
         	source.setUpdated(updated);
         	source.setEvaluationUpdated(updated);

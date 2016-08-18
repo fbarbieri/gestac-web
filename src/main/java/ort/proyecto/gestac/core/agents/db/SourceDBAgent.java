@@ -1,6 +1,7 @@
 package ort.proyecto.gestac.core.agents.db;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -54,7 +55,9 @@ public class SourceDBAgent extends GestacAgent {
 	            case DBAgentOperations.SAVE_SOURCE:
 	            	Source saved = null;
 	            	try {
-						saved = sourceRepository.save(getJsonMapper().readValue(parameters[1], Source.class));
+	            		Source toSave = getJsonMapper().readValue(parameters[1], Source.class);
+	            		toSave.setArea(new Area(Long.parseLong(parameters[2])));
+						saved = sourceRepository.save(toSave);
 					} catch (IOException e) {
 						logger.error("Error saving source " + parameters[1], e);
 					}
@@ -71,6 +74,12 @@ public class SourceDBAgent extends GestacAgent {
 	            case DBAgentOperations.GET_AREA_FOR_BEST_SOURCE:
 	            	Area bestArea = sourceDataSource.getAreaForBestSource(Long.parseLong(parameters[1]));
 	            	sendReply(bestArea, message);
+	            	break;
+	            case DBAgentOperations.UPDATE_SOURCE_EVALUATION:
+            		Source sourceFromDb = sourceRepository.findOne(Long.parseLong(parameters[1]));
+            		sourceFromDb.setScoreTotal(Double.parseDouble(parameters[2]));
+            		sourceFromDb.setEvaluationUpdated(new Timestamp(Long.parseLong(parameters[3])));
+					sourceRepository.save(sourceFromDb);
 	            	break;
 	            }
 			} else {

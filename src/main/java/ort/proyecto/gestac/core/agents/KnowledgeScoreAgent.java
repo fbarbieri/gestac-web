@@ -59,6 +59,10 @@ public class KnowledgeScoreAgent extends GestacAgent {
 				send(updateKnowledge);
 				
 				//enviar mensaje a fuente para actualizarse.
+				ACLMessage updateSource = createMessage("SourceScoreAgent");
+				updateSource.setContent("updateSourceOnEvaluation"+"&"+
+						getJsonMapper().writeValueAsString(knowledge));
+				send(updateSource);
 				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
@@ -95,10 +99,6 @@ public class KnowledgeScoreAgent extends GestacAgent {
 						scoreMessage.setContent(getJsonMapper().writeValueAsString(knowledge));
 						scoreMessage.setReplyWith("updatedScore");
 						send(scoreMessage);
-					}
-					if (toUpdate!=null && toUpdate.size()>0) {
-						//un ticker distinto, que valide que no exista en knowledge uno con más puntaje que el que está ahora en 
-						//issue_best_knowledge?
 					}
 				}
 			} catch (IOException e) {

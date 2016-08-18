@@ -40,4 +40,6 @@ public class DBAgentOperations {
 	
 	public static final String GET_ISSUES_WITH_KNOWLEDGE_BY_OTHER_SOURCE = "getIssuesWithKnowledgeByOtherSource";
 	
+	public static final String UPDATE_SOURCE_EVALUATION = "updateSourceEvaluation";
+	
 }

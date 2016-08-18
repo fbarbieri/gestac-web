@@ -24,7 +24,8 @@ angular.module('app')
    			  ];
 	  
 	  $scope.refreshRows=function(){
-		  $scope.gridOptions.data=Sources.query()
+		  $scope.gridOptions.data=Sources.query();
+		  areasList = Areas.query();
 	  }
 	  
 	  $scope.add=function(){
@@ -100,6 +101,14 @@ angular.module('app')
 //	  $scope.gridOptions.data = setAreasToSources();
 	  
 	  $scope.gridOptions.data = sourcesList;
+	  
+//	  $scope.showSources = function() {
+//			for(var i=0;i<sourcesList.length;i++) {
+//				console.log(sourcesList[i]);
+//			}
+//	  };
+//	  
+//	  $scope.showSources();
 	  
 	  
 	  

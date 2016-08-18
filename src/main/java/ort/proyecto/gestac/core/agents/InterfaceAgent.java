@@ -28,7 +28,7 @@ public class InterfaceAgent extends GuiAgent {
 	
 	private static final long serialVersionUID = 1L;
 	
-	private Logger logger = LoggerFactory.getLogger("ort.proyecto.gestac.core.agents.InterfaceAgent");
+	private Logger logger = LoggerFactory.getLogger(InterfaceAgent.class);
 	
 	private ObjectMapper jsonMapper = new ObjectMapper();
 	
@@ -102,7 +102,8 @@ public class InterfaceAgent extends GuiAgent {
 	public boolean saveSource(Source source) {
 		ACLMessage message;
 		try {
-			message = createMessage("SourceDBAgent", DBAgentOperations.SAVE_SOURCE + "&" + jsonMapper.writeValueAsString(source));
+			message = createMessage("SourceDBAgent", DBAgentOperations.SAVE_SOURCE + "&" + jsonMapper.writeValueAsString(source)
+					+ "&" + source.getArea().getId());
 			send(message);
 			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
 			if (reply.getContent()!=null && reply.getContent().equals(DBAgentOperations.OK)) {

@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Area.class)
 @Entity
 public class Area implements Serializable {
 	
@@ -54,6 +54,11 @@ public class Area implements Serializable {
 	
 	public Area() {
 
+	}
+	
+	public Area(Long id) {
+		super();
+		this.id = id;
 	}
 
 	public Long getId() {

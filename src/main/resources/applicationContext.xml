@@ -61,6 +61,10 @@
 					<key><value>IssueManagementSearchAgent</value></key>
 					<ref bean="issue.management.search.agent"/>
 				</entry>
+				<entry>
+					<key><value>SourceScoreAgent</value></key>
+					<ref bean="source.score.agent"/>
+				</entry>
 			</map>
 		</property>
 	</bean>
@@ -84,6 +88,12 @@
 			<value>ticker</value>
 		</constructor-arg>
 		<property name="tickerInterval" value="${tickerInterval}"></property>
+	</bean>
+	
+	<bean id="source.score.agent" class="ort.proyecto.gestac.core.agents.SourceScoreAgent">
+		<constructor-arg>
+			<value>update</value>
+		</constructor-arg>
 	</bean>
 	
 	<bean id="knowledge.db.agent" class="ort.proyecto.gestac.core.agents.db.KnowledgeDBAgent"/>
