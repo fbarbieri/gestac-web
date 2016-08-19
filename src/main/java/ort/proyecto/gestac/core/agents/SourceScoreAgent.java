@@ -9,8 +9,10 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 
+import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.core.behaviours.OneShotBehaviour;
+import jade.core.behaviours.TickerBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import jade.wrapper.StaleProxyException;
@@ -24,6 +26,8 @@ public class SourceScoreAgent extends GestacAgent {
 	private Logger logger = LoggerFactory.getLogger(SourceScoreAgent.class);
 
 	private String mode;
+	
+	private int tickerInterval = 5000;
 
 	public SourceScoreAgent(String mode) {
 		super();
@@ -33,10 +37,27 @@ public class SourceScoreAgent extends GestacAgent {
 	@Override
 	protected void setup() {
 		if (mode.equals("update")) {
-			addBehaviour(new UpdateBehaviour());			
+			addBehaviour(new UpdateBehaviour());		
 		} else if (mode.equals("evaluate")) {
 			addBehaviour(new DoEvaluationBehaviour());
+		} else if (mode.equals("ticker")) {
+			addBehaviour(new SearchBestSourceBehaviour(this, tickerInterval));
 		}
+	}
+	
+	class SearchBestSourceBehaviour extends TickerBehaviour {
+
+		public SearchBestSourceBehaviour(Agent a, long period) {
+			super(a, period);
+		}
+
+		@Override
+		protected void onTick() {
+			ACLMessage message = createMessage("SourceDBAgent");
+			message.setContent(DBAgentOperations.SEARCH_AND_UPDATE_BEST_SOURCE_FOR_AREA);
+			send(message);
+		}
+		
 	}
 
 	class UpdateBehaviour extends CyclicBehaviour {
@@ -110,6 +131,14 @@ public class SourceScoreAgent extends GestacAgent {
 			}
 		}
 		
+	}
+
+	public int getTickerInterval() {
+		return tickerInterval;
+	}
+
+	public void setTickerInterval(int tickerInterval) {
+		this.tickerInterval = tickerInterval;
 	}
 	
 }

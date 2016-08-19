@@ -48,8 +48,8 @@ public class SourceDBAgent extends GestacAgent {
 	        		List<Source> allSources = sourceRepository.findAllByOrderByNameAsc();
 	            	sendReply(allSources, message);
 	        		break;
-	            case DBAgentOperations.FIND_SOURCE_BY_NAME_MAIL:
-	            	Source source = sourceRepository.findByNameAndMail(parameters[1],parameters[2]);
+	            case DBAgentOperations.FIND_SOURCE_BY_USER:
+	            	Source source = sourceRepository.findByUserName(parameters[1]);
 	            	sendReply(source, message);
 	            	break;
 	            case DBAgentOperations.SAVE_SOURCE:
@@ -58,6 +58,7 @@ public class SourceDBAgent extends GestacAgent {
 	            		Source toSave = getJsonMapper().readValue(parameters[1], Source.class);
 	            		toSave.setArea(new Area(Long.parseLong(parameters[2])));
 						saved = sourceRepository.save(toSave);
+						sourceDataSource.addAsBestIfNull(saved);
 					} catch (IOException e) {
 						logger.error("Error saving source " + parameters[1], e);
 					}
@@ -80,6 +81,9 @@ public class SourceDBAgent extends GestacAgent {
             		sourceFromDb.setScoreTotal(Double.parseDouble(parameters[2]));
             		sourceFromDb.setEvaluationUpdated(new Timestamp(Long.parseLong(parameters[3])));
 					sourceRepository.save(sourceFromDb);
+	            	break;
+	            case DBAgentOperations.SEARCH_AND_UPDATE_BEST_SOURCE_FOR_AREA:
+	            	sourceDataSource.updateBestSourceForArea();
 	            	break;
 	            }
 			} else {

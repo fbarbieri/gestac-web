@@ -26,7 +26,7 @@ public class DBAgentOperations {
 	
 	public static final String SEARCH_AND_UPDATE_BEST_KNOWLEDGES_FOR_ISSUES = "searchAndUpdateBestKnowledgeForIssue";
 	
-	public static final String FIND_SOURCE_BY_NAME_MAIL = "findSourceByNameMail";
+	public static final String FIND_SOURCE_BY_USER = "findSourceByUser";
 	
 	public static final String SAVE_SOURCE = "saveSource";
 
@@ -41,5 +41,7 @@ public class DBAgentOperations {
 	public static final String GET_ISSUES_WITH_KNOWLEDGE_BY_OTHER_SOURCE = "getIssuesWithKnowledgeByOtherSource";
 	
 	public static final String UPDATE_SOURCE_EVALUATION = "updateSourceEvaluation";
+	
+	public static final String SEARCH_AND_UPDATE_BEST_SOURCE_FOR_AREA = "searchAndUpdateBestSourceForArea";
 	
 }

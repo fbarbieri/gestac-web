@@ -15,5 +15,7 @@ public interface KnowledgeDataSource {
 	public Knowledge update(Knowledge knowledge);
 
 	public void updateBestKnowledgesForIssues();
+	
+	public void addAsBestIfNull(Knowledge knowledge);
 
 }

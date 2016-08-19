@@ -89,7 +89,7 @@ public class InterfaceAgent extends GuiAgent {
 	
 	public boolean sourceExists(Source source) {
 		ACLMessage message = createMessage("SourceDBAgent", 
-				DBAgentOperations.FIND_SOURCE_BY_NAME_MAIL + "&" + source.getName() + "&" + source.getMail());
+				DBAgentOperations.FIND_SOURCE_BY_USER + "&" + source.getUserName());
 		send(message);
 		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
 		if (reply.getContent()==null || reply.getContent().equals("")) {

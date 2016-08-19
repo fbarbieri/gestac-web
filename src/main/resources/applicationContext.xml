@@ -65,6 +65,10 @@
 					<key><value>SourceScoreAgent</value></key>
 					<ref bean="source.score.agent"/>
 				</entry>
+				<entry>
+					<key><value>SourceScoreAgentTicker</value></key>
+					<ref bean="source.score.agent.ticker"/>
+				</entry>
 			</map>
 		</property>
 	</bean>
@@ -93,6 +97,12 @@
 	<bean id="source.score.agent" class="ort.proyecto.gestac.core.agents.SourceScoreAgent">
 		<constructor-arg>
 			<value>update</value>
+		</constructor-arg>
+	</bean>
+	
+	<bean id="source.score.agent.ticker" class="ort.proyecto.gestac.core.agents.SourceScoreAgent">
+		<constructor-arg>
+			<value>ticker</value>
 		</constructor-arg>
 	</bean>
 	

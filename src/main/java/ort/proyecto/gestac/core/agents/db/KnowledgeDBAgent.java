@@ -71,6 +71,7 @@ public class KnowledgeDBAgent extends GestacAgent {
 	            	case DBAgentOperations.ADD_KNOWLEDGE:
 						try {
 							Knowledge added = dataSource.update(jsonMapper.readValue(parameters[1], Knowledge.class));
+							dataSource.addAsBestIfNull(added);
 							sendReply(added.getId(), message);
 						} catch (IOException e) {
 							logger.error("Error parsing json to Knowledge, " + parameters[1], e);

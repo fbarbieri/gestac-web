@@ -53,13 +53,19 @@ public class KnowledgeDataSourceImpl implements KnowledgeDataSource {
 				+ "where knowledge.issue.id=best.issue.id and "
 				+ "knowledge.knowledgeScore > best.knowledge.knowledgeScore")
 				.getResultList();
-		
 		for (Object[] row : list) {
 			IssueBestKnowledge best = (IssueBestKnowledge) row[1];
 			Knowledge better = (Knowledge) row [0];
 			best.setKnowledge(better);
 			em.merge(best);
 		}
+		
+//		List<Long> issuesWithoutBest = em.createQuery("select best.issue.id "
+//				+ "from IssueBestKnowledge as best "
+//				+ "where best.knowledge is null").getResultList();
+//		for (Long id : issuesWithoutBest) {
+//			
+//		}
 	}
 
 	@Override
@@ -79,6 +85,23 @@ public class KnowledgeDataSourceImpl implements KnowledgeDataSource {
 	@Transactional
 	public Knowledge update(Knowledge knowledge) {
 		return em.merge(knowledge);
+	}	
+	
+	@Override
+	@Transactional
+	public void addAsBestIfNull(Knowledge knowledge) {
+		IssueBestKnowledge best = (IssueBestKnowledge) em.createQuery(""
+				+ "from IssueBestKnowledge best "
+				+ "where best.issue.id=?1 "
+				+ "and best.knowledge is null").
+				setParameter(1, knowledge.getIssue().getId()).
+				getSingleResult();
+		if (best!=null) {
+			best.setKnowledge(knowledge);
+			em.merge(best);
+		}
 	}
+	
+	
 
 }

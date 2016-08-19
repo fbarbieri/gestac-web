@@ -98,7 +98,7 @@ public class SourceController {
         if(source.getName()==null)
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);	
         
-        if (!interfaceAgent.sourceExists(source)) {
+        if (interfaceAgent.sourceExists(source)) {
         	source.setPerceptionTotal(SourceScoreHelper.calculatePerceptionTotal(source));
         	source.setOwnEvaluationTotal(SourceScoreHelper.calculateOwnEvaluationTotal(source));
         	Timestamp updated = new Timestamp(System.currentTimeMillis());
@@ -109,7 +109,6 @@ public class SourceController {
         } else {
         	return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
-  
   
         return new ResponseEntity<Source>(source, HttpStatus.CREATED);
     }

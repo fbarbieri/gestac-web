@@ -13,7 +13,7 @@ public interface SourceRepository extends JpaRepository<Source, Long> {
 	
 	List<Source> findAllByOrderByNameAsc();
 	
-	Source findByNameAndMail(String name, String mail);
+	Source findByUserName(String userName);
 	
 	Source findByUserNameAndPassword(String userName, String password);
 	

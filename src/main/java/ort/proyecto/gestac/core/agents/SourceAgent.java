@@ -45,8 +45,6 @@ public class SourceAgent extends GestacAgent {
 					//source
 					sendReply(fromDB.getContent(), message);
 					break;
-				case "updateSourceOnEvaluation":
-					break;
 				}
 			} else {
 				block();

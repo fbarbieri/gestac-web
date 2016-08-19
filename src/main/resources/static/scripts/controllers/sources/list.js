@@ -8,7 +8,7 @@
  * Controller of the gestacWebApp
  */
 angular.module('app')
-  .controller('SourceListCtrl', function ($scope,$rootScope,$uibModal,sourcesList,areasList,Sources,Areas) {
+  .controller('SourceListCtrl', function ($http,$scope,$rootScope,$uibModal,sourcesList,areasList,Sources,Areas) {
 	  
 	  $scope.gridOptions = {
 			    modifierKeysToMultiSelectCells: true,
@@ -18,6 +18,8 @@ angular.module('app')
 	  $scope.gridOptions.columnDefs = [
    			    { name: 'name',field:'name',displayName:'Nombre',allowCellFocus : false },
    			    { name: 'mail',field:'mail',displayName:'Mail',allowCellFocus : false },
+   			    { name: 'userName',field:'userName',displayName:'Nombre de usuario',allowCellFocus : false },
+   			    { name: 'scoreTotal',field:'scoreTotal',displayName:'Puntuación',allowCellFocus : false },
    			    //{ name: 'area',field:'area.name',displayName:'Area',allowCellFocus : false },
    			    { name: 'edit',cellTemplate:'<a href="" ng-click="grid.appScope.editRow(row.entity)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>'},
    			    { name: 'remove',cellTemplate:'<a href="" ng-click="grid.appScope.removeRow(row,row.entity)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>'},
@@ -73,11 +75,12 @@ angular.module('app')
 		    });
 
 		    modalInstance.result.then(function (selectedItem) {
-		      selectedItem.$update().then(function (source) {
-		    	  $scope.refreshRows();
-			  });
+		    	$http.put('/sources/', selectedItem).then(function(data) {
+		    		$scope.refreshRows();
+				  });
 		    }, function () {
 		      console.log('Modal dismissed at: ' + new Date());
+		      $scope.refreshRows();
 		    });
 	  }
 	  
