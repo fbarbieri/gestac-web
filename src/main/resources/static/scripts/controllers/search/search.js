@@ -16,6 +16,7 @@ angular.module('app')
 			  areas: areasList,
 	  }
 	  $scope.data.selectedArea=$scope.data.areas[0];
+	  //como selecciono recién cuando el promise ya se cumplió?
 	  
 	  $scope.areaSelected = function(){
 		  var sa = $scope.data.selectedArea;

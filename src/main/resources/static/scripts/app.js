@@ -64,6 +64,15 @@ angular.module(
 				return Areas.query();
 			}
 		}
+	}).when('/newIssue', {
+		templateUrl : 'views/issues/newIssue.html',
+		controller : 'NewIssueCtrl',
+		controllerAs : 'issueCtrl',
+		resolve : {
+			areasList : function(Areas) {
+				return Areas.query();
+			}
+		}
 	}).otherwise({
 		redirectTo : '/'
 	});

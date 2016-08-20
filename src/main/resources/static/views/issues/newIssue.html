@@ -1,0 +1,67 @@
+<h1>Nuevo Problema</h1>
+
+
+<br>
+<br>
+<form name="searchParameters" class="form-inline">
+	<div class="form-group">
+		<label for="areasSelect">&Aacute;rea: </label>
+		<select name="areasSelect" id="areasSelect" size=5 class="form-control" required="required"
+			ng-options="option.name for option in areas track by option.id"
+			ng-model="selectedArea"
+			ng-change="areaSelected()"></select>
+	</div>
+	
+	<div class="form-group">	
+		<label for="subjectSelect">Sujeto: </label>
+		<select name="subjectSelect" id="subjectSelect" size=5 class="form-control" required="required"
+			ng-options="option.name for option in subjects track by option.id"
+			ng-model="selectedSubject"></select>
+	</div>
+		
+	<div class="form-group">	
+		<label for="incidentSelect">Incidente: </label>
+		<select name="incidentSelect" id="incidentSelect" size=5 class="form-control" required="required"
+			ng-options="option.name for option in incidents track by option.id"
+			ng-model="selectedIncident"
+			ng-change="incidentSelected()"></select>
+	</div>
+	
+	<div class="form-group">	
+		<label for="gravitySelect">Gravedad: </label>
+		<select name="gravitySelect" id="gravitySelect" size=5 class="form-control" required="required"
+			ng-options="option.description for option in gravities track by option.id"
+			ng-model="selectedGravity"></select>
+	</div>
+</form>
+
+<div class="panel-body">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="input-group">
+				<span class="input-group-addon" id="basic-addon3">T&iacute;tulo</span> <input
+					type="text" class="form-control" aria-describedby="basic-addon3"
+					ng-model="newIssue.title">
+			</div>
+		</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="input-group">
+				<span class="input-group-addon" id="basic-addon3">Descripci&oacute;n</span>
+				<textarea id="inputIssue" type="text"
+					ng-model="newIssue.description" class="form-control" align="left"
+					rows="10"></textarea>
+			</div>
+		</div>
+	</div>
+	</br>
+	<div ng-if="fieldsError!=null">
+		<br>
+		<p class="bg-danger">{{fieldsError}}</p>
+		<br>
+	</div>
+	<button type="button" class='btn btn-success btn-lg' ng-click="saveIssue()">Guardar</button>
+	<br><br>
+</div>
