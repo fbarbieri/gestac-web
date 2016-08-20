@@ -8,6 +8,11 @@ import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 
 public class IssueManagementSearchAgent extends GestacAgent {
 
+	/**
+	 * cambiarle el nombre (sacar search)
+	 * agregar el addissue. 
+	 */
+	
 	private static final long serialVersionUID = 1L;
 
 	@Override

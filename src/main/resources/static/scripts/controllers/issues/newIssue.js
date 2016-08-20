@@ -57,6 +57,18 @@ angular.module('app')
 			  return;
 		  }
 		  $scope.fieldsError=null;
+		  
+		  $scope.newIssue.gravity = $scope.selectedGravity;
+		  $scope.newIssue.subjects = [$scope.selectedSubject];
+		  $scope.newIssue.incidents = [$scope.selectedIncident];
+		  
+		  $http.post('/issues/', $scope.newIssue).then(function(data) {
+			  if (data.data!=null) {
+				  				  
+			  } else {
+				
+			  }
+		  });
 	  };
 	  
   });

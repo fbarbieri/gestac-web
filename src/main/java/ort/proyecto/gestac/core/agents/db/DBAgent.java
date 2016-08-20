@@ -20,9 +20,6 @@ import ort.proyecto.gestac.core.entities.repository.IssueSearchRepository;
 public class DBAgent extends Agent {
 	
 	@Autowired
-	private PruebaSpring prueba;
-	
-	@Autowired
 	private AreaRepository areaRepository;
 	
 	@Autowired

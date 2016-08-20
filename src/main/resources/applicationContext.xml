@@ -5,13 +5,9 @@
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="placeholderConfig" class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
-		<property name="location" value="classpath:agents.properties">  <!--reads config.properties file -->
+		<property name="location" value="classpath:agents.properties">  <!--reads agents.properties file -->
 		</property>
 	</bean>
-
-    <bean id="gravedad" class="ort.proyecto.gestac.core.entities.PruebaSpring">
-    	<property name="dato" value="dato!"/>
-    </bean>
     
     <bean id="jadeBean" class="net.sf.jade4spring.JadeBean" init-method="startContainer" lazy-init="false"
 			destroy-method="stopContainer">

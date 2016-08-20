@@ -210,6 +210,20 @@ public class InterfaceAgent extends GuiAgent {
 		return result;
 	}
 	
+	public Issue addIssue(Issue issue) {
+		try {
+			ACLMessage newIssueMessage = createMessage("IssueAgent", "addIssue"
+					+ "&" + jsonMapper.writeValueAsString(issue));
+			send(newIssueMessage);
+			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(newIssueMessage.getConversationId()));
+			return jsonMapper.readValue(reply.getContent(), Issue.class);
+		} catch (IOException e) {
+			logger.error("Error converting from Knowledge to Json, id: " + issue.getId(), e);
+			return null;
+		} 
+		
+	}
+	
 	public Long addKnowledge(Knowledge toSave) {
 		Long newId = -1L;
 		try {
