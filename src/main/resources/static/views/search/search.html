@@ -77,6 +77,7 @@
 				<br><br>
 				<em>Creado por: {{data.displayKnowledge.source.name}}</em><br>
 				<em>Cantidad de evaluaciones: {{data.displayKnowledge.totalEvaluations}}</em><br>
+				<em>Calificaci&oacute;n actual: {{data.displayKnowledge.knowledgeScore}}</em><br>
 			</div>
 		</div>
 
@@ -148,48 +149,51 @@
 			
 				<label class="radio-inline">Simplicidad:</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.25" ng-model="data.selectedSimplicity" required="required">Complejo				
+					<input type="radio" value="0" ng-model="data.selectedSimplicity" required="required">3 pasos (necesario consultar a la fuente)
 				</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.5" ng-model="data.selectedSimplicity" required="required">Un poco complejo				
+					<input type="radio" value="0.5" ng-model="data.selectedSimplicity" required="required">2 pasos (necesario consultar a la fuente)				
 				</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.75" ng-model="data.selectedSimplicity" required="required">Un poco simple				
-				</label>
-				<label class="radio-inline">
-					<input type="radio" value="1" ng-model="data.selectedSimplicity" required="required">Simple
+					<input type="radio" value="1" ng-model="data.selectedSimplicity" required="required">1 paso (sin consultar a la fuente)
 				</label>
 				
 				<br><br>
 				
 				<label class="radio-inline">Tiempo utilizado:</label>
 				<label class="radio-inline">
-					<input type="radio" value="1" ng-model="data.selectedUsedTime" required="required"><15 min.				
+					<input type="radio" value="0" ng-model="data.selectedUsedTime" required="required">16 - 24 horas m&aacute;ximo
 				</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.75" ng-model="data.selectedUsedTime" required="required">15 min - 1 hora				
+					<input type="radio" value="0.25" ng-model="data.selectedUsedTime" required="required">8 - 16 horas m&aacute;ximo				
 				</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.5" ng-model="data.selectedUsedTime" required="required">1 - 2 horas				
+					<input type="radio" value="0.5" ng-model="data.selectedUsedTime" required="required">4 - 8 horas m&aacute;ximo				
 				</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.25" ng-model="data.selectedUsedTime" required="required">>2 horas	
+					<input type="radio" value="0.75" ng-model="data.selectedUsedTime" required="required">2 - 4 horas m&aacute;ximo	
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="1" ng-model="data.selectedUsedTime" required="required">2 horas m&aacute;ximo	
 				</label>
 				
 				<br><br>
 				
 				<label class="radio-inline">Reuso:</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.25" ng-model="data.selectedReuse" required="required">0 - 1 vez				
+					<input type="radio" value="0" ng-model="data.selectedReuse" required="required">No se usa (cada m&aacute;s de un a&ntilde;o)				
 				</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.5" ng-model="data.selectedReuse" required="required">2 - 5 veces				
+					<input type="radio" value="0.25" ng-model="data.selectedReuse" required="required">Uso bajo (al menos una vez por a&ntilde;o)				
 				</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.75" ng-model="data.selectedReuse" required="required">6 - 10 veces				
+					<input type="radio" value="0.5" ng-model="data.selectedReuse" required="required">Uso b&aacute;sico (al menos 1 vez por mes)				
 				</label>
 				<label class="radio-inline">
-					<input type="radio" value="1" ng-model="data.selectedReuse" required="required">>10 veces	
+					<input type="radio" value="0.75" ng-model="data.selectedReuse" required="required">Uso medio (al menos 1 vez cada 15 d&iacute;as)
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="1" ng-model="data.selectedReuse" required="required">Mucho uso (al menos 1 vez por semana)
 				</label>
 			</div>
 			<br>
