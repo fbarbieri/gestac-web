@@ -15,45 +15,44 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ort.proyecto.gestac.core.agents.InterfaceAgent;
 import ort.proyecto.gestac.core.entities.Area;
-import ort.proyecto.gestac.core.entities.Subject;
-import ort.proyecto.gestac.core.entities.repository.SubjectRepository;
+import ort.proyecto.gestac.core.entities.Incident;
 
 @RestController
-@RequestMapping("/subjects")
-public class SubjectController {
+@RequestMapping("/incidents")
+public class IncidentController {
 
 	@Autowired
 	private InterfaceAgent interfaceAgent;
 	
 	
 	@RequestMapping(value = "", method = RequestMethod.GET)
-    public Collection<Subject> getAll() {
-		List<Subject> result = new ArrayList<Subject>();
+    public Collection<Incident> getAll() {
+		List<Incident> result = new ArrayList<Incident>();
 		List<Area> areas = interfaceAgent.getAreas();
 		
 		for (Area a : areas) {
-			result.addAll(a.getSubjects());
+			result.addAll(a.getIncidents());
 		}
 		
         return result;
     }
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<Subject> createSubject(@RequestBody Subject subject) {
-        if(subject.getName()==null) {
+    public ResponseEntity<Incident> createIncident(@RequestBody Incident incident) {
+        if(incident.getName()==null) {
         	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
-        subject = interfaceAgent.addSubject(subject);
-        if (subject!=null) {
-        	return new ResponseEntity<Subject>(subject, HttpStatus.CREATED);          	
+        incident = interfaceAgent.addIncident(incident);
+        if (incident!=null) {
+        	return new ResponseEntity<Incident>(incident, HttpStatus.CREATED);          	
         } else {
         	return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
 	
 	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity<Boolean> deleteSubject(@PathVariable("id") String id) {
-		boolean success = interfaceAgent.deleteSubject(id);
+    public ResponseEntity<Boolean> deleteIncident(@PathVariable("id") String id) {
+		boolean success = interfaceAgent.deleteIncident(id);
 		if (success) {
 			return new ResponseEntity<Boolean>(success, HttpStatus.NO_CONTENT);
 		} else {

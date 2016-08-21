@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jade.core.Agent;
@@ -16,10 +18,14 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import ort.proyecto.gestac.core.agents.GestacAgent;
 import ort.proyecto.gestac.core.entities.Area;
+import ort.proyecto.gestac.core.entities.Incident;
 import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.PruebaSpring;
+import ort.proyecto.gestac.core.entities.Subject;
 import ort.proyecto.gestac.core.entities.repository.AreaRepository;
+import ort.proyecto.gestac.core.entities.repository.IncidentRepository;
 import ort.proyecto.gestac.core.entities.repository.IssueSearchDataSource;
+import ort.proyecto.gestac.core.entities.repository.SubjectRepository;
 import sun.util.logging.resources.logging;
 
 public class DBAgent extends GestacAgent {
@@ -30,7 +36,13 @@ public class DBAgent extends GestacAgent {
 	private AreaRepository areaRepository;
 	
 	@Autowired
+	private SubjectRepository subjectRepository;
+	
+	@Autowired
 	private IssueSearchDataSource issueSearch;
+	
+	@Autowired
+	private IncidentRepository incidentRepository;
 	
 	private ObjectMapper jsonMapper = new ObjectMapper();
 	
@@ -53,14 +65,7 @@ public class DBAgent extends GestacAgent {
             String operation = parameters[0];
             switch (operation){
             	case DBAgentOperations.FIND_ALL_AREAS:
-//            		ACLMessage reply = message.createReply();
             		List<Area> areas = areaRepository.findAllByOrderByNameAsc();
-//            		try {
-//            			reply.setContent(jsonMapper.writeValueAsString(areas.toArray()));
-//            			send(reply);
-//            		} catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
             		sendReply(areas, message);
             		break;
             	case DBAgentOperations.ADD_AREA:
@@ -80,20 +85,87 @@ public class DBAgent extends GestacAgent {
             			sendReply(new Boolean(true), message);
             		}
             		break;
+            	case DBAgentOperations.ADD_SUBJECT:
+            		addSubject(parameters[1], parameters[2], message);
+            		break;
+            	case DBAgentOperations.DELETE_SUBJECT:
+            		deleteSubject(parameters[1], message);
+            		break;
+            	case DBAgentOperations.ADD_INCIDENT:
+            		addIncident(parameters[1], parameters[2], message);
+            		break;
+            	case DBAgentOperations.DELETE_INCIDENT:
+            		deleteIncident(parameters[1], message);
+            		break;
             }
 			
 			
 		}
-	
-//		private void sendReply(List data, ACLMessage messageToReplyTo) {
-//			ACLMessage reply = messageToReplyTo.createReply();
-//			try {
-//    			reply.setContent(jsonMapper.writeValueAsString(data.toArray()));
-//    			send(reply);
-//    		} catch (Exception e) {
-//                e.printStackTrace();
-//            }
-//		}
+		
+		private void addIncident(String jsonIncident, String areaId, ACLMessage messageToReplyTo) {
+			try {
+				Incident toSave = jsonMapper.readValue(jsonIncident, Incident.class);
+				if (incidentRepository.findByNameIgnoreCaseAndAreaId(toSave.getName(), Long.parseLong(areaId)).size()>0) {
+					//ya existe
+					sendEmptyReply(messageToReplyTo);
+				} else {
+					toSave.setArea(new Area(Long.parseLong(areaId)));
+					incidentRepository.save(toSave);
+					sendReply(toSave, messageToReplyTo);
+				}
+			} catch (IOException e) {
+				logger.error("Error parsing subject, " + jsonIncident, e);
+			}
+		}
+		
+		private void deleteIncident(String id, ACLMessage messageToReplyTo) {
+			try{
+				List<Issue> uses = issueSearch.getIssuesByIncident(Long.parseLong(id));
+				if (uses!=null && uses.size()>0) {
+					sendReply(new Boolean(false), messageToReplyTo);
+				} else {
+					Incident incident = incidentRepository.findOne(Long.parseLong(id));
+					if (incident!=null && incident.getGravities()!=null && incident.getGravities().size()>0) {
+						sendReply(new Boolean(false), messageToReplyTo);
+					} else {
+						incidentRepository.delete(Long.parseLong(id));
+						sendReply(new Boolean(true), messageToReplyTo);;					
+					}
+				}
+			} catch (Exception e) {
+				logger.error("Error deleting Subject, id: " + id, e);
+			}
+		}
+		
+		private void deleteSubject(String id, ACLMessage messageToReplyTo) {
+			try{
+				List<Issue> uses = issueSearch.getIssuesBySubject(Long.parseLong(id));
+				if (uses!=null && uses.size()>0) {
+					sendReply(new Boolean(false), messageToReplyTo);
+				} else {
+					incidentRepository.delete(Long.parseLong(id));
+					sendReply(new Boolean(true), messageToReplyTo);;					
+				}
+			} catch (Exception e) {
+				logger.error("Error deleting Subject, id: " + id, e);
+			}
+		}
+
+		private void addSubject(String jsonSubject, String areaId, ACLMessage messageToReplyTo) {
+			try {
+				Subject toSave = jsonMapper.readValue(jsonSubject, Subject.class);
+				if (subjectRepository.findByNameIgnoreCaseAndAreaId(toSave.getName(), Long.parseLong(areaId)).size()>0) {
+					//ya existe
+					sendEmptyReply(messageToReplyTo);
+				} else {
+					toSave.setArea(new Area(Long.parseLong(areaId)));
+					subjectRepository.save(toSave);
+					sendReply(toSave, messageToReplyTo);
+				}
+			} catch (IOException e) {
+				logger.error("Error parsing subject, " + jsonSubject, e);
+			}
+		}
 		
 		private void presentarse() {
 			try {
@@ -103,11 +175,8 @@ public class DBAgent extends GestacAgent {
 				e.printStackTrace();
 			}
 		}
-
+		
 	}
 
-//	public void setClassLoader(ClassLoader classLoader) {
-//		this.classLoader = classLoader;
-//	}	
 	
 }

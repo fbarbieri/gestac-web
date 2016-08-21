@@ -19,10 +19,12 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Area;
+import ort.proyecto.gestac.core.entities.Incident;
 import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.Knowledge;
 import ort.proyecto.gestac.core.entities.KnowledgeEvaluation;
 import ort.proyecto.gestac.core.entities.Source;
+import ort.proyecto.gestac.core.entities.Subject;
 
 public class InterfaceAgent extends GuiAgent {
 	
@@ -223,6 +225,43 @@ public class InterfaceAgent extends GuiAgent {
 		} 
 	}
 	
+	public Incident addIncident(Incident incident) {
+		try {
+			ACLMessage addIncidentMessage = createMessage("DBAgent", DBAgentOperations.ADD_INCIDENT + "&" + 
+					jsonMapper.writeValueAsString(incident) + "&" + incident.getArea().getId());
+			send(addIncidentMessage);
+			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(addIncidentMessage.getConversationId()));
+			if (reply.getContent()!=null) {
+				return jsonMapper.readValue(reply.getContent(), Incident.class);
+			}
+		} catch (IOException e) {
+			logger.error("Error parsing Incident to/from json, id: " + incident.getId(), e);
+		}
+		return null;
+	}
+
+	public boolean deleteIncident(String id) {
+		ACLMessage deleteIncidentMessage = createMessage("DBAgent", DBAgentOperations.DELETE_INCIDENT + "&" + id);
+		send(deleteIncidentMessage);
+		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(deleteIncidentMessage.getConversationId()));
+		return Boolean.parseBoolean(reply.getContent());
+	}
+	
+	public Subject addSubject(Subject subject) {
+		try {
+			ACLMessage addSubjectMessage = createMessage("DBAgent", DBAgentOperations.ADD_SUBJECT + "&" + 
+					jsonMapper.writeValueAsString(subject) + "&" + subject.getArea().getId());
+			send(addSubjectMessage);
+			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(addSubjectMessage.getConversationId()));
+			if (reply.getContent()!=null) {
+				return jsonMapper.readValue(reply.getContent(), Subject.class);
+			}
+		} catch (IOException e) {
+			logger.error("Error parsing Subject to/from json, id: " + subject.getId(), e);
+		}
+		return null;
+	}
+	
 	public void addArea(Area area) {
 		try {
 			ACLMessage addAreaMessage = createMessage("DBAgent", DBAgentOperations.ADD_AREA + "&" + 
@@ -245,6 +284,13 @@ public class InterfaceAgent extends GuiAgent {
 			logger.error("Error converting from Knowledge to Json, id: " + toSave.getId(), e);
 		}	
 		return newId;
+	}
+	
+	public boolean deleteSubject(String id) {
+		ACLMessage deleteSubjectMessage = createMessage("DBAgent", DBAgentOperations.DELETE_SUBJECT + "&" + id);
+		send(deleteSubjectMessage);
+		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(deleteSubjectMessage.getConversationId()));
+		return Boolean.parseBoolean(reply.getContent());
 	}
 	
 	public boolean deleteArea(String id) {

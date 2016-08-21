@@ -8,7 +8,7 @@
  * Controller of the gestacWebApp
  */
 angular.module('app')
-  .controller('SubjectListCtrl', function ($scope,$rootScope,$uibModal,$window,areasList,Areas,Subjects) {
+  .controller('IncidentListCtrl', function ($scope,$rootScope,$uibModal,$window,areasList,Areas,Incidents) {
 	  
 	  $scope.data = {
 			  areas : areasList
@@ -33,7 +33,7 @@ angular.module('app')
 	  
 	  $scope.areaChanged = function () {
 		  if (typeof $scope.data.selectedArea != 'undefined') {
-			  $scope.gridOptions.data = $scope.data.selectedArea.subjects;
+			  $scope.gridOptions.data = $scope.data.selectedArea.incidents;
 		  }
 	  };
 	  
@@ -41,20 +41,20 @@ angular.module('app')
 		  if (typeof $scope.data.selectedArea!='undefined'){
 			  var modalInstance = $uibModal.open({
 			      animation: $scope.animationsEnabled,
-			      templateUrl: '/views/subjects/new.html',
-			      controller: 'SubjectNewCtrl',
+			      templateUrl: '/views/incidents/new.html',
+			      controller: 'IncidentNewCtrl',
 			      size: 'medium',
 			      resolve: {
-			    	  item: function (Subjects) {
-    			          return new Subjects();
+			    	  item: function (Incidents) {
+    			          return new Incidents();
     			        }
 			      }
 			    });
 
 			    modalInstance.result.then(function (item) {
 			    	item.area=$scope.data.selectedArea;
-			    	item.$save().then(function (subject) {
-			    		 $scope.data.selectedArea.subjects.push(subject);
+			    	item.$save().then(function (incident) {
+			    		 $scope.data.selectedArea.incidents.push(incident);
 			    		 $scope.refreshRows();
 			    		 $scope.data.selectedArea = $scope.data.areas[0];
 			    		 $window.location.reload();
@@ -66,13 +66,13 @@ angular.module('app')
 	  }
 	  
 	  $scope.removeRow=function(row,item) {
-		  var subject = new Subjects();
-		  subject.id = item.id;
-		  subject.$delete().then(function (subject) {
+		  var incident = new Incidents();
+		  incident.id = item.id;
+		  incident.$delete().then(function (incident) {
 			  $scope.refreshRows();
 			  $window.location.reload();
-		  }, function(subject) {
-			  $scope.open("Sujeto", "No se puede eliminar el sujeto porque está en uso");
+		  }, function(incident) {
+			  $scope.open("Incidente", "No se puede eliminar el incidente porque está en uso");
 		  });
 	  }
 	  

@@ -16,4 +16,8 @@ public interface IssueSearchDataSource {
 	
 	public List<Issue> getIssuesWithKnowledgeByOther(long sourceId, long areaId);
 	
+	public List<Issue> getIssuesBySubject(long subjectId);
+	
+	public List<Issue> getIssuesByIncident(long incidentId);
+	
 }

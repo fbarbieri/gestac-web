@@ -82,6 +82,24 @@ angular.module(
 				return Areas.query();
 			}
 		}
+	}).when('/manageIncidents', {
+		templateUrl : 'views/incidents/incident.html',
+		controller : 'IncidentListCtrl',
+		controllerAs : 'incidentCtrl',
+		resolve : {
+			areasList : function(Areas) {
+				return Areas.query();
+			}
+		}
+	}).when('/manageGravities', {
+		templateUrl : 'views/gravities/gravity.html',
+		controller : 'GravityListCtrl',
+		controllerAs : 'gravityCtrl',
+		resolve : {
+			areasList : function(Areas) {
+				return Areas.query();
+			}
+		}
 	}).otherwise({
 		redirectTo : '/'
 	});

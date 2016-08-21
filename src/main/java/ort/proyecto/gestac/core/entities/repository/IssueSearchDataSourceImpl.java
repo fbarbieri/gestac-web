@@ -83,4 +83,28 @@ public class IssueSearchDataSourceImpl implements IssueSearchDataSource {
 				.getResultList();
 		return list;
 	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Issue> getIssuesBySubject(long subjectId) {
+		List<Issue> list = em.createQuery("select issue from Issue as issue "
+				+ "left join issue.subjects as subject "
+				+ "where subject.id=?1 ").
+				setParameter(1, new Long(subjectId)).
+				getResultList();
+		
+		return list;
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Issue> getIssuesByIncident(long incidentId) {
+		List<Issue> list = em.createQuery("select issue from Issue as issue "
+				+ "left join issue.incidents as incident "
+				+ "where incident.id=?1 ").
+				setParameter(1, new Long(incidentId)).
+				getResultList();
+		
+		return list;
+	}
 }

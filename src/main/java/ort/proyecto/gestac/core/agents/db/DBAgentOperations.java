@@ -52,4 +52,12 @@ public class DBAgentOperations {
 	
 	public static final String DELETE_AREA = "deleteArea";
 	
+	public static final String ADD_SUBJECT = "addSubject";
+	
+	public static final String DELETE_SUBJECT = "deleteSubject";
+	
+	public static final String ADD_INCIDENT = "addIncident";
+	
+	public static final String DELETE_INCIDENT = "deleteIncident";
+	
 }
