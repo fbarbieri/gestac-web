@@ -1,19 +1,25 @@
 package ort.proyecto.gestac.core.agents;
 
+import java.io.IOException;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import ort.proyecto.gestac.core.agents.KnowledgeAgent.QueryBehaviour;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
+import ort.proyecto.gestac.core.entities.Issue;
 
-public class IssueManagementSearchAgent extends GestacAgent {
-
-	/**
-	 * cambiarle el nombre (sacar search)
-	 * agregar el addissue. 
-	 */
+public class IssueManagementAgent extends GestacAgent {
 	
 	private static final long serialVersionUID = 1L;
+	
+	private Logger logger = LoggerFactory.getLogger(IssueManagementAgent.class);
 
 	@Override
 	protected void setup() {

@@ -1,0 +1,19 @@
+<div class="page-header">
+	<h2>Sujetos</h2>
+</div>
+
+<div class="row">
+	<div class="col-sm-12">
+		<div class="input-group">
+			<span class="input-group-addon" id="basic-addon3">&Aacute;rea</span>
+			<select class="form-control" ng-options="a as a.name for a in data.areas track by a.id" 
+				ng-model="data.selectedArea" ng-change="areaChanged()"></select>
+		</div>
+	</div>
+</div>
+
+<br>
+
+<div ui-grid="gridOptions" ui-grid-cellNav ui-grid-pinning class="grid"></div>
+</br>
+<a class="btn btn-success btn-lg" href="" role="button" ng-click="add()">Nuevo</a>

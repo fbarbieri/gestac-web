@@ -93,6 +93,16 @@ public class SourceController {
         return new ResponseEntity<Source>(source, HttpStatus.CREATED);
     }
 	
+	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Boolean> deleteSource(@PathVariable("id") String id) {
+		boolean success = interfaceAgent.deleteSource(id);
+		if (success) {
+			return new ResponseEntity<Boolean>(success, HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<Boolean>(success, HttpStatus.CONFLICT);	
+		}
+    }
+	
 	@RequestMapping(value = "", method = RequestMethod.PUT)
     public ResponseEntity<Source> updateSource(@RequestBody Source source) {
         if(source.getName()==null)

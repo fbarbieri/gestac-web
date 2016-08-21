@@ -1,19 +1,34 @@
 package ort.proyecto.gestac.core.agents.db;
 
+import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import ort.proyecto.gestac.core.agents.GestacAgent;
 import ort.proyecto.gestac.core.entities.Issue;
-import ort.proyecto.gestac.core.entities.repository.IssueSearchRepository;
+import ort.proyecto.gestac.core.entities.IssueBestKnowledge;
+import ort.proyecto.gestac.core.entities.repository.IssueBestKnowledgeRepository;
+import ort.proyecto.gestac.core.entities.repository.IssueRepository;
+import ort.proyecto.gestac.core.entities.repository.IssueSearchDataSource;
 
 public class IssueDBAgent extends GestacAgent {
 	
+	private Logger logger = LoggerFactory.getLogger(IssueDBAgent.class);
+	
 	@Autowired
-	private IssueSearchRepository issueSearch;	
+	private IssueSearchDataSource issueSearch;	
+	
+	@Autowired
+	private IssueRepository issueRepository;
+	
+	@Autowired
+	private IssueBestKnowledgeRepository issueBestKnowledgeRepository;
 	
 	@Override
 	protected void setup() {
@@ -55,6 +70,18 @@ public class IssueDBAgent extends GestacAgent {
         				Long.parseLong(parameters[2]));
         		sendReply(issuesWithKnowledge, message);
         		break;
+        	case DBAgentOperations.ADD_ISSUE:
+				try {
+					Issue toAdd = getJsonMapper().readValue(parameters[1], Issue.class);
+					Issue saved = issueRepository.save(toAdd);
+					IssueBestKnowledge best = new IssueBestKnowledge(toAdd.getId(), toAdd, null, new Timestamp(System.currentTimeMillis()));
+					issueBestKnowledgeRepository.save(best);
+					sendReply(saved, message);
+				} catch (IOException e) {
+					logger.error("Error parsing issue, check the input for message addIssue: " + parameters[1], e);
+					sendEmptyReply(message);
+				}
+				break;
             }
 		}
 		

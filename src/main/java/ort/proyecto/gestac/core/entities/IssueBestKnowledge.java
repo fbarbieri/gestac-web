@@ -1,5 +1,7 @@
 package ort.proyecto.gestac.core.entities;
 
+import java.sql.Timestamp;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -19,6 +21,20 @@ public class IssueBestKnowledge {
 	
 	@OneToOne(cascade = CascadeType.ALL)
 	private Knowledge knowledge;
+	
+	private Timestamp date;
+	
+	public IssueBestKnowledge(Long id, Issue issue, Knowledge knowledge, Timestamp date) {
+		super();
+		this.id = id;
+		this.issue = issue;
+		this.knowledge = knowledge;
+		this.date = date;
+	}
+	
+	public IssueBestKnowledge() {
+		super();
+	}
 
 	public Issue getIssue() {
 		return issue;
@@ -35,5 +51,7 @@ public class IssueBestKnowledge {
 	public void setKnowledge(Knowledge knowledge) {
 		this.knowledge = knowledge;
 	}
+
+	
 
 }

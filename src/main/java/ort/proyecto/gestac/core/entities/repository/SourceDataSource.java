@@ -11,4 +11,6 @@ public interface SourceDataSource {
 	
 	public void addAsBestIfNull(Source source);
 
+	public boolean isDeletable(Long idToDelete);
+
 }

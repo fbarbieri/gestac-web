@@ -136,7 +136,7 @@ public class InterfaceAgent extends GuiAgent {
 	
 	public List<Issue> getIssuesWithKnowledgeForSourceArea(String sourceId, String areaId) {
 		List<Issue> result = null;
-		ACLMessage message = createMessage("IssueManagementSearchAgent", "getIssuesForSourceWithKnowledgeByOtherSource"+"&"+sourceId+"&"+areaId);
+		ACLMessage message = createMessage("IssueManagementAgent", "getIssuesForSourceWithKnowledgeByOtherSource"+"&"+sourceId+"&"+areaId);
 		send(message);
 		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
 		try {
@@ -197,7 +197,7 @@ public class InterfaceAgent extends GuiAgent {
 	
 	public List<Issue> getIssuesForSourceWithoutKnowledge(long sourceId, long areaId) {
 		List<Issue> result = null;
-		ACLMessage message = createMessage("IssueManagementSearchAgent", "getIssuesForSourceWithoutKnowledge"+"&"+sourceId+"&"+areaId);
+		ACLMessage message = createMessage("IssueManagementAgent", "getIssuesForSourceWithoutKnowledge"+"&"+sourceId+"&"+areaId);
 		send(message);
 		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
 		try {
@@ -212,7 +212,7 @@ public class InterfaceAgent extends GuiAgent {
 	
 	public Issue addIssue(Issue issue) {
 		try {
-			ACLMessage newIssueMessage = createMessage("IssueAgent", "addIssue"
+			ACLMessage newIssueMessage = createMessage("IssueDBAgent", DBAgentOperations.ADD_ISSUE
 					+ "&" + jsonMapper.writeValueAsString(issue));
 			send(newIssueMessage);
 			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(newIssueMessage.getConversationId()));
@@ -221,7 +221,16 @@ public class InterfaceAgent extends GuiAgent {
 			logger.error("Error converting from Knowledge to Json, id: " + issue.getId(), e);
 			return null;
 		} 
-		
+	}
+	
+	public void addArea(Area area) {
+		try {
+			ACLMessage addAreaMessage = createMessage("DBAgent", DBAgentOperations.ADD_AREA + "&" + 
+					jsonMapper.writeValueAsString(area));
+			send(addAreaMessage);
+		} catch (JsonProcessingException e) {
+			logger.error("Error parsing Area to json, id: " + area.getId(), e);
+		}		
 	}
 	
 	public Long addKnowledge(Knowledge toSave) {
@@ -236,6 +245,20 @@ public class InterfaceAgent extends GuiAgent {
 			logger.error("Error converting from Knowledge to Json, id: " + toSave.getId(), e);
 		}	
 		return newId;
+	}
+	
+	public boolean deleteArea(String id) {
+		ACLMessage deleteAreaMessage = createMessage("DBAgent", DBAgentOperations.DELETE_AREA + "&" + id);
+		send(deleteAreaMessage);
+		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(deleteAreaMessage.getConversationId()));
+		return Boolean.parseBoolean(reply.getContent());
+	}
+	
+	public boolean deleteSource(String id) {
+		ACLMessage checkMessage = createMessage("SourceDBAgent", DBAgentOperations.DELETE_SOURCE + "&" + id);
+		send(checkMessage);
+		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(checkMessage.getConversationId()));
+		return Boolean.parseBoolean(reply.getContent());
 	}
 	
 	public void addKnowledgeEvaluation(KnowledgeEvaluation evaluation) {
@@ -261,10 +284,6 @@ public class InterfaceAgent extends GuiAgent {
 		System.out.println(ev.getType());
 		System.out.println(ev.getSource());
 	}
-
-	
-
-	
 
 //	public void setClassLoader(ClassLoader classLoader) {
 //		this.classLoader = classLoader;

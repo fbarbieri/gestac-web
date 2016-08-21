@@ -23,15 +23,18 @@ public class Subject implements Serializable {
 
 	private String name;
 	
+	private String description;
+	
 	@JsonBackReference
 	@ManyToOne
 	private Area area;
 
 	
-	public Subject(Long id, String name, Area area) {
+	public Subject(Long id, String name, String description, Area area) {
 		super();
 		this.id = id;
 		this.name = name;
+		this.description = description;
 		this.area = area;
 	}
 	
@@ -66,6 +69,14 @@ public class Subject implements Serializable {
 	@Override
 	public String toString() {
 		return "Subject [id=" + id + ", name=" + name + ", area=" + area + "]";
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
 	
 	

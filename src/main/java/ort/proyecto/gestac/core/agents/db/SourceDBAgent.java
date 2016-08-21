@@ -85,9 +85,22 @@ public class SourceDBAgent extends GestacAgent {
 	            case DBAgentOperations.SEARCH_AND_UPDATE_BEST_SOURCE_FOR_AREA:
 	            	sourceDataSource.updateBestSourceForArea();
 	            	break;
+	            case DBAgentOperations.DELETE_SOURCE:
+	            	sendReply(doDelete(parameters[1]), message);
+	            	break;
 	            }
 			} else {
 				block();
+			}
+		}
+		
+		public Boolean doDelete(String id) {
+			Long idToDelete = Long.parseLong(id);
+			if (sourceDataSource.isDeletable(idToDelete)) {
+				sourceRepository.delete(idToDelete);
+				return true;
+			} else {
+				return false;
 			}
 		}
 		

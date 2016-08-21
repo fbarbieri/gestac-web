@@ -4,7 +4,7 @@ import java.util.List;
 
 import ort.proyecto.gestac.core.entities.Issue;
 
-public interface IssueSearchRepository {
+public interface IssueSearchDataSource {
 
 	public List<Issue> getIssuesBySubjectIncidentGravity(long subjectId, long incidentId, long gravityId);
 	

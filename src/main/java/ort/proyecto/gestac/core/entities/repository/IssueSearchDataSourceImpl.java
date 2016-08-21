@@ -11,7 +11,7 @@ import org.hibernate.jpa.criteria.CriteriaBuilderImpl;
 
 import ort.proyecto.gestac.core.entities.Issue;
 
-public class IssueSearchRepositoryImpl implements IssueSearchRepository {
+public class IssueSearchDataSourceImpl implements IssueSearchDataSource {
 
 	@PersistenceContext
 	private EntityManager em;

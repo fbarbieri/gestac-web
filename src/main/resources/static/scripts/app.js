@@ -73,6 +73,15 @@ angular.module(
 				return Areas.query();
 			}
 		}
+	}).when('/manageSubjects', {
+		templateUrl : 'views/subjects/subject.html',
+		controller : 'SubjectListCtrl',
+		controllerAs : 'subjectCtrl',
+		resolve : {
+			areasList : function(Areas) {
+				return Areas.query();
+			}
+		}
 	}).otherwise({
 		redirectTo : '/'
 	});

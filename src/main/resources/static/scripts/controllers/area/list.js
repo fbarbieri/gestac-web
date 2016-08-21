@@ -16,11 +16,12 @@ angular.module('app')
 			    modifierKeysToMultiSelectCells: true,
 			    showGridFooter: true
 			  };
+	  
 			  $scope.gridOptions.columnDefs = [
-			    { name: 'name',/*width:'640', */label:"Nombre",allowCellFocus : false },
-			    { name: 'description',/*width:'640', */label:"Descripcion",allowCellFocus : false },
-			    { name: 'edit', /*width:'100', */cellTemplate:'<a href="" ng-click="grid.appScope.editRow(row.entity)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>'},
-			    { name: 'remove', /*width:'100',*/cellTemplate:'<a href="" ng-click="grid.appScope.removeRow(row,row.entity)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>'},
+			    { name: 'name', field:'name',displayName:"Nombre",allowCellFocus : false }, /*width:'640', */
+			    { name: 'description', field:'description', displayName:"Descripcion",allowCellFocus : false },
+			    //{ name: 'edit', /*width:'100', */cellTemplate:'<a href="" ng-click="grid.appScope.editRow(row.entity)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>'},
+			    { name: 'remove', cellTemplate:'<a href="" ng-click="grid.appScope.removeRow(row,row.entity)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>'},
 			  ];
 			 
 			  
@@ -29,10 +30,11 @@ angular.module('app')
 			  }
 			  
 			  $scope.removeRow=function(row,item) {
-				  item.$delete({id:item.name}).then(function (area) {
+				  item.$delete().then(function (area) {
 					  $scope.refreshRows();
+				  }, function(area) {
+					  $scope.open("Area", "No se puede eliminar el área porque está en uso");
 				  });
-					 
 			  }
 			  
 			  
@@ -50,10 +52,6 @@ angular.module('app')
 			    			    });
 
 			    			    modalInstance.result.then(function (item) {
-//			    			    	item.source = {
-//			    			    			name: 'namedesource',
-//			    			    			mail: 'maildesource'
-//			    			    	}
 			    			    	item.$save().then(function (area) {
 			    			    		 $scope.refreshRows();
 			    					  });
@@ -84,6 +82,27 @@ angular.module('app')
 			    			      console.log('Modal dismissed at: ' + new Date());
 			    			    });
 			  }
+			  
+			  $scope.open = function(modalTitle, modalText) {
+				  
+				  var modalInstance = $uibModal.open({
+					 animation:false,
+					 templateUrl:'/views/modal.html',
+					 controller:'ModalInstanceCtrl',
+					 size:'large',
+					 resolve: {
+				        item: {
+				          text:modalText,
+				          title:modalTitle
+				        }
+				      }
+				  });
+				  
+				  modalInstance.result.then(function(){
+					  $window.location.reload();
+				  });
+				  
+			  };
 			  
 			  $scope.gridOptions.data = areasList;
 			 

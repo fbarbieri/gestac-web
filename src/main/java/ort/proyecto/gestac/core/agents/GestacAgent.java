@@ -51,6 +51,11 @@ public class GestacAgent extends Agent {
         }
 	}
 	
+	protected void sendEmptyReply(ACLMessage messageToReplyTo) {
+		ACLMessage reply = messageToReplyTo.createReply();
+		send(reply);
+	}
+	
 	protected void sendReply(String data, ACLMessage messageToReplyTo) {
 		ACLMessage reply = messageToReplyTo.createReply();
 		try {

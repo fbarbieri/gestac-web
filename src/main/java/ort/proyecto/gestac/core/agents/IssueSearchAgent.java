@@ -16,7 +16,7 @@ import jade.lang.acl.MessageTemplate;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.repository.IssueRepository;
-import ort.proyecto.gestac.core.entities.repository.IssueSearchRepository;
+import ort.proyecto.gestac.core.entities.repository.IssueSearchDataSource;
 
 public class IssueSearchAgent extends GestacAgent {
 	
@@ -36,7 +36,7 @@ public class IssueSearchAgent extends GestacAgent {
 	private IssueRepository issueRepository;
 	
 	@Autowired
-	private IssueSearchRepository issueSearch;
+	private IssueSearchDataSource issueSearch;
 	
 	
 	@Override

@@ -44,4 +44,12 @@ public class DBAgentOperations {
 	
 	public static final String SEARCH_AND_UPDATE_BEST_SOURCE_FOR_AREA = "searchAndUpdateBestSourceForArea";
 	
+	public static final String ADD_ISSUE = "addIssue";
+	
+	public static final String DELETE_SOURCE = "deleteSource";
+	
+	public static final String ADD_AREA = "addArea";
+	
+	public static final String DELETE_AREA = "deleteArea";
+	
 }

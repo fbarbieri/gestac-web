@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -36,15 +37,22 @@ public class AreaController {
     }
 	
 	@RequestMapping(value = "", method = RequestMethod.POST)
-    public ResponseEntity<Area> createUser(@RequestBody Area area) {
-        if(area.getName()==null)
-        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);	
-//        if (areas.containsKey(area.getName()))
-//            return new ResponseEntity<>(HttpStatus.CONFLICT);
-//        
-//        areas.put(area.getName(),area);
-  
-        return new ResponseEntity<Area>(area, HttpStatus.CREATED);
+    public ResponseEntity<Area> createArea(@RequestBody Area area) {
+        if(area.getName()==null) {
+        	return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+        interfaceAgent.addArea(area);
+        return new ResponseEntity<Area>(area, HttpStatus.CREATED);  
     }
+	
+	@RequestMapping(value = "{id}", method = RequestMethod.DELETE)
+    public ResponseEntity<Boolean> deleteArea(@PathVariable("id") String id) {
+		boolean success = interfaceAgent.deleteArea(id);
+		if (success) {
+			return new ResponseEntity<Boolean>(success, HttpStatus.NO_CONTENT);
+		} else {
+			return new ResponseEntity<Boolean>(success, HttpStatus.CONFLICT);	
+		}
+	}
 
 }

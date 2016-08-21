@@ -8,8 +8,6 @@ import javax.transaction.Transactional;
 
 import ort.proyecto.gestac.core.entities.Area;
 import ort.proyecto.gestac.core.entities.AreaBestSource;
-import ort.proyecto.gestac.core.entities.IssueBestKnowledge;
-import ort.proyecto.gestac.core.entities.Knowledge;
 import ort.proyecto.gestac.core.entities.Source;
 
 public class SourceDataSourceImpl implements SourceDataSource{
@@ -34,6 +32,7 @@ public class SourceDataSourceImpl implements SourceDataSource{
 		
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
 	public void updateBestSourceForArea() {
@@ -51,6 +50,7 @@ public class SourceDataSourceImpl implements SourceDataSource{
 		}
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	@Transactional
 	public void addAsBestIfNull(Source source) {
@@ -65,6 +65,28 @@ public class SourceDataSourceImpl implements SourceDataSource{
 			best.setSource(source);
 			em.merge(best);
 		}
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public boolean isDeletable(Long idToDelete) {
+		List<String> knowledges = em.createQuery(""
+				+ "select k.id from Knowledge k "
+				+ "where k.source.id=?1").
+				setParameter(1, idToDelete).
+				getResultList();
+		
+		if (knowledges.size()>0) {
+			return false;
+		} else {
+			List<String> sources = em.createQuery(""
+					+ "select best.id from AreaBestSource best "
+					+ "where best.source.id=?1").
+					setParameter(1, idToDelete).
+					getResultList();
+			return sources.size()<=0;
+		}
+		
 	}
 	
 }

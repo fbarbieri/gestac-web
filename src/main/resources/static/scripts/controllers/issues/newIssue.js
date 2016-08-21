@@ -64,11 +64,32 @@ angular.module('app')
 		  
 		  $http.post('/issues/', $scope.newIssue).then(function(data) {
 			  if (data.data!=null) {
-				  				  
+				  $scope.open("Nuevo Problema", "Problema agregado correctamente");
 			  } else {
 				
 			  }
 		  });
+		  
+		  $scope.open = function(modalTitle, modalText) {
+			  
+			  var modalInstance = $uibModal.open({
+				 animation:false,
+				 templateUrl:'/views/modal.html',
+				 controller:'ModalInstanceCtrl',
+				 size:'large',
+				 resolve: {
+			        item: {
+			          text:modalText,
+			          title:modalTitle
+			        }
+			      }
+			  });
+			  
+			  modalInstance.result.then(function(){
+				  $window.location.reload();
+			  });
+			  
+		  };
 	  };
 	  
   });

@@ -13,7 +13,7 @@ import jade.core.behaviours.OneShotBehaviour;
 import jade.lang.acl.ACLMessage;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Issue;
-import ort.proyecto.gestac.core.entities.repository.IssueSearchRepository;
+import ort.proyecto.gestac.core.entities.repository.IssueSearchDataSource;
 
 public class IssueAgent extends GestacAgent {
 
@@ -23,7 +23,7 @@ public class IssueAgent extends GestacAgent {
 	private String gravityId;
 	
 	@Autowired
-	private IssueSearchRepository issueSearch;
+	private IssueSearchDataSource issueSearch;
 	
 	private ObjectMapper jsonMapper = new ObjectMapper();
 	
@@ -119,7 +119,7 @@ public class IssueAgent extends GestacAgent {
 	public void setGravityId(String gravityId) {
 		this.gravityId = gravityId;
 	}
-	public IssueAgent(String areaId, String subjectId, String incidentId, String gravityId, IssueSearchRepository issueSearch) {
+	public IssueAgent(String areaId, String subjectId, String incidentId, String gravityId, IssueSearchDataSource issueSearch) {
 		super();
 		this.areaId = areaId;
 		this.subjectId = subjectId;

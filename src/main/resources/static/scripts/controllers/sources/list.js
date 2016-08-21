@@ -84,34 +84,40 @@ angular.module('app')
 		    });
 	  }
 	  
-// var setAreasToSources = function() {
-// areasList = Areas.query();
-//		  
-// for (var j=0;j<areasList.length;j++) {
-//			  var area = areasList[j];
-//			  for (var k=0;k<area.sources.length;k++) {
-//				  var source = area.sources[k];
-//				  for (i=0;i<sourcesList.length;i++) {
-//					  var sourceFromList = sourceList[i];
-//					  if (source.id==sourceFromList.id) {
-//						  sourceFromList.area = area;
-//					  }
-//				  }
-//			  }
-//		  }
-//	  }
+	  $scope.open = function(modalTitle, modalText) {
+		  
+		  var modalInstance = $uibModal.open({
+			 animation:false,
+			 templateUrl:'/views/modal.html',
+			 controller:'ModalInstanceCtrl',
+			 size:'large',
+			 resolve: {
+		        item: {
+		          text:modalText,
+		          title:modalTitle
+		        }
+		      }
+		  });
+		  
+		  modalInstance.result.then(function(){
+			  $window.location.reload();
+		  });
+		  
+	  };
 	  
-//	  $scope.gridOptions.data = setAreasToSources();
+	  $scope.removeRow=function(row, item) {
+		  item.$delete().then(function (source){
+			  $scope.refreshRows();				  
+		  }, function(source){
+			  $scope.open("Fuentes", "No se puede eliminar la fuente porque está en uso");
+		  });
+	  }
+	  
+	  
 	  
 	  $scope.gridOptions.data = sourcesList;
 	  
-//	  $scope.showSources = function() {
-//			for(var i=0;i<sourcesList.length;i++) {
-//				console.log(sourcesList[i]);
-//			}
-//	  };
-//	  
-//	  $scope.showSources();
+
 	  
 	  
 	  

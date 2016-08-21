@@ -64,17 +64,17 @@ public class SearchController {
 			
 			Area area = new Area(1L, "area", "area", null, null, null);
 			
-			Subject subject = new Subject(1L, "subject", area);
-			Set<Subject> subjects = new HashSet<>();
-			subjects.add(subject);
+//			Subject subject = new Subject(1L, "subject", area);
+//			Set<Subject> subjects = new HashSet<>();
+//			subjects.add(subject);
 			
 			areaRepository.save(area);
-			subjectRepository.save(subject);
+//			subjectRepository.save(subject);
 			
 			Area area2 = areaRepository.findOne(1L);
 			System.out.println(area2);
 			
-			area.setSubjects(subjects);
+//			area.setSubjects(subjects);
 			
 //			Gson gson = new GsonBuilder().excludeFieldsWithoutExposeAnnotation().create();
 //			String json = gson.toJson(area);
