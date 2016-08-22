@@ -44,64 +44,66 @@ angular.module('app')
 	  }
 	  
 	  
-//	  $scope.add=function(){
-//		  if (typeof $scope.data.selectedArea!='undefined'){
-//			  var modalInstance = $uibModal.open({
-//			      animation: $scope.animationsEnabled,
-//			      templateUrl: '/views/incidents/new.html',
-//			      controller: 'IncidentNewCtrl',
-//			      size: 'medium',
-//			      resolve: {
-//			    	  item: function (Incidents) {
-//    			          return new Incidents();
-//    			        }
-//			      }
-//			    });
-//
-//			    modalInstance.result.then(function (item) {
-//			    	item.area=$scope.data.selectedArea;
-//			    	item.$save().then(function (incident) {
-//			    		 $scope.data.selectedArea.incidents.push(incident);
-//			    		 $scope.refreshRows();
-//			    		 $scope.data.selectedArea = $scope.data.areas[0];
-//			    		 $window.location.reload();
-//					  });
-//			    }, function () {
-//			      console.log('Modal dismissed at: ' + new Date());
-//			    });
-//		  } 
-//	  }
-//	  
-//	  $scope.removeRow=function(row,item) {
-//		  var incident = new Incidents();
-//		  incident.id = item.id;
-//		  incident.$delete().then(function (incident) {
-//			  $scope.refreshRows();
-//			  $window.location.reload();
-//		  }, function(incident) {
-//			  $scope.open("Incidente", "No se puede eliminar el incidente porque está en uso");
-//		  });
-//	  }
-//	  
-//	  $scope.open = function(modalTitle, modalText) {
-//		  
-//		  var modalInstance = $uibModal.open({
-//			 animation:false,
-//			 templateUrl:'/views/modal.html',
-//			 controller:'ModalInstanceCtrl',
-//			 size:'large',
-//			 resolve: {
-//		        item: {
-//		          text:modalText,
-//		          title:modalTitle
-//		        }
-//		      }
-//		  });
-//		  
-//		  modalInstance.result.then(function(){
-//			  $window.location.reload();
-//		  });
-//		  
-//	  };
+	  $scope.add=function(){
+		  if (typeof $scope.data.selectedArea!='undefined'){
+			  var modalInstance = $uibModal.open({
+			      animation: $scope.animationsEnabled,
+			      templateUrl: '/views/gravities/new.html',
+			      controller: 'GravitiesNewCtrl',
+			      size: 'medium',
+			      resolve: {
+			    	  item: function (Gravities) {
+    			          return new Gravities();
+    			        }
+			      }
+			    });
+
+			    modalInstance.result.then(function (item) {
+			    	item.incident=$scope.data.selectedIncident;
+			    	item.$save().then(function (gravity) {
+			    		 $scope.data.selectedIncident.gravities.push(gravity);
+			    		 $scope.refreshRows();
+			    		 $scope.data.selectedArea = $scope.data.areas[0];
+			    		 $window.location.reload();
+					  },function(gravity){
+						  $scope.open("Gravedad", "Ya existe una gravedad con esos datos, ingrese otros.");
+					  });
+			    }, function () {
+			      console.log('Modal dismissed at: ' + new Date());
+			    });
+		  } 
+	  }
+	  
+	  $scope.removeRow=function(row,item) {
+		  var gravity = new Gravities();
+		  gravity.id = item.id;
+		  gravity.$delete().then(function (gravity) {
+			  $scope.refreshRows();
+			  $window.location.reload();
+		  }, function(gravity) {
+			  $scope.open("Gravedad", "No se puede eliminar la gravedad porque está en uso");
+		  });
+	  }
+	  
+	  $scope.open = function(modalTitle, modalText) {
+		  
+		  var modalInstance = $uibModal.open({
+			 animation:false,
+			 templateUrl:'/views/modal.html',
+			 controller:'ModalInstanceCtrl',
+			 size:'large',
+			 resolve: {
+		        item: {
+		          text:modalText,
+		          title:modalTitle
+		        }
+		      }
+		  });
+		  
+		  modalInstance.result.then(function(){
+			  $window.location.reload();
+		  });
+		  
+	  };
 		  
   });

@@ -59,5 +59,9 @@ public class DBAgentOperations {
 	public static final String ADD_INCIDENT = "addIncident";
 	
 	public static final String DELETE_INCIDENT = "deleteIncident";
+
+	public static final String ADD_GRAVITY = "addGravity";
+
+	public static final String DELETE_GRAVITY = "deleteGravity";
 	
 }

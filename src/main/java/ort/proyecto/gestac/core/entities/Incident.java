@@ -37,6 +37,14 @@ public class Incident {
 	@ManyToOne
 	private Area area;
 	
+	public Incident() {
+		super();
+	}
+	
+	public Incident(Long id) {
+		super();
+		this.id = id;
+	}
 
 	public Long getId() {
 		return id;

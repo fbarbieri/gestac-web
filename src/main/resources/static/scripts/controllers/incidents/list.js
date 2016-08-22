@@ -58,6 +58,8 @@ angular.module('app')
 			    		 $scope.refreshRows();
 			    		 $scope.data.selectedArea = $scope.data.areas[0];
 			    		 $window.location.reload();
+					  },function(gravity){
+						  $scope.open("Incidente", "Ya existe un incidente con esos datos, ingrese otros.");
 					  });
 			    }, function () {
 			      console.log('Modal dismissed at: ' + new Date());

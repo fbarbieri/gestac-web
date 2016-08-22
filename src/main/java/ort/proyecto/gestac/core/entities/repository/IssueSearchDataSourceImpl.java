@@ -107,4 +107,15 @@ public class IssueSearchDataSourceImpl implements IssueSearchDataSource {
 		
 		return list;
 	}
+	
+	@SuppressWarnings("unchecked")
+	@Override
+	public List<Issue> getIssuesByGravity(long gravityId) {
+		List<Issue> list = em.createQuery("select issue from Issue as issue "
+				+ "where issue.gravity.id=?1").
+				setParameter(1, new Long(gravityId)).
+				getResultList();
+		
+		return list;
+	}
 }

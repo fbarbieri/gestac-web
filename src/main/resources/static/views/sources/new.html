@@ -1,5 +1,5 @@
 <div class="panel panel-default">
-	<div class="panel-heading">{{title}}</div>
+	<div class="panel-heading">Fuentes</div>
 
 	<div class="panel-body">
 		<div class="row">
@@ -114,37 +114,84 @@
 				<h4>Percepci&oacute;n</h4>
 				<br>
 				
-				<label class="radio-inline">Sentido com&uacute;n:</label>
+				<label class="radio-inline">Uso de sentido com&uacute;n:</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.25" ng-model="item.perceptionCommonSense" required="required">¿?				
+					<input type="radio" value="0" ng-model="item.perceptionCommonSense" required="required">Rara vez				
 				</label>
-				
+				<label class="radio-inline">
+					<input type="radio" value="0.5" ng-model="item.perceptionCommonSense" required="required">Frecuentemente				
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="1" ng-model="item.perceptionCommonSense" required="required">Siempre				
+				</label>
 				<br><br>
 				
 				<label class="radio-inline">Met&oacute;dico / Ordenado:</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.25" ng-model="item.perceptionOrder" required="required">¿?				
+					<input type="radio" value="0" ng-model="item.perceptionOrder" required="required">Nunca				
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.25" ng-model="item.perceptionOrder" required="required">Muy frecuentemente				
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.5" ng-model="item.perceptionOrder" required="required">Frecuentemente
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.75" ng-model="item.perceptionOrder" required="required">Rara vez	
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="1" ng-model="item.perceptionOrder" required="required">Nunca				
 				</label>
 				
 				<br><br>
 				
-				<label class="radio-inline">Inter&eacute;s en el &aacute;rea:</label>
+				<label class="radio-inline">Nivel de inter&eacute;s en el &aacute;rea:</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.25" ng-model="item.perceptionInterest" required="required">¿?				
+					<input type="radio" value="0" ng-model="item.perceptionInterest" required="required">Regular				
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.5" ng-model="item.perceptionInterest" required="required">Normal			
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="1" ng-model="item.perceptionInterest" required="required">Muy interesado		
 				</label>
 				
 				<br><br>
 				
 				<label class="radio-inline">Capacidad de trabajo:</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.25" ng-model="item.perceptionWorkCapacity" required="required">¿?				
+					<input type="radio" value="0" ng-model="item.perceptionWorkCapacity" required="required">M&iacute;nima				
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.25" ng-model="item.perceptionWorkCapacity" required="required">Por debajo de la media
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.5" ng-model="item.perceptionWorkCapacity" required="required">Regular
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.75" ng-model="item.perceptionWorkCapacity" required="required">Bueno		
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="1" ng-model="item.perceptionWorkCapacity" required="required">Muy bueno			
 				</label>
 
 				<br><br>
 
 				<label class="radio-inline">Capacidad de trabajo en grupo:</label>
 				<label class="radio-inline">
-					<input type="radio" value="0.25" ng-model="item.perceptionGroupWorkCapacity" required="required">¿?				
+					<input type="radio" value="0" ng-model="item.perceptionWorkCapacity" required="required">Trabaja mejor s&oacute;lo				
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.25" ng-model="item.perceptionWorkCapacity" required="required">Por debajo de la media
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.5" ng-model="item.perceptionWorkCapacity" required="required">Regular
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="0.75" ng-model="item.perceptionWorkCapacity" required="required">Bueno		
+				</label>
+				<label class="radio-inline">
+					<input type="radio" value="1" ng-model="item.perceptionWorkCapacity" required="required">Muy bueno			
 				</label>
 				
 			</div>

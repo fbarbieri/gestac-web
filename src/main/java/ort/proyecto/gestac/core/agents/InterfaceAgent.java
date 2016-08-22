@@ -19,6 +19,7 @@ import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Area;
+import ort.proyecto.gestac.core.entities.Gravity;
 import ort.proyecto.gestac.core.entities.Incident;
 import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.Knowledge;
@@ -244,6 +245,28 @@ public class InterfaceAgent extends GuiAgent {
 		ACLMessage deleteIncidentMessage = createMessage("DBAgent", DBAgentOperations.DELETE_INCIDENT + "&" + id);
 		send(deleteIncidentMessage);
 		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(deleteIncidentMessage.getConversationId()));
+		return Boolean.parseBoolean(reply.getContent());
+	}
+	
+	public Gravity addGravity(Gravity gravity) {
+		try {
+			ACLMessage addGravityMessage = createMessage("DBAgent", DBAgentOperations.ADD_GRAVITY + "&" + 
+					jsonMapper.writeValueAsString(gravity) + "&" + gravity.getIncident().getId());
+			send(addGravityMessage);
+			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(addGravityMessage.getConversationId()));
+			if (reply.getContent()!=null) {
+				return jsonMapper.readValue(reply.getContent(), Gravity.class);
+			}
+		} catch (IOException e) {
+			logger.error("Error parsing Gravity to/from json, id: " + gravity.getId(), e);
+		}
+		return null;
+	}
+
+	public boolean deleteGravity(String id) {
+		ACLMessage deleteGravityMessage = createMessage("DBAgent", DBAgentOperations.DELETE_GRAVITY + "&" + id);
+		send(deleteGravityMessage);
+		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(deleteGravityMessage.getConversationId()));
 		return Boolean.parseBoolean(reply.getContent());
 	}
 	

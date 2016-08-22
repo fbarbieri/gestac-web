@@ -18,11 +18,13 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import ort.proyecto.gestac.core.agents.GestacAgent;
 import ort.proyecto.gestac.core.entities.Area;
+import ort.proyecto.gestac.core.entities.Gravity;
 import ort.proyecto.gestac.core.entities.Incident;
 import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.PruebaSpring;
 import ort.proyecto.gestac.core.entities.Subject;
 import ort.proyecto.gestac.core.entities.repository.AreaRepository;
+import ort.proyecto.gestac.core.entities.repository.GravityRepository;
 import ort.proyecto.gestac.core.entities.repository.IncidentRepository;
 import ort.proyecto.gestac.core.entities.repository.IssueSearchDataSource;
 import ort.proyecto.gestac.core.entities.repository.SubjectRepository;
@@ -43,6 +45,9 @@ public class DBAgent extends GestacAgent {
 	
 	@Autowired
 	private IncidentRepository incidentRepository;
+	
+	@Autowired
+	private GravityRepository gravityRepository;
 	
 	private ObjectMapper jsonMapper = new ObjectMapper();
 	
@@ -97,11 +102,48 @@ public class DBAgent extends GestacAgent {
             	case DBAgentOperations.DELETE_INCIDENT:
             		deleteIncident(parameters[1], message);
             		break;
+            	case DBAgentOperations.ADD_GRAVITY:
+            		addGravity(parameters[1], parameters[2], message);
+            		break;
+            	case DBAgentOperations.DELETE_GRAVITY:
+            		deleteGravity(parameters[1], message);
+            		break;
             }
 			
 			
 		}
 		
+		private void addGravity(String jsonGravity, String incidentId, ACLMessage messageToReplyTo) {
+			try {
+				Gravity toSave = jsonMapper.readValue(jsonGravity, Gravity.class);
+				if (gravityRepository.findByDescriptionIgnoreCaseAndIncidentId(toSave.getDescription(), 
+						Long.parseLong(incidentId)).size()>0) {
+					//ya existe
+					sendEmptyReply(messageToReplyTo);
+				} else {
+					toSave.setIncident(new Incident(Long.parseLong(incidentId)));
+					gravityRepository.save(toSave);
+					sendReply(toSave, messageToReplyTo);
+				}
+			} catch (IOException e) {
+				logger.error("Error parsing gravity, " + jsonGravity, e);
+			}
+		}
+
+		private void deleteGravity(String id, ACLMessage messageToReplyTo) {
+			try{
+				List<Issue> uses = issueSearch.getIssuesByGravity(Long.parseLong(id));
+				if (uses!=null && uses.size()>0) {
+					sendReply(new Boolean(false), messageToReplyTo);
+				} else {
+					gravityRepository.delete(Long.parseLong(id));
+					sendReply(new Boolean(true), messageToReplyTo);;					
+				}
+			} catch (Exception e) {
+				logger.error("Error deleting Subject, id: " + id, e);
+			}
+		}
+
 		private void addIncident(String jsonIncident, String areaId, ACLMessage messageToReplyTo) {
 			try {
 				Incident toSave = jsonMapper.readValue(jsonIncident, Incident.class);
