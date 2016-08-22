@@ -1,19 +1,14 @@
 package ort.proyecto.gestac.core.agents.db;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jade.core.Agent;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import ort.proyecto.gestac.core.agents.GestacAgent;
@@ -21,14 +16,12 @@ import ort.proyecto.gestac.core.entities.Area;
 import ort.proyecto.gestac.core.entities.Gravity;
 import ort.proyecto.gestac.core.entities.Incident;
 import ort.proyecto.gestac.core.entities.Issue;
-import ort.proyecto.gestac.core.entities.PruebaSpring;
 import ort.proyecto.gestac.core.entities.Subject;
 import ort.proyecto.gestac.core.entities.repository.AreaRepository;
 import ort.proyecto.gestac.core.entities.repository.GravityRepository;
 import ort.proyecto.gestac.core.entities.repository.IncidentRepository;
 import ort.proyecto.gestac.core.entities.repository.IssueSearchDataSource;
 import ort.proyecto.gestac.core.entities.repository.SubjectRepository;
-import sun.util.logging.resources.logging;
 
 public class DBAgent extends GestacAgent {
 	

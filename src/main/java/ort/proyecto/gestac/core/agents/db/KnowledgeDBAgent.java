@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import ort.proyecto.gestac.core.agents.GestacAgent;
-import ort.proyecto.gestac.core.agents.db.DBAgent.DBAgentBehaviour;
 import ort.proyecto.gestac.core.entities.Knowledge;
 import ort.proyecto.gestac.core.entities.repository.KnowledgeDataSource;
 

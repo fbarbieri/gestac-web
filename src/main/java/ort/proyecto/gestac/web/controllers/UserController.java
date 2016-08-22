@@ -1,21 +1,10 @@
 package ort.proyecto.gestac.web.controllers;
 
-import java.util.ArrayList;
 import java.util.LinkedHashSet;
-import java.util.List;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 
-import jade.wrapper.AgentContainer;
-import jade.core.Agent;
-import jade.core.Profile;
-import jade.core.ProfileImpl;
-import jade.core.Runtime;
-import jade.wrapper.AgentController;
 import net.sf.jade4spring.JadeBean;
 import ort.proyecto.gestac.core.entities.Area;
 import ort.proyecto.gestac.core.entities.PruebaSpring;

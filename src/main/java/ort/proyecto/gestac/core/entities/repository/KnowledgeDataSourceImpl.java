@@ -7,7 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.transaction.Transactional;
 
-import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.IssueBestKnowledge;
 import ort.proyecto.gestac.core.entities.Knowledge;
 import ort.proyecto.gestac.core.entities.KnowledgeEvaluation;

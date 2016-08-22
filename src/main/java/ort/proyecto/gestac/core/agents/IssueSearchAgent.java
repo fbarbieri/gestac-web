@@ -12,8 +12,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
-import jade.lang.acl.MessageTemplate;
-import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.repository.IssueRepository;
 import ort.proyecto.gestac.core.entities.repository.IssueSearchDataSource;

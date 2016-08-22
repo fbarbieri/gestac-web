@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ort.proyecto.gestac.core.agents.InterfaceAgent;
 import ort.proyecto.gestac.core.entities.Area;
 import ort.proyecto.gestac.core.entities.Subject;
-import ort.proyecto.gestac.core.entities.repository.SubjectRepository;
 
 @RestController
 @RequestMapping("/subjects")

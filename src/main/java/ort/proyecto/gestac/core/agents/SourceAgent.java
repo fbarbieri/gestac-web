@@ -1,7 +1,5 @@
 package ort.proyecto.gestac.core.agents;
 
-import com.mysql.jdbc.BestResponseTimeBalanceStrategy;
-
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;

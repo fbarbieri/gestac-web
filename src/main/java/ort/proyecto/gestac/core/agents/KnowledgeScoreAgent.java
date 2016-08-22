@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import com.sun.jmx.snmp.Timestamp;
-
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
@@ -14,7 +12,6 @@ import jade.lang.acl.MessageTemplate;
 import jade.wrapper.StaleProxyException;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Knowledge;
-import ort.proyecto.gestac.core.entities.KnowledgeEvaluation;
 import ort.proyecto.gestac.core.entities.score.KnowledgeScoreHelper;
 
 public class KnowledgeScoreAgent extends GestacAgent {

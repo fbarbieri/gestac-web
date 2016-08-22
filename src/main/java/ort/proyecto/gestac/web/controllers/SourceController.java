@@ -1,8 +1,6 @@
 package ort.proyecto.gestac.web.controllers;
 
-import java.net.InterfaceAddress;
 import java.sql.Timestamp;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ort.proyecto.gestac.core.agents.InterfaceAgent;
-import ort.proyecto.gestac.core.entities.Area;
 import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.Source;
 import ort.proyecto.gestac.core.entities.score.SourceScoreHelper;
