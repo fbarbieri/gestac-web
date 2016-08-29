@@ -1,7 +1,9 @@
 package ort.proyecto.gestac.core.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -28,19 +31,23 @@ public class Area implements Serializable {
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="area", fetch = FetchType.EAGER)
-	private Set<Subject> subjects = new HashSet<>();
+	@OrderBy("name")
+	private List<Subject> subjects = new ArrayList<>();
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="area", fetch = FetchType.EAGER)
-	private Set<Incident> incidents = new HashSet<>();
+	@OrderBy("name")
+	private List<Incident> incidents = new ArrayList<>();
+	//private Set<Incident> incidents = new HashSet<>();
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="area", fetch = FetchType.EAGER)
-	private Set<Source> sources = new HashSet<>();
+	@OrderBy("name")
+	private List<Source> sources = new ArrayList<>();
 
 	
-	public Area(Long id, String name, String description, Set<Subject> subjects, Set<Incident> incidents,
-			Set<Source> sources) {
+	public Area(Long id, String name, String description, List<Subject> subjects, List<Incident> incidents,
+			List<Source> sources) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -83,27 +90,27 @@ public class Area implements Serializable {
 		this.description = description;
 	}
 
-	public Set<Subject> getSubjects() {
+	public List<Subject> getSubjects() {
 		return subjects;
 	}
 
-	public void setSubjects(Set<Subject> subjects) {
+	public void setSubjects(List<Subject> subjects) {
 		this.subjects = subjects;
 	}
 
-	public Set<Incident> getIncidents() {
+	public List<Incident> getIncidents() {
 		return incidents;
 	}
 
-	public void setIncidents(Set<Incident> incidents) {
+	public void setIncidents(List<Incident> incidents) {
 		this.incidents = incidents;
 	}
 
-	public Set<Source> getSources() {
+	public List<Source> getSources() {
 		return sources;
 	}
 
-	public void setSources(Set<Source> sources) {
+	public void setSources(List<Source> sources) {
 		this.sources = sources;
 	}
 

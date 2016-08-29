@@ -55,6 +55,9 @@ public class IssueSearchAgent extends GestacAgent {
 					String content = message.getContent();
 					String sender = message.getSender().getLocalName();
 					String conversationId = message.getConversationId();
+					/**
+					 * TODO verificar esto
+					 */
 					if (sender.equals("InterfaceAgent")) {
 						String[] parameters = content.split("&");
 						String operation = parameters[0];
@@ -106,17 +109,19 @@ public class IssueSearchAgent extends GestacAgent {
 							replies.put(conversationId, quantity+1);
 							
 							//agrego los resultados
-							List<Issue> contentResult = Arrays.asList(jsonMapper.readValue(content, Issue[].class));
-							switch(message.getSender().getLocalName().substring(message.getSender().getLocalName().length()-1)){
-							case "1":
-								firstResults.get(conversationId).addAll(contentResult);
-								break;
-							case "2":
-								secondResults.get(conversationId).addAll(contentResult);
-								break;
-							case "3":
-								thirdResults.get(conversationId).addAll(contentResult);
-								break;
+							if (content!=null) {
+								List<Issue> contentResult = Arrays.asList(jsonMapper.readValue(content, Issue[].class));
+								switch(message.getSender().getLocalName().substring(message.getSender().getLocalName().length()-1)){
+								case "1":
+									firstResults.get(conversationId).addAll(contentResult);
+									break;
+								case "2":
+									secondResults.get(conversationId).addAll(contentResult);
+									break;
+								case "3":
+									thirdResults.get(conversationId).addAll(contentResult);
+									break;
+								}
 							}
 							
 							//comprobar si se recibió todo

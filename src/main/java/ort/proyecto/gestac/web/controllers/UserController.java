@@ -103,7 +103,7 @@ public class UserController {
 			
 			Set<Subject> list = new LinkedHashSet<Subject>();
 			list.add(sujeto);
-			area.setSubjects(list);
+			//area.setSubjects(list);
 			sujeto.setArea(area);
 			
 //			areaDao.save(area);

@@ -35,13 +35,32 @@ angular.module('app')
 	  }
 	  
 	  $scope.searchIssue = function() {
-		  //$http.get('/search/test').then(function(data) {
+		  if (typeof $scope.data.selectedArea == 'undefined') {
+			  $scope.data.searchError = 'Debe seleccionar un área';
+			  return;
+		  }
+		  if (typeof $scope.data.selectedSubject == 'undefined') {
+			  $scope.data.searchError = 'Debe seleccionar un sujeto';
+			  return;
+		  }
+		  if (typeof $scope.data.selectedIncident == 'undefined') {
+			  $scope.data.searchError = 'Debe seleccionar un incidente';
+			  return;
+		  }
+		  if (typeof $scope.data.selectedGravity == 'undefined') {
+			  $scope.data.searchError = 'Debe seleccionar una gravedad';
+			  return;
+		  }
 		  var urlParams = ''+$scope.data.selectedArea.id+'/'+$scope.data.selectedSubject.id+'/'+$scope.data.selectedIncident.id+'/'+$scope.data.selectedGravity.id;
 		  $http.get('/search/getIssuesForAreaSubjectIncidentGravity/'+urlParams).then(function(data) {
 			  console.log(data);
 			  $scope.data.searchedIssues = data.data;
-			  if ($scope.data.searchedIssues!=null) {
+			  if ($scope.data.searchedIssues!=null && $scope.data.searchedIssues!='') {
+				    $scope.data.searchError = null; 
 					$scope.data.displayIssue = $scope.data.searchedIssues[0];
+				} else {
+					$scope.data.searchError = 'No hay problemas para esta búsqueda';
+					$scope.data.displayIssue = null;
 				}
 	        });  	  
 	  }

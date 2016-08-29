@@ -63,7 +63,9 @@ public class IssueAgent extends GestacAgent {
 //				System.out.println("### - IssueAgent, contenedor: " + this.myAgent.getContainerController().getContainerName());
 //				System.out.println("### - IssueAgent, mensaje de: " + message.getSender().getLocalName() + " conversación: " + message.getConversationId());
 				ACLMessage reply = message.createReply();
-				reply.setContent(jsonMapper.writeValueAsString(result.toArray()));
+				if (result!=null && result.size()>0) {
+					reply.setContent(jsonMapper.writeValueAsString(result.toArray()));					
+				}
 				send(reply);
 			} catch (JsonProcessingException e) {
 				// TODO Auto-generated catch block

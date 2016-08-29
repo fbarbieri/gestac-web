@@ -45,6 +45,11 @@
 		</div>
 		
 		<br><br>
+		<div ng-if="data.searchError!=null">
+			<br>
+			<p class="bg-danger">{{data.searchError}}</p>
+			<br>
+		</div>
 		<button type="button" class='btn btn-primary btn-lg' ng-click="searchIssue()">Buscar</button>
 		<br>
 		
@@ -57,7 +62,12 @@
 				<h3 class="panel-title" align="left">{{data.displayIssue.title}}</h3>
 			</div>
 			<div class="panel-body" align="left">
-				{{data.displayIssue.description}}</div>
+				<em>Sujeto: {{data.displayIssue.subjects[0].name}}</em><br>
+				<em>Incidente: {{data.displayIssue.incidents[0].name}}</em><br>
+				<em>Gravedad: {{data.displayIssue.gravity.name}}</em><br>
+				<br>
+				{{data.displayIssue.description}}
+			</div>
 		</div>
 
 		<br><br>

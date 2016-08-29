@@ -1,6 +1,8 @@
 package ort.proyecto.gestac.core.entities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -9,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -27,7 +30,8 @@ public class Incident {
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy="incident", fetch = FetchType.EAGER)
-	private Set<Gravity> gravities = new HashSet<>();
+	@OrderBy("description")
+	private List<Gravity> gravities = new ArrayList<>();
 	
 	@JsonBackReference
 	@ManyToOne
@@ -74,11 +78,11 @@ public class Incident {
 		this.description = description;
 	}
 
-	public Set<Gravity> getGravities() {
+	public List<Gravity> getGravities() {
 		return gravities;
 	}
 
-	public void setGravities(Set<Gravity> gravities) {
+	public void setGravities(List<Gravity> gravities) {
 		this.gravities = gravities;
 	}
 	
