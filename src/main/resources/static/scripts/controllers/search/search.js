@@ -10,7 +10,12 @@
 angular.module('app')
   .controller('SearchCtrl', function ($scope,$rootScope,$uibModal,$http,areasList,Areas,Subjects,$location,$window) {
 	  
-	  $rootScope.entity="Gestac";
+	  $rootScope.entity="Gestac v2";
+	  
+	  $scope.isActive = function (viewLocation) {
+		     var active = (viewLocation === $location.path());
+		     return active;
+	  };
 	  
 	  $scope.data={
 			  areas: areasList,

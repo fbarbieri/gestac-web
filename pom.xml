@@ -50,16 +50,16 @@
 			<artifactId>spring-boot-starter-log4j</artifactId>
 		</dependency>   
     	
-<!--     	<dependency> -->
-<!--       		<groupId>mysql</groupId> -->
-<!--       		<artifactId>mysql-connector-java</artifactId> -->
-<!--     	</dependency> -->
-    	
     	<dependency>
-            <groupId>org.postgresql</groupId>
-            <artifactId>postgresql</artifactId>
-            <version>9.4-1200-jdbc41</version>
-        </dependency>
+      		<groupId>mysql</groupId>
+      		<artifactId>mysql-connector-java</artifactId>
+    	</dependency>
+    	
+<!--     	<dependency> -->
+<!--             <groupId>org.postgresql</groupId> -->
+<!--             <artifactId>postgresql</artifactId> -->
+<!--             <version>9.4-1200-jdbc41</version> -->
+<!--         </dependency> -->
         
         <dependency>
 		    <groupId>org.webjars</groupId>

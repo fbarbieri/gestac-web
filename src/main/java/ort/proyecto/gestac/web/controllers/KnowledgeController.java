@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ort.proyecto.gestac.core.agents.InterfaceAgent;
 import ort.proyecto.gestac.core.entities.Knowledge;
 import ort.proyecto.gestac.core.entities.KnowledgeEvaluation;
-import ort.proyecto.gestac.core.entities.NewKnowledgeRequestHolder;
 
 @RestController
 @RequestMapping("/knowledge")

@@ -1,4 +1,9 @@
-package ort.proyecto.gestac.core.entities;
+package ort.proyecto.gestac.web.controllers;
+
+import ort.proyecto.gestac.core.entities.Issue;
+import ort.proyecto.gestac.core.entities.Knowledge;
+import ort.proyecto.gestac.core.entities.KnowledgeEvaluation;
+import ort.proyecto.gestac.core.entities.Source;
 
 public class NewKnowledgeRequestHolder {
 

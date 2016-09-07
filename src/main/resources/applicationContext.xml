@@ -26,10 +26,6 @@
 					<ref bean="interface.agent"/>
 				</entry>
 				<entry>
-					<key><value>DosComportamientosAgent</value></key>
-					<ref bean="doscomportamientos.agent"/>
-				</entry>
-				<entry>
 					<key><value>IssueSearchAgent</value></key>
 					<ref bean="issue.search.agent"/>
 				</entry>
@@ -70,8 +66,6 @@
 	</bean>
 	
 	<bean id="issue.management.agent" class="ort.proyecto.gestac.core.agents.IssueManagementAgent"></bean>
-	
-	<bean id="doscomportamientos.agent" class="ort.proyecto.gestac.core.agents.AgenteDosComportamientos"></bean>
 
 	<bean id="db.agent" class="ort.proyecto.gestac.core.agents.db.DBAgent"/>
 	

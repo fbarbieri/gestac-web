@@ -15,23 +15,46 @@
     <!-- build:css(.tmp) styles/main.css -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
+    <link href="bower_components/bootstrap/dist/css/dashboard.css" rel="stylesheet">
   </head>
   <body ng-app="app">
-   
-   <div class="menu-panel">
-	 <ul class="nav nav-pills nav-stacked">
-	  <li role="presentation" ><a href="/#/">B&uacute;squeda</a></li><!-- class="active" -->
-	  <li role="presentation" ><a href="/#/newKnowledge">Nuevo Conocimiento</a></li>
-	  <li role="presentation" ><a href="/#/newIssue">Nuevo Problema</a></li>
-	  <li role="presentation" ><a href="/#/manageSources">Fuentes</a></li>
-	  <li role="presentation" ><a href="/#/manageAreas">Areas</a></li>
-	  <li role="presentation" ><a href="/#/manageSubjects">Sujetos</a></li>
-	  <li role="presentation" ><a href="/#/manageIncidents">Incidentes</a></li>
-	  <li role="presentation" ><a href="/#/manageGravities">Gravedades</a></li>
-	</ul>
+
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-3 col-md-2 sidebar">
+				<ul class="nav nav-sidebar">
+					<li ng-class="{active:isActive('/#/')}"><a href="/#/">B&uacute;squeda<span class="sr-only">(current)</span></a></li>
+				</ul>
+				<ul class="nav nav-sidebar">
+					<li class="active"><a href="/#/newKnowledge">Nuevo Conocimiento</a></li>
+					<li><a href="/#/newIssue">Nuevo Problema</a></li>
+				</ul>
+				<ul class="nav nav-sidebar">
+					<li><a href="/#/manageSources">Fuentes</a></li>
+					<li><a href="/#/manageAreas">&Aacute;reas</a></li>
+					<li><a href="/#/manageSubjects">Sujetos</a></li>
+					<li><a href="/#/manageIncidents">Incidentes</a></li>
+					<li><a href="/#/manageGravities">Gravedades</a></li>
+				</ul>
+			</div>
+		</div>
 	</div>
- 
-    <div class="container">
+
+<!-- 	<div class="menu-panel"> -->
+<!-- 		<ul class="nav nav-pills nav-stacked"> -->
+<!-- 			<li role="presentation"><a href="/#/">B&uacute;squeda</a></li> -->
+ 			<!-- class="active" -->
+<!-- 			<li role="presentation"><a href="/#/newKnowledge">Nuevo Conocimiento</a></li> -->
+<!-- 			<li role="presentation"><a href="/#/newIssue">Nuevo Problema</a></li> -->
+<!-- 			<li role="presentation"><a href="/#/manageSources">Fuentes</a></li> -->
+<!-- 			<li role="presentation"><a href="/#/manageAreas">Areas</a></li> -->
+<!-- 			<li role="presentation"><a href="/#/manageSubjects">Sujetos</a></li> -->
+<!-- 			<li role="presentation"><a href="/#/manageIncidents">Incidentes</a></li> -->
+<!-- 			<li role="presentation"><a href="/#/manageGravities">Gravedades</a></li> -->
+<!-- 		</ul> -->
+<!-- 	</div> -->
+
+	<div class="container">
     	<h2>{{entity}}</h2>
     	<div ng-view=""></div>
     </div>
