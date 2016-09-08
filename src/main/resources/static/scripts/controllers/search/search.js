@@ -30,8 +30,12 @@ angular.module('app')
 		  
 		  $scope.data.incidents=sa.incidents;
 		  $scope.data.selectedIncident=sa.incidents[0];
-		  $scope.data.gravities=$scope.data.selectedIncident.gravities;
-		  $scope.data.selectedGravity=$scope.data.selectedIncident.gravities[0];
+		  if (typeof $scope.data.selectedIncident != 'undefined') {
+			  $scope.data.gravities=$scope.data.selectedIncident.gravities;
+			  $scope.data.selectedGravity=$scope.data.selectedIncident.gravities[0];			  
+		  }else{
+			  $scope.data.gravities=undefined;
+		  }
 	  }
 	  
 	  $scope.incidentSelected = function(){

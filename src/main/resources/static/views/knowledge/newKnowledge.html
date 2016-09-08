@@ -14,6 +14,12 @@
 		<button type="button" class='btn btn-link btn-lg' ng-click="back()">Volver</button>
 	</div>
 </div>
+<div ng-if="noIssuesWithoutKnowledge!=null">
+	<div>
+		<p class="bg-warning">No hay problemas que no tengan conocimientos</p>
+		<br>
+	</div>
+</div>
 <div ng-if="noBestSource==null">
 	<div>
 		<br><br><br>

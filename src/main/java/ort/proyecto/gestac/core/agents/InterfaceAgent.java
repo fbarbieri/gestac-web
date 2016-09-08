@@ -17,6 +17,7 @@ import jade.gui.GuiAgent;
 import jade.gui.GuiEvent;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
+import jade.wrapper.ControllerException;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 import ort.proyecto.gestac.core.entities.Area;
 import ort.proyecto.gestac.core.entities.Gravity;
@@ -32,12 +33,17 @@ public class InterfaceAgent extends GuiAgent {
 	private static final long serialVersionUID = 1L;
 	
 	private Logger logger = LoggerFactory.getLogger(InterfaceAgent.class);
+	private Logger agentsLogger = LoggerFactory.getLogger("agents-activity");
 	
 	private ObjectMapper jsonMapper = new ObjectMapper();
 	
 	@Override
 	protected void setup() {
 		super.setup();
+		try {
+			agentsLogger.info("Agente " + this.getName() + " iniciado, contenedor: " + this.getContainerController().getContainerName());
+		} catch (ControllerException e) {
+		}
 		//Thread.currentThread().setContextClassLoader(classLoader);
 	}
 	

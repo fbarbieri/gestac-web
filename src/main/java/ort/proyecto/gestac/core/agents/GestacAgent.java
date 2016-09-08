@@ -3,15 +3,20 @@ package ort.proyecto.gestac.core.agents;
 import java.util.List;
 import java.util.UUID;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jade.core.AID;
 import jade.core.Agent;
 import jade.lang.acl.ACLMessage;
+import jade.wrapper.ControllerException;
 
 public class GestacAgent extends Agent {
 
 	private ObjectMapper jsonMapper = new ObjectMapper();
+	private Logger agentsLogger = LoggerFactory.getLogger("agents-activity");
 	
 	protected ACLMessage createMessage(String agentName) {
         ACLMessage message = new ACLMessage(ACLMessage.INFORM);
@@ -68,6 +73,15 @@ public class GestacAgent extends Agent {
 
 	public ObjectMapper getJsonMapper() {
 		return jsonMapper;
+	}
+
+	@Override
+	protected void setup() {
+		super.setup();
+		try {
+			agentsLogger.info("Agente " + this.getName() + " iniciado, contenedor: " + this.getContainerController().getContainerName());
+		} catch (ControllerException e) {
+		}
 	}
 	
 }

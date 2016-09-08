@@ -1,6 +1,7 @@
 package ort.proyecto.gestac.core.agents.db;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -13,10 +14,12 @@ import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import ort.proyecto.gestac.core.agents.GestacAgent;
 import ort.proyecto.gestac.core.entities.Area;
+import ort.proyecto.gestac.core.entities.AreaBestSource;
 import ort.proyecto.gestac.core.entities.Gravity;
 import ort.proyecto.gestac.core.entities.Incident;
 import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.Subject;
+import ort.proyecto.gestac.core.entities.repository.AreaBestSourceRepository;
 import ort.proyecto.gestac.core.entities.repository.AreaRepository;
 import ort.proyecto.gestac.core.entities.repository.GravityRepository;
 import ort.proyecto.gestac.core.entities.repository.IncidentRepository;
@@ -41,6 +44,9 @@ public class DBAgent extends GestacAgent {
 	
 	@Autowired
 	private GravityRepository gravityRepository;
+	
+	@Autowired
+	private AreaBestSourceRepository areaBestSourceRepository;
 	
 	private ObjectMapper jsonMapper = new ObjectMapper();
 	
@@ -68,7 +74,9 @@ public class DBAgent extends GestacAgent {
             		break;
             	case DBAgentOperations.ADD_AREA:
 					try {
-						areaRepository.save(jsonMapper.readValue(parameters[1], Area.class));
+						Area saved = areaRepository.save(jsonMapper.readValue(parameters[1], Area.class));
+						AreaBestSource best = new AreaBestSource(saved.getId(), saved, null, new Timestamp(System.currentTimeMillis()));
+						areaBestSourceRepository.save(best);
 					} catch (IOException e) {
 						logger.error("Error reading Area from json, area: " + parameters[1], e);
 					}
@@ -178,7 +186,7 @@ public class DBAgent extends GestacAgent {
 				if (uses!=null && uses.size()>0) {
 					sendReply(new Boolean(false), messageToReplyTo);
 				} else {
-					incidentRepository.delete(Long.parseLong(id));
+					subjectRepository.delete(Long.parseLong(id));
 					sendReply(new Boolean(true), messageToReplyTo);;					
 				}
 			} catch (Exception e) {

@@ -22,6 +22,18 @@ public class AreaBestSource {
 	private Source source;
 	
 	private Timestamp date;
+	
+	public AreaBestSource(Long id, Area area, Source source, Timestamp date) {
+		super();
+		this.id = id;
+		this.area = area;
+		this.source = source;
+		this.date = date;
+	}
+	
+	public AreaBestSource() {
+		super();
+	}
 
 	public Long getId() {
 		return id;
@@ -54,7 +66,5 @@ public class AreaBestSource {
 	public void setDate(Timestamp date) {
 		this.date = date;
 	}
-	
-	
 	
 }
