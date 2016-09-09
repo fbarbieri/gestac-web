@@ -17,7 +17,8 @@ public class SourceScoreHelper {
 		perception = (source.getPerceptionCommonSense() + source.getPerceptionOrder() + 
 				source.getPerceptionInterest() + source.getPerceptionWorkCapacity() + 
 				source.getPerceptionGroupWorkCapacity()) / 5;
-		return new BigDecimal(perception).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+		//return new BigDecimal(perception).multiply(new BigDecimal(100)).setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
+		return new BigDecimal(perception).setScale(2, BigDecimal.ROUND_HALF_EVEN).doubleValue();
 	}
 	
 	public static double calculateOwnEvaluationTotal(Source source) {

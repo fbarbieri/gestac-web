@@ -1,27 +1,20 @@
 package ort.proyecto.gestac.core.agents;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jade.core.behaviours.CyclicBehaviour;
 import jade.lang.acl.ACLMessage;
 import jade.lang.acl.MessageTemplate;
 import ort.proyecto.gestac.core.agents.db.DBAgentOperations;
 
 public class SourceAgent extends GestacAgent {
-	/**
-	 * los que se agreguen por spring deben tener task=refresh
-	 */
 
-	public final String REFRESH = "refresh";
-	public final String UPDATE = "update";
-	
-	private String task;
+	private Logger logger = LoggerFactory.getLogger(SourceAgent.class);
+	private Logger agentsLogger = LoggerFactory.getLogger("agents-activity");
 	
 	@Override
 	protected void setup() {	
-//		if (task.equals(REFRESH)) {
-//			addBehaviour(new SourceRefreshBehaviour());
-//		} else if (task.equals(UPDATE)) {
-//			//addBehaviour(new SourceUpdateBehaviour());
-//		}
 		addBehaviour(new QueryBehaviour());
 	}
 
@@ -31,18 +24,24 @@ public class SourceAgent extends GestacAgent {
 		public void action() {
 			ACLMessage message = receive();
 			if (message!=null) {
-				String[] parameters = message.getContent().split("&");
-				String operation = parameters[0];
-				switch (operation){
-				case "getAreaIfSourceIsBest":
-					ACLMessage bestSourceMessage = createMessage("SourceDBAgent");
-					bestSourceMessage.setContent(DBAgentOperations.GET_AREA_FOR_BEST_SOURCE+"&"+parameters[1]);
-					send(bestSourceMessage);
-					ACLMessage fromDB = blockingReceive(MessageTemplate.
-							MatchConversationId(bestSourceMessage.getConversationId()));
-					//source
-					sendReply(fromDB.getContent(), message);
-					break;
+				try {
+					String[] parameters = message.getContent().split("&");
+					String operation = parameters[0];
+					switch (operation){
+					case "getAreaIfSourceIsBest":
+						ACLMessage bestSourceMessage = createMessage("SourceDBAgent");
+						bestSourceMessage.setContent(DBAgentOperations.GET_AREA_FOR_BEST_SOURCE+"&"+parameters[1]);
+						send(bestSourceMessage);
+						ACLMessage fromDB = blockingReceive(MessageTemplate.
+								MatchConversationId(bestSourceMessage.getConversationId()));
+						//source
+						sendReply(fromDB.getContent(), message);
+						break;
+					}
+				} catch (Exception e) {
+					String operation = message.getContent()!=null?message.getContent():"";
+					logger.error("Error for opertaion " + operation, e);
+					sendEmptyReply(message);
 				}
 			} else {
 				block();

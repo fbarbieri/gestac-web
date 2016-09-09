@@ -4,6 +4,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import jade.core.Agent;
 import jade.core.behaviours.OneShotBehaviour;
 import jade.core.behaviours.TickerBehaviour;
@@ -15,6 +18,9 @@ import ort.proyecto.gestac.core.entities.Knowledge;
 import ort.proyecto.gestac.core.entities.score.KnowledgeScoreHelper;
 
 public class KnowledgeScoreAgent extends GestacAgent {
+	
+	private Logger logger = LoggerFactory.getLogger(KnowledgeScoreAgent.class);
+	private Logger agentsLogger = LoggerFactory.getLogger("agents-activity");
 	
 	private int tickerInterval;
 	
@@ -43,8 +49,8 @@ public class KnowledgeScoreAgent extends GestacAgent {
 		
 		@Override
 		public void action() {
+			ACLMessage request = blockingReceive(MessageTemplate.MatchReplyWith("updatedScore"));
 			try {
-				ACLMessage request = blockingReceive(MessageTemplate.MatchReplyWith("updatedScore"));
 				Knowledge knowledge = getJsonMapper().readValue(request.getContent(), Knowledge.class);
 				knowledge.setKnowledgeScore(KnowledgeScoreHelper.calculateScore(knowledge));
 				knowledge.setConsideredEvaluations(knowledge.getEvaluations().size());
@@ -61,9 +67,8 @@ public class KnowledgeScoreAgent extends GestacAgent {
 						getJsonMapper().writeValueAsString(knowledge));
 				send(updateSource);
 				
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				logger.error("Error updating knowledge, " + request.getContent(), e);
 			} finally {
 				this.myAgent.doDelete();				
 			}
@@ -99,9 +104,9 @@ public class KnowledgeScoreAgent extends GestacAgent {
 					}
 				}
 			} catch (IOException e) {
-				e.printStackTrace();
+				logger.error("Error parsing on ticker", e);
 			} catch (StaleProxyException e) {
-				e.printStackTrace();
+				logger.error("Error on ticker", e);
 			}				
 		}
 	}

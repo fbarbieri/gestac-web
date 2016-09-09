@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,6 +19,9 @@ import ort.proyecto.gestac.core.entities.repository.IssueSearchDataSource;
 
 public class IssueAgent extends GestacAgent {
 
+	private Logger logger = LoggerFactory.getLogger(IssueAgent.class);
+	private Logger agentsLogger = LoggerFactory.getLogger("agents-activity");
+	
 	private String areaId;
 	private String subjectId;
 	private String incidentId;
@@ -67,9 +72,8 @@ public class IssueAgent extends GestacAgent {
 					reply.setContent(jsonMapper.writeValueAsString(result.toArray()));					
 				}
 				send(reply);
-			} catch (JsonProcessingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			} catch (Exception e) {
+				logger.error("Error on agent", e);
 			} finally {
 				myAgent.doDelete();
 			}
@@ -88,8 +92,7 @@ public class IssueAgent extends GestacAgent {
 				}				
 				return result;
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				logger.error("Error parsing Issues", e);
 				return null;
 			}
 		}

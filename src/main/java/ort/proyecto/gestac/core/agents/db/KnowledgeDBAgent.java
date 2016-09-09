@@ -40,43 +40,49 @@ public class KnowledgeDBAgent extends GestacAgent {
 			
 			ACLMessage message = receive();
 			if (message!=null) {
-				String content = message.getContent();
-	            String[] parameters = content.split("&");
-	            String operation = parameters[0];
-	            switch (operation){
-	            	case DBAgentOperations.GET_BEST_KNOWLEDGE_FOR_ISSUE:
-	            		Knowledge bestKnowledge = dataSource.getBestKnowledgeForIssue(parameters[1]);
-	            		sendReply(bestKnowledge, message);
-	            		break;
-	            	case DBAgentOperations.ADD_KNOWLEDGE_EVALUATION:
-	            		dataSource.addEvaluationToKnowledge(parameters[1], parameters[2],
-	            				parameters[3], parameters[4]);
-	            		break;
-	            	case DBAgentOperations.SEARCH_KNOWLEDGES_TO_UPDATE:
-	            		List<Knowledge> toUpdate = dataSource.searchKnowledgesToUpdate();
-	            		sendReply(toUpdate, message);
-	            		break;
-	            	case DBAgentOperations.UPDATE_KNOWLEDGE:
-						try {
-							Knowledge update = getJsonMapper().readValue(parameters[1], Knowledge.class);
-							dataSource.update(update);
-						} catch (IOException e) {
-							e.printStackTrace();
-						}
-	            		break;
-	            	case DBAgentOperations.SEARCH_AND_UPDATE_BEST_KNOWLEDGES_FOR_ISSUES:
-	            		dataSource.updateBestKnowledgesForIssues();
-	            		break;
-	            	case DBAgentOperations.ADD_KNOWLEDGE:
-						try {
-							Knowledge added = dataSource.update(jsonMapper.readValue(parameters[1], Knowledge.class));
-							dataSource.addAsBestIfNull(added);
-							sendReply(added.getId(), message);
-						} catch (IOException e) {
-							logger.error("Error parsing json to Knowledge, " + parameters[1], e);
-						}
-	            		break;
-	            }
+				try {
+					String content = message.getContent();
+		            String[] parameters = content.split("&");
+		            String operation = parameters[0];
+		            switch (operation){
+		            	case DBAgentOperations.GET_BEST_KNOWLEDGE_FOR_ISSUE:
+		            		Knowledge bestKnowledge = dataSource.getBestKnowledgeForIssue(parameters[1]);
+		            		sendReply(bestKnowledge, message);
+		            		break;
+		            	case DBAgentOperations.ADD_KNOWLEDGE_EVALUATION:
+		            		dataSource.addEvaluationToKnowledge(parameters[1], parameters[2],
+		            				parameters[3], parameters[4]);
+		            		break;
+		            	case DBAgentOperations.SEARCH_KNOWLEDGES_TO_UPDATE:
+		            		List<Knowledge> toUpdate = dataSource.searchKnowledgesToUpdate();
+		            		sendReply(toUpdate, message);
+		            		break;
+		            	case DBAgentOperations.UPDATE_KNOWLEDGE:
+							try {
+								Knowledge update = getJsonMapper().readValue(parameters[1], Knowledge.class);
+								dataSource.update(update);
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+		            		break;
+		            	case DBAgentOperations.SEARCH_AND_UPDATE_BEST_KNOWLEDGES_FOR_ISSUES:
+		            		dataSource.updateBestKnowledgesForIssues();
+		            		break;
+		            	case DBAgentOperations.ADD_KNOWLEDGE:
+							try {
+								Knowledge added = dataSource.update(jsonMapper.readValue(parameters[1], Knowledge.class));
+								dataSource.addAsBestIfNull(added);
+								sendReply(added.getId(), message);
+							} catch (IOException e) {
+								logger.error("Error parsing json to Knowledge, " + parameters[1], e);
+							}
+		            		break;
+		            }
+				} catch (Exception e) {
+					String operation = message.getContent()!=null?message.getContent():"";
+					logger.error("Error for opertaion " + operation, e);
+					sendEmptyReply(message);
+				}
 			} else {
 				block();
 			}

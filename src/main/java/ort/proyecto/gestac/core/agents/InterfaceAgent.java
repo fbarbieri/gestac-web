@@ -44,7 +44,6 @@ public class InterfaceAgent extends GuiAgent {
 			agentsLogger.info("Agente " + this.getName() + " iniciado, contenedor: " + this.getContainerController().getContainerName());
 		} catch (ControllerException e) {
 		}
-		//Thread.currentThread().setContextClassLoader(classLoader);
 	}
 	
 	public List<Area> getAreas() {
@@ -248,10 +247,15 @@ public class InterfaceAgent extends GuiAgent {
 	}
 
 	public boolean deleteIncident(String id) {
-		ACLMessage deleteIncidentMessage = createMessage("DBAgent", DBAgentOperations.DELETE_INCIDENT + "&" + id);
-		send(deleteIncidentMessage);
-		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(deleteIncidentMessage.getConversationId()));
-		return Boolean.parseBoolean(reply.getContent());
+		try {
+			ACLMessage deleteIncidentMessage = createMessage("DBAgent", DBAgentOperations.DELETE_INCIDENT + "&" + id);
+			send(deleteIncidentMessage);
+			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(deleteIncidentMessage.getConversationId()));
+			return Boolean.parseBoolean(reply.getContent());
+		} catch (Exception e) {
+			logger.error("Error deleting incident " + id, e);
+			return false;
+		}
 	}
 	
 	public Gravity addGravity(Gravity gravity) {
@@ -270,10 +274,15 @@ public class InterfaceAgent extends GuiAgent {
 	}
 
 	public boolean deleteGravity(String id) {
-		ACLMessage deleteGravityMessage = createMessage("DBAgent", DBAgentOperations.DELETE_GRAVITY + "&" + id);
-		send(deleteGravityMessage);
-		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(deleteGravityMessage.getConversationId()));
-		return Boolean.parseBoolean(reply.getContent());
+		try {
+			ACLMessage deleteGravityMessage = createMessage("DBAgent", DBAgentOperations.DELETE_GRAVITY + "&" + id);
+			send(deleteGravityMessage);
+			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(deleteGravityMessage.getConversationId()));
+			return Boolean.parseBoolean(reply.getContent());
+		} catch (Exception e) {
+			logger.error("Error deleting gravity " + id, e);
+			return false;
+		}
 	}
 	
 	public Subject addSubject(Subject subject) {
@@ -316,24 +325,39 @@ public class InterfaceAgent extends GuiAgent {
 	}
 	
 	public boolean deleteSubject(String id) {
-		ACLMessage deleteSubjectMessage = createMessage("DBAgent", DBAgentOperations.DELETE_SUBJECT + "&" + id);
-		send(deleteSubjectMessage);
-		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(deleteSubjectMessage.getConversationId()));
-		return Boolean.parseBoolean(reply.getContent());
+		try {
+			ACLMessage deleteSubjectMessage = createMessage("DBAgent", DBAgentOperations.DELETE_SUBJECT + "&" + id);
+			send(deleteSubjectMessage);
+			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(deleteSubjectMessage.getConversationId()));
+			return Boolean.parseBoolean(reply.getContent());
+		} catch (Exception e) {
+			logger.error("Error deleting subject " + id, e);
+			return false;
+		}
 	}
 	
 	public boolean deleteArea(String id) {
-		ACLMessage deleteAreaMessage = createMessage("DBAgent", DBAgentOperations.DELETE_AREA + "&" + id);
-		send(deleteAreaMessage);
-		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(deleteAreaMessage.getConversationId()));
-		return Boolean.parseBoolean(reply.getContent());
+		try {
+			ACLMessage deleteAreaMessage = createMessage("DBAgent", DBAgentOperations.DELETE_AREA + "&" + id);
+			send(deleteAreaMessage);
+			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(deleteAreaMessage.getConversationId()));
+			return Boolean.parseBoolean(reply.getContent());
+		} catch (Exception e) {
+			logger.error("Error deleting area " + id, e);
+			return false;
+		}
 	}
 	
 	public boolean deleteSource(String id) {
-		ACLMessage checkMessage = createMessage("SourceDBAgent", DBAgentOperations.DELETE_SOURCE + "&" + id);
-		send(checkMessage);
-		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(checkMessage.getConversationId()));
-		return Boolean.parseBoolean(reply.getContent());
+		try {
+			ACLMessage checkMessage = createMessage("SourceDBAgent", DBAgentOperations.DELETE_SOURCE + "&" + id);
+			send(checkMessage);
+			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(checkMessage.getConversationId()));
+			return Boolean.parseBoolean(reply.getContent());
+		} catch (Exception e) {
+			logger.error("Error deleting area " + id, e);
+			return false;
+		}
 	}
 	
 	public void addKnowledgeEvaluation(KnowledgeEvaluation evaluation) {

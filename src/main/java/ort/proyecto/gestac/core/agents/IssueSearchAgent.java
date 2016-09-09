@@ -6,6 +6,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +19,9 @@ import ort.proyecto.gestac.core.entities.repository.IssueRepository;
 import ort.proyecto.gestac.core.entities.repository.IssueSearchDataSource;
 
 public class IssueSearchAgent extends GestacAgent {
+	
+	private Logger logger = LoggerFactory.getLogger(IssueSearchAgent.class);
+	private Logger agentsLogger = LoggerFactory.getLogger("agents-activity");
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -155,8 +160,7 @@ public class IssueSearchAgent extends GestacAgent {
 				}
 				
 			} catch (Exception e) {
-				System.out.println(e);
-				//myAgent.doDelete();
+				logger.error("Error during search", e);
 			}			
 		}
 		

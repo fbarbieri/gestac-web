@@ -21,6 +21,7 @@ import ort.proyecto.gestac.core.entities.score.SourceScoreHelper;
 public class SourceScoreAgent extends GestacAgent {
 	
 	private Logger logger = LoggerFactory.getLogger(SourceScoreAgent.class);
+	private Logger agentsLogger = LoggerFactory.getLogger("agents-activity");
 
 	private String mode;
 	
@@ -65,35 +66,41 @@ public class SourceScoreAgent extends GestacAgent {
 		public void action() {
 			ACLMessage message = receive();
 			if (message!=null) {
-				String[] parameters = message.getContent().split("&");
-				String operation = parameters[0];
-				switch (operation){
-				case "updateSourceOnEvaluation":
-					try {
-						Knowledge knowledge = getJsonMapper().readValue(parameters[1], Knowledge.class); 
+				try {
+					String[] parameters = message.getContent().split("&");
+					String operation = parameters[0];
+					switch (operation){
+					case "updateSourceOnEvaluation":
+						try {
+							Knowledge knowledge = getJsonMapper().readValue(parameters[1], Knowledge.class); 
+							
+							SourceScoreAgent scoreAgent = new SourceScoreAgent("evaluate");
+							this.myAgent.getContainerController().acceptNewAgent("SourceScoreAgent"+knowledge.getId(), 
+									scoreAgent).start();
+							ACLMessage scoreMessage = createMessage("SourceScoreAgent"+knowledge.getId());
+							scoreMessage.setContent(parameters[1]);
+							scoreMessage.setReplyWith("updatedScore");
+							send(scoreMessage);
+						} catch (StaleProxyException e) {
+							logger.error("Error adding agent to container",e);
+						} catch (IOException e) {
+							logger.error("Error parsing knowledge parameter, " + parameters[1], e);
+						}
 						
-						SourceScoreAgent scoreAgent = new SourceScoreAgent("evaluate");
-						this.myAgent.getContainerController().acceptNewAgent("SourceScoreAgent"+knowledge.getId(), 
-								scoreAgent).start();
-						ACLMessage scoreMessage = createMessage("SourceScoreAgent"+knowledge.getId());
-						scoreMessage.setContent(parameters[1]);
-						scoreMessage.setReplyWith("updatedScore");
-						send(scoreMessage);
-					} catch (StaleProxyException e) {
-						logger.error("Error adding agent to container",e);
-					} catch (IOException e) {
-						logger.error("Error parsing knowledge parameter, " + parameters[1], e);
+//						KnowledgeScoreAgent scoreAgent = new KnowledgeScoreAgent("update");
+//						this.myAgent.getContainerController().acceptNewAgent("KnowledgeScoreAgent"+knowledge.getId(), 
+//								scoreAgent).start();
+//						ACLMessage scoreMessage = createMessage("KnowledgeScoreAgent"+knowledge.getId());
+//						scoreMessage.setContent(getJsonMapper().writeValueAsString(knowledge));
+//						scoreMessage.setReplyWith("updatedScore");
+//						send(scoreMessage);
+						
+						break;
 					}
-					
-//					KnowledgeScoreAgent scoreAgent = new KnowledgeScoreAgent("update");
-//					this.myAgent.getContainerController().acceptNewAgent("KnowledgeScoreAgent"+knowledge.getId(), 
-//							scoreAgent).start();
-//					ACLMessage scoreMessage = createMessage("KnowledgeScoreAgent"+knowledge.getId());
-//					scoreMessage.setContent(getJsonMapper().writeValueAsString(knowledge));
-//					scoreMessage.setReplyWith("updatedScore");
-//					send(scoreMessage);
-					
-					break;
+				} catch (Exception e) {
+					String operation = message.getContent()!=null?message.getContent():"";
+					logger.error("Error for opertaion " + operation, e);
+					sendEmptyReply(message);
 				}
 			} else {
 				block();

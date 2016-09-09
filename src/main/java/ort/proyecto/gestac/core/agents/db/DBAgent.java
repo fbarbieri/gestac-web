@@ -64,54 +64,58 @@ public class DBAgent extends GestacAgent {
 			//presentarse();
 			
 			ACLMessage message = blockingReceive();
-            String content = message.getContent();
-            String[] parameters = content.split("&");
-            String operation = parameters[0];
-            switch (operation){
-            	case DBAgentOperations.FIND_ALL_AREAS:
-            		List<Area> areas = areaRepository.findAllByOrderByNameAsc();
-            		sendReply(areas, message);
-            		break;
-            	case DBAgentOperations.ADD_AREA:
-					try {
-						Area saved = areaRepository.save(jsonMapper.readValue(parameters[1], Area.class));
-						AreaBestSource best = new AreaBestSource(saved.getId(), saved, null, new Timestamp(System.currentTimeMillis()));
-						areaBestSourceRepository.save(best);
-					} catch (IOException e) {
-						logger.error("Error reading Area from json, area: " + parameters[1], e);
-					}
-            		break;
-            	case DBAgentOperations.DELETE_AREA:
-            		Area toDelete = areaRepository.findOne(Long.parseLong(parameters[1]));
-            		if (toDelete.getIncidents().size()>0 || toDelete.getSources().size()>0 || 
-            				toDelete.getSubjects().size()>0) {
-            			sendReply(new Boolean(false), message);
-            		} else {
-            			areaRepository.delete(toDelete);
-            			sendReply(new Boolean(true), message);
-            		}
-            		break;
-            	case DBAgentOperations.ADD_SUBJECT:
-            		addSubject(parameters[1], parameters[2], message);
-            		break;
-            	case DBAgentOperations.DELETE_SUBJECT:
-            		deleteSubject(parameters[1], message);
-            		break;
-            	case DBAgentOperations.ADD_INCIDENT:
-            		addIncident(parameters[1], parameters[2], message);
-            		break;
-            	case DBAgentOperations.DELETE_INCIDENT:
-            		deleteIncident(parameters[1], message);
-            		break;
-            	case DBAgentOperations.ADD_GRAVITY:
-            		addGravity(parameters[1], parameters[2], message);
-            		break;
-            	case DBAgentOperations.DELETE_GRAVITY:
-            		deleteGravity(parameters[1], message);
-            		break;
-            }
-			
-			
+			try {
+				String content = message.getContent();
+	            String[] parameters = content.split("&");
+	            String operation = parameters[0];
+	            switch (operation){
+	            	case DBAgentOperations.FIND_ALL_AREAS:
+	            		List<Area> areas = areaRepository.findAllByOrderByNameAsc();
+	            		sendReply(areas, message);
+	            		break;
+	            	case DBAgentOperations.ADD_AREA:
+						try {
+							Area saved = areaRepository.save(jsonMapper.readValue(parameters[1], Area.class));
+							AreaBestSource best = new AreaBestSource(saved.getId(), saved, null, new Timestamp(System.currentTimeMillis()));
+							areaBestSourceRepository.save(best);
+						} catch (IOException e) {
+							logger.error("Error reading Area from json, area: " + parameters[1], e);
+						}
+	            		break;
+	            	case DBAgentOperations.DELETE_AREA:
+	            		Area toDelete = areaRepository.findOne(Long.parseLong(parameters[1]));
+	            		if (toDelete.getIncidents().size()>0 || toDelete.getSources().size()>0 || 
+	            				toDelete.getSubjects().size()>0) {
+	            			sendReply(new Boolean(false), message);
+	            		} else {
+	            			areaRepository.delete(toDelete);
+	            			sendReply(new Boolean(true), message);
+	            		}
+	            		break;
+	            	case DBAgentOperations.ADD_SUBJECT:
+	            		addSubject(parameters[1], parameters[2], message);
+	            		break;
+	            	case DBAgentOperations.DELETE_SUBJECT:
+	            		deleteSubject(parameters[1], message);
+	            		break;
+	            	case DBAgentOperations.ADD_INCIDENT:
+	            		addIncident(parameters[1], parameters[2], message);
+	            		break;
+	            	case DBAgentOperations.DELETE_INCIDENT:
+	            		deleteIncident(parameters[1], message);
+	            		break;
+	            	case DBAgentOperations.ADD_GRAVITY:
+	            		addGravity(parameters[1], parameters[2], message);
+	            		break;
+	            	case DBAgentOperations.DELETE_GRAVITY:
+	            		deleteGravity(parameters[1], message);
+	            		break;
+	            }
+			} catch (Exception e) {
+				String operation = message.getContent()!=null?message.getContent():"";
+				logger.error("Error for opertaion " + operation, e);
+				sendEmptyReply(message);
+			}			
 		}
 		
 		private void addGravity(String jsonGravity, String incidentId, ACLMessage messageToReplyTo) {
