@@ -30,6 +30,16 @@ angular.module('app')
 				  $scope.noBestSource = "No es la mejor fuente para su área, no puede ingresar conocimientos";
 			  } else if (data.data.length==0) {
 				  $scope.noIssuesWithoutKnowledge = "No hay problemas sin conocimiento para solucionar";
+				  $scope.issuesNoKnowledge = data.data;
+				  for (var i=0;i<areasList.length;i++) {
+					  var area = areasList[i];
+					  for (var j=0;j<area.sources.length;j++) {
+						  if ($scope.currentSource.id == area.sources[j].id) {
+							  $scope.currentSource.area = area;
+							  break;
+						  }
+					  }
+				  }
 			  } else {
 				  $scope.issuesNoKnowledge = data.data;
 				  for (var i=0;i<areasList.length;i++) {

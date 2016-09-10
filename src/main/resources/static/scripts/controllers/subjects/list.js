@@ -28,7 +28,7 @@ angular.module('app')
 	  $scope.gridOptions.columnDefs = [
 	    { name: 'name', field:'name',displayName:"Nombre",allowCellFocus : false },
 	    { name: 'description', field:'description',displayName:"Descripcion",allowCellFocus : false },
-	    { name: 'remove', cellTemplate:'<a href="" ng-click="grid.appScope.removeRow(row,row.entity)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>'},
+	    { name: 'remove', displayName:"Borrar", cellTemplate:'<a href="" ng-click="grid.appScope.removeRow(row,row.entity)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>'},
 	  ];
 	  
 	  $scope.areaChanged = function () {

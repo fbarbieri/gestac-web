@@ -21,7 +21,7 @@ angular.module('app')
 			    { name: 'name', field:'name',displayName:"Nombre",allowCellFocus : false }, /*width:'640', */
 			    { name: 'description', field:'description', displayName:"Descripcion",allowCellFocus : false },
 			    //{ name: 'edit', /*width:'100', */cellTemplate:'<a href="" ng-click="grid.appScope.editRow(row.entity)"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>'},
-			    { name: 'remove', cellTemplate:'<a href="" ng-click="grid.appScope.removeRow(row,row.entity)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>'},
+			    { name: 'remove', displayName:"Borrar", cellTemplate:'<a href="" ng-click="grid.appScope.removeRow(row,row.entity)"><span class="glyphicon glyphicon-trash" aria-hidden="true"></span></a>'},
 			  ];
 			 
 			  

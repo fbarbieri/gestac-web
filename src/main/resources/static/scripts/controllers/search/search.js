@@ -20,7 +20,11 @@ angular.module('app')
 	  $scope.data={
 			  areas: areasList,
 	  }
-	  $scope.data.selectedArea=$scope.data.areas[0];
+	  $scope.data.areas.$promise.then(function(result){
+		  $scope.data.selectedArea=$scope.data.areas[0];
+		  $scope.areaSelected();
+	  });
+	  //$scope.data.selectedArea=$scope.data.areas[0];
 	  //como selecciono recién cuando el promise ya se cumplió?
 	  
 	  $scope.areaSelected = function(){

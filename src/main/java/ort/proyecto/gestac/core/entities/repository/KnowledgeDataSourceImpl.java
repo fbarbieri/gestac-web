@@ -89,12 +89,17 @@ public class KnowledgeDataSourceImpl implements KnowledgeDataSource {
 	@Override
 	@Transactional
 	public void addAsBestIfNull(Knowledge knowledge) {
-		IssueBestKnowledge best = (IssueBestKnowledge) em.createQuery(""
-				+ "from IssueBestKnowledge best "
-				+ "where best.issue.id=?1 "
-				+ "and best.knowledge is null").
-				setParameter(1, knowledge.getIssue().getId()).
-				getSingleResult();
+		IssueBestKnowledge best = null;
+		try{
+			best = (IssueBestKnowledge) em.createQuery(""
+					+ "from IssueBestKnowledge best "
+					+ "where best.issue.id=?1 "
+					+ "and best.knowledge is null").
+					setParameter(1, knowledge.getIssue().getId()).
+					getSingleResult();			
+		} catch (Exception e) {
+			//no result
+		}
 		if (best!=null) {
 			best.setKnowledge(knowledge);
 			em.merge(best);
