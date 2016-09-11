@@ -72,22 +72,34 @@ public class IssueDBAgent extends GestacAgent {
 	        		sendReply(issuesWithKnowledge, message);
 	        		break;
 	        	case DBAgentOperations.ADD_ISSUE:
-					try {
-						Issue toAdd = getJsonMapper().readValue(parameters[1], Issue.class);
-						Issue saved = issueRepository.save(toAdd);
-						IssueBestKnowledge best = new IssueBestKnowledge(toAdd.getId(), toAdd, null, new Timestamp(System.currentTimeMillis()));
-						issueBestKnowledgeRepository.save(best);
-						sendReply(saved, message);
-					} catch (IOException e) {
-						logger.error("Error parsing issue, check the input for message addIssue: " + parameters[1], e);
-						sendEmptyReply(message);
-					}
+					addIssue(parameters, message);
 					break;
 	            }
 			} catch (Exception e) {
 				String operation = message.getContent()!=null?message.getContent():"";
 				logger.error("Error for opertaion " + operation, e);
 				sendEmptyReply(message);
+			}
+		}
+		
+		private void addIssue(String[] parameters, ACLMessage messageToReplyTo) {
+			try {
+				Issue toAdd = getJsonMapper().readValue(parameters[1], Issue.class);
+				List<Issue> alreadyExists = issueSearch.getIssuesBySubjectIncidentGravity(
+						toAdd.getSubjects().get(0).getId(), toAdd.getIncidents().get(0).getId(), 
+						toAdd.getGravity().getId()); 			
+				if (alreadyExists!=null && !alreadyExists.isEmpty()) {
+					//Issue already exists for area/subject/incident/gravity
+					sendEmptyReply(messageToReplyTo);
+				} else {
+					Issue saved = issueRepository.save(toAdd);
+					IssueBestKnowledge best = new IssueBestKnowledge(toAdd.getId(), toAdd, null, new Timestamp(System.currentTimeMillis()));
+					issueBestKnowledgeRepository.save(best);
+					sendReply(saved, messageToReplyTo);					
+				}
+			} catch (IOException e) {
+				logger.error("Error parsing issue, check the input for message addIssue: " + parameters[1], e);
+				sendEmptyReply(messageToReplyTo);
 			}
 		}
 		

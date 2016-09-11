@@ -82,8 +82,11 @@ angular.module('app')
 		  //$http.get('/search/test').then(function(data) {
 		  var urlParams = ''+$scope.data.displayIssue.id;
 		  $http.get('/knowledge/bestForIssue/'+urlParams).then(function(data) {
-			  console.log(data);
-			  $scope.data.displayKnowledge = data.data;
+			  if (data.status=='204') {
+				  $scope.open("Problema", 'No hay conocimentos para este problema');
+			  } else {
+				  $scope.data.displayKnowledge = data.data;				  
+			  }
 	        });  	  
 	  }
 	  

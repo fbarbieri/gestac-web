@@ -163,7 +163,9 @@ public class InterfaceAgent extends GuiAgent {
 		send(message);
 		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
 		try {
-			knowledge = jsonMapper.readValue(reply.getContent(), Knowledge.class);
+			if (reply.getContent()!=null) {
+				knowledge = jsonMapper.readValue(reply.getContent(), Knowledge.class);
+			}
 		} catch (IOException e) {
 			logger.error("Error getting best knowledge for issue " + issueId, e);
 			e.printStackTrace();
@@ -224,7 +226,11 @@ public class InterfaceAgent extends GuiAgent {
 					+ "&" + jsonMapper.writeValueAsString(issue));
 			send(newIssueMessage);
 			ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(newIssueMessage.getConversationId()));
-			return jsonMapper.readValue(reply.getContent(), Issue.class);
+			if (reply.getContent()!=null) {
+				return jsonMapper.readValue(reply.getContent(), Issue.class);				
+			} else {
+				return null;
+			}
 		} catch (IOException e) {
 			logger.error("Error converting from Knowledge to Json, id: " + issue.getId(), e);
 			return null;

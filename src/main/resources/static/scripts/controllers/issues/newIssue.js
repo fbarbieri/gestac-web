@@ -68,6 +68,8 @@ angular.module('app')
 			  } else {
 				
 			  }
+		  }, function (errordata){
+			  $scope.open("Nuevo problema", "Los datos ingresados no son correctos, o ya existe un problema para esa área, sujeto, incidente y gravedad");
 		  });
 		  
 		  $scope.open = function(modalTitle, modalText) {

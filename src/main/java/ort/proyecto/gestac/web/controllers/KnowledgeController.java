@@ -5,6 +5,8 @@ import java.sql.Timestamp;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ort.proyecto.gestac.core.agents.InterfaceAgent;
+import ort.proyecto.gestac.core.entities.Issue;
 import ort.proyecto.gestac.core.entities.Knowledge;
 import ort.proyecto.gestac.core.entities.KnowledgeEvaluation;
 
@@ -26,9 +29,13 @@ public class KnowledgeController {
 	
 	
 	@RequestMapping(value = "/bestForIssue/{issueId}", method = RequestMethod.GET)
-	public Knowledge getBestKnowledgeForIssue(@PathVariable("issueId") String issueId) {
+	public ResponseEntity<Knowledge> getBestKnowledgeForIssue(@PathVariable("issueId") String issueId) {
 		Knowledge best = interfaceAgent.getBestKnowledge(issueId);
-		return best;
+		if (best!=null) {
+			return new ResponseEntity<Knowledge>(best, HttpStatus.ACCEPTED);
+		} else {
+			return new ResponseEntity<Knowledge>(HttpStatus.NO_CONTENT);
+		}
 	}
 	
 	@RequestMapping(value = "/newKnowledge", method = RequestMethod.POST)

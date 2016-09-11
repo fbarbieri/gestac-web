@@ -12,6 +12,9 @@ angular.module('app')
 	  $scope.title="Fuentes";
 	  $scope.item=item;
 	  $scope.areas=areas;
+	  $scope.data={
+			  errorMessage:null
+	  }
 	  
 	  var setAreaToSource = function() {
 		  for (var i=0;i<areas.length;i++) {
@@ -30,8 +33,24 @@ angular.module('app')
 	  };
 	  
 	  $scope.accept=function(){
-		  //$scope.item.ownEvaluationTotal = (Number($scope.item.workExperience) + Number($scope.item.areaEducation) + Number($scope.item.title))/Number(3);
-		  $uibModalInstance.close($scope.item);
+		  if (typeof $scope.item.workExperience === 'undefined' || 
+				  typeof $scope.item.workExperience === 'undefined' ||
+				  typeof $scope.item.areaEducation === 'undefined' ||
+				  typeof $scope.item.title === 'undefined' ||
+				  typeof $scope.item.perceptionCommonSense === 'undefined' ||
+				  typeof $scope.item.perceptionOrder === 'undefined' ||
+				  typeof $scope.item.perceptionInterest === 'undefined' ||
+				  typeof $scope.item.perceptionWorkCapacity === 'undefined' ||
+				  typeof $scope.item.perceptionGroupWorkCapacity === 'undefined') {
+			  $scope.data.errorMessage = 'Debe completar los datos de la evaluación';
+		  } else if (typeof $scope.item.name === 'undefined' ||
+				  typeof $scope.item.userName === 'undefined' ||
+				  typeof $scope.item.password === 'undefined' ||
+				  typeof $scope.item.area === 'undefined') {
+			  $scope.data.errorMessage = 'Debe completar los datos de la fuente';
+		  } else {
+			  $uibModalInstance.close($scope.item);			  
+		  }
 	  };
 	  
 	  setAreaToSource();

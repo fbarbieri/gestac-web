@@ -1,12 +1,15 @@
 package ort.proyecto.gestac.core.entities;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
@@ -20,13 +23,14 @@ public class Issue {
 	
 	private String title;
 	
+	@Lob
 	private String description;
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-	private Set<Subject> subjects = new HashSet<>();
+	private List<Subject> subjects = new ArrayList<>();
 	
 	@ManyToMany(fetch = FetchType.EAGER)
-	private Set<Incident> incidents = new HashSet<>();
+	private List<Incident> incidents = new ArrayList<>();
 	
 	@ManyToOne
 	private Gravity gravity;
@@ -55,19 +59,19 @@ public class Issue {
 		this.description = description;
 	}
 
-	public Set<Subject> getSubjects() {
+	public List<Subject> getSubjects() {
 		return subjects;
 	}
 
-	public void setSubjects(Set<Subject> subjects) {
+	public void setSubjects(List<Subject> subjects) {
 		this.subjects = subjects;
 	}
 
-	public Set<Incident> getIncidents() {
+	public List<Incident> getIncidents() {
 		return incidents;
 	}
 
-	public void setIncidents(Set<Incident> incidents) {
+	public void setIncidents(List<Incident> incidents) {
 		this.incidents = incidents;
 	}
 
