@@ -49,6 +49,7 @@ public class IssueAgent extends GestacAgent {
 		public void action() {
 			try {
 				ACLMessage message = blockingReceive();
+				agentsLogger.debug(this.myAgent.getName() + ", message recieved: " + message.getContent() + ", conversationId:" + message.getConversationId());
 				List<Issue> result=null;
 				if (areaId!=null && areaId.length()>0) {
 					if (subjectId!=null && subjectId.length()>0 && 
@@ -72,9 +73,11 @@ public class IssueAgent extends GestacAgent {
 					reply.setContent(jsonMapper.writeValueAsString(result.toArray()));					
 				}
 				send(reply);
+				agentsLogger.debug(this.myAgent.getName() + ", send reply: " + reply.getContent() + ", conversationId:" + reply.getConversationId());
 			} catch (Exception e) {
 				logger.error("Error on agent", e);
 			} finally {
+				agentsLogger.debug(this.myAgent.getName() + ", deleted itself from the container");
 				myAgent.doDelete();
 			}
 		}
@@ -84,8 +87,10 @@ public class IssueAgent extends GestacAgent {
 				List<Issue> result = null;
 				ACLMessage query = createMessage("IssueDBAgent");
 				query.setContent(content);
+				agentsLogger.debug(this.myAgent.getName() + ", send message to IssueDBAgent: " + content + ", conversationId:" + query.getConversationId());
 				send(query);
 				ACLMessage reply = blockingReceive();
+				agentsLogger.debug(this.myAgent.getName() + ", reply from IssueDBAgent: " + reply.getContent() + ", conversationId:" + reply.getConversationId());
 				Issue[] issues = jsonMapper.readValue(reply.getContent(), Issue[].class);
 				if (issues!=null && issues.length>0) {
 					result = Arrays.asList(issues);
@@ -99,7 +104,14 @@ public class IssueAgent extends GestacAgent {
 	}
 	
 	
-	
+	public IssueAgent(String areaId, String subjectId, String incidentId, String gravityId, IssueSearchDataSource issueSearch) {
+		super();
+		this.areaId = areaId;
+		this.subjectId = subjectId;
+		this.incidentId = incidentId;
+		this.gravityId = gravityId;
+		this.issueSearch = issueSearch;
+	}
 	public String getAreaId() {
 		return areaId;
 	}
@@ -123,14 +135,6 @@ public class IssueAgent extends GestacAgent {
 	}
 	public void setGravityId(String gravityId) {
 		this.gravityId = gravityId;
-	}
-	public IssueAgent(String areaId, String subjectId, String incidentId, String gravityId, IssueSearchDataSource issueSearch) {
-		super();
-		this.areaId = areaId;
-		this.subjectId = subjectId;
-		this.incidentId = incidentId;
-		this.gravityId = gravityId;
-		this.issueSearch = issueSearch;
 	}	
 	
 	

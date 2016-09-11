@@ -20,6 +20,7 @@ public class KnowledgeDBAgent extends GestacAgent {
 	private static final long serialVersionUID = 1L;
 	
 	private Logger logger = LoggerFactory.getLogger(KnowledgeDBAgent.class);
+	private Logger agentsLogger = LoggerFactory.getLogger("agents-activity");
 	
 	@Autowired
 	private KnowledgeDataSource dataSource;
@@ -41,6 +42,7 @@ public class KnowledgeDBAgent extends GestacAgent {
 			ACLMessage message = receive();
 			if (message!=null) {
 				try {
+					agentsLogger.debug(this.myAgent.getName() + ", message recieved: " + message.getContent() + ", conversationId:" + message.getConversationId());
 					String content = message.getContent();
 		            String[] parameters = content.split("&");
 		            String operation = parameters[0];

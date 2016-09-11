@@ -34,6 +34,7 @@ public class SourceScoreAgent extends GestacAgent {
 	
 	@Override
 	protected void setup() {
+		super.setup();
 		if (mode.equals("update")) {
 			addBehaviour(new UpdateBehaviour());		
 		} else if (mode.equals("evaluate")) {
@@ -53,6 +54,7 @@ public class SourceScoreAgent extends GestacAgent {
 		protected void onTick() {
 			ACLMessage message = createMessage("SourceDBAgent");
 			message.setContent(DBAgentOperations.SEARCH_AND_UPDATE_BEST_SOURCE_FOR_AREA);
+			agentsLogger.debug(this.myAgent.getName() + " ticking, searching for best source, send message to SourceDBAgent: " + message.getContent() + ", conversationId:" + message.getConversationId());
 			send(message);
 		}
 		
@@ -67,6 +69,7 @@ public class SourceScoreAgent extends GestacAgent {
 			ACLMessage message = receive();
 			if (message!=null) {
 				try {
+					agentsLogger.debug(this.myAgent.getName() + " message recieved: " + message.getContent() + ", conversationId:" + message.getConversationId());
 					String[] parameters = message.getContent().split("&");
 					String operation = parameters[0];
 					switch (operation){
@@ -80,6 +83,7 @@ public class SourceScoreAgent extends GestacAgent {
 							ACLMessage scoreMessage = createMessage("SourceScoreAgent"+knowledge.getId());
 							scoreMessage.setContent(parameters[1]);
 							scoreMessage.setReplyWith("updatedScore");
+							agentsLogger.debug(this.myAgent.getName() + " new knowledge evaluation, send message to SourceScoreAgent for update: " + scoreMessage.getContent() + ", conversationId:" + scoreMessage.getConversationId());
 							send(scoreMessage);
 						} catch (StaleProxyException e) {
 							logger.error("Error adding agent to container",e);
@@ -103,6 +107,7 @@ public class SourceScoreAgent extends GestacAgent {
 					sendEmptyReply(message);
 				}
 			} else {
+				agentsLogger.debug(this.myAgent.getName() + ", called block(), waiting for messages");
 				block();
 			}
 		}
@@ -118,6 +123,7 @@ public class SourceScoreAgent extends GestacAgent {
 			ACLMessage request = null;
 			try {
 				request = blockingReceive(MessageTemplate.MatchReplyWith("updatedScore"));
+				agentsLogger.debug(this.myAgent.getName() + ", message recieved: " + request.getContent() + ", conversationId: " + request.getConversationId());
 				Knowledge knowledge = getJsonMapper().readValue(request.getContent(), Knowledge.class);
 				
 				Source source = knowledge.getSource();
@@ -127,10 +133,12 @@ public class SourceScoreAgent extends GestacAgent {
 				ACLMessage updateSource = createMessage("SourceDBAgent");
 				updateSource.setContent(DBAgentOperations.UPDATE_SOURCE_EVALUATION+
 						"&"+source.getId()+"&"+source.getScoreTotal()+"&"+source.getEvaluationUpdated().getTime());
+				agentsLogger.debug(this.myAgent.getName() + ", send message to SourceDBAgent: " + updateSource.getContent() + ", conversationId: " + updateSource.getConversationId());
 				send(updateSource);
 			} catch (IOException e) {
 				logger.error("Error parsing knowledge, " + request.getContent()!=null?request.getContent():"request content is empty", e);
 			} finally {
+				agentsLogger.debug(this.myAgent.getName() + ", deleted itself from the container");
 				this.myAgent.doDelete();
 			}
 		}

@@ -20,6 +20,7 @@ import ort.proyecto.gestac.core.entities.repository.IssueSearchDataSource;
 public class IssueDBAgent extends GestacAgent {
 	
 	private Logger logger = LoggerFactory.getLogger(IssueDBAgent.class);
+	private Logger agentsLogger = LoggerFactory.getLogger("agents-activity");
 	
 	@Autowired
 	private IssueSearchDataSource issueSearch;	
@@ -42,6 +43,7 @@ public class IssueDBAgent extends GestacAgent {
 		public void action() {
 			ACLMessage message = blockingReceive();
 			try {
+				agentsLogger.debug(this.myAgent.getName() + ", message recieved: " + message.getContent() + ", conversationId:" + message.getConversationId());
 				String content = message.getContent();
 	            String[] parameters = content.split("&");
 	            String operation = parameters[0];

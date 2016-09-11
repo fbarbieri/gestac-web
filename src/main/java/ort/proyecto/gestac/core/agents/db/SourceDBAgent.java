@@ -20,7 +20,8 @@ public class SourceDBAgent extends GestacAgent {
 
 	private static final long serialVersionUID = 1L;
 	
-	Logger logger = LoggerFactory.getLogger(SourceDBAgent.class);
+	private Logger logger = LoggerFactory.getLogger(SourceDBAgent.class);
+	private Logger agentsLogger = LoggerFactory.getLogger("agents-activity");
 
 	@Autowired
 	private SourceRepository sourceRepository;
@@ -41,6 +42,7 @@ public class SourceDBAgent extends GestacAgent {
 			ACLMessage message = receive();
 			if (message!=null) {
 				try {
+					agentsLogger.debug(this.myAgent.getName() + ", message recieved: " + message.getContent() + ", conversationId:" + message.getConversationId());
 					String content = message.getContent();
 		            String[] parameters = content.split("&");
 		            String operation = parameters[0];

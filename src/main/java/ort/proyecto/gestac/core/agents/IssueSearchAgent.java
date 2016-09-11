@@ -60,8 +60,9 @@ public class IssueSearchAgent extends GestacAgent {
 					String content = message.getContent();
 					String sender = message.getSender().getLocalName();
 					String conversationId = message.getConversationId();
+					agentsLogger.debug(this.myAgent.getName() + ", message from " + message.getSender() +" recieved: " + content + ", conversationId:" + message.getConversationId());
 					/**
-					 * TODO verificar esto
+					 * 
 					 */
 					if (sender.equals("InterfaceAgent")) {
 						String[] parameters = content.split("&");
@@ -81,6 +82,7 @@ public class IssueSearchAgent extends GestacAgent {
 									issueAgentSubjectIncidentGravity).start();
 							//enviar mensaje a primer agente
 							ACLMessage messageSearchSubjectIncidentGravity = createMessage("IssueAgent&"+conversationId+"&1", conversationId);
+							agentsLogger.debug(this.myAgent.getName() + ", message to first IssueAgent: " + content + ", conversationId:" + conversationId);
 							send(messageSearchSubjectIncidentGravity);
 
 							//agregar el segundo agente
@@ -89,6 +91,7 @@ public class IssueSearchAgent extends GestacAgent {
 									issueAgentSubjectIncident).start();
 							//enviar mensaje a segundo agente
 							ACLMessage messageSearchSubjectIncident = createMessage("IssueAgent&"+conversationId+"&2", conversationId);
+							agentsLogger.debug(this.myAgent.getName() + ", message to second IssueAgent: " + content + ", conversationId:" + conversationId);
 							send(messageSearchSubjectIncident);
 							
 							//agregar el tercer agente
@@ -97,6 +100,7 @@ public class IssueSearchAgent extends GestacAgent {
 									issueAgentSubjectGravity).start();
 							//enviar mensaje a tercer agente
 							ACLMessage messageSearchSubjectGravity = createMessage("IssueAgent&"+conversationId+"&3", conversationId);
+							agentsLogger.debug(this.myAgent.getName() + ", message to third IssueAgent: " + content + ", conversationId:" + conversationId);
 							send(messageSearchSubjectGravity);
 							
 							break;
@@ -104,7 +108,7 @@ public class IssueSearchAgent extends GestacAgent {
 						
 					} 
 					if (sender.startsWith("IssueAgent")) {
-						System.out.println("llegada de respuesta " + message.getConversationId());
+						agentsLogger.debug(this.myAgent.getName() + ", reply from a IssueAgent: " + content + ", conversationId:" + conversationId);
 						if (replies.get(conversationId)!=null){
 							//llegó una respuesta válida
 							
@@ -131,7 +135,7 @@ public class IssueSearchAgent extends GestacAgent {
 							
 							//comprobar si se recibió todo
 							if (replies.get(conversationId).equals(3)) {
-								System.out.println("llegaron todas las respuestas, "  + message.getConversationId());
+								agentsLogger.debug(this.myAgent.getName() + ", all three replies from the IssueAgents arrived, merging results");
 								List<Issue> finalResults = mergeResults(conversationId);
 								//limpiar resultados
 								replies.remove(conversationId);
@@ -141,6 +145,7 @@ public class IssueSearchAgent extends GestacAgent {
 								//enviar respuestas
 								ACLMessage replyToInterface = createMessage("InterfaceAgent", conversationId);
 								replyToInterface.setContent(jsonMapper.writeValueAsString(finalResults.toArray()));
+								agentsLogger.debug(this.myAgent.getName() + ", send reply to InterfaceAgent: " + replyToInterface.getContent() + ", conversationId:" + replyToInterface.getConversationId());
 								send(replyToInterface);
 							}
 						}
@@ -150,10 +155,7 @@ public class IssueSearchAgent extends GestacAgent {
 					/**
 					 * cuando arranco a mandar los mensajes, pongo el conversationid en el mapa.
 					 * si el mensaje es de respuesta, lo agrego al map de listas y de cantidades (otro mapa que vaya llevando la cuenta de cuantas respuestas recibo)
-					 * si la respuesta es la última, uno los resultados y contesto el mensaje.
-					 * 
-					 * mantener un mapa con los mensajes originales desde la interfaz?
-					 * 
+					 * si la respuesta es la última, unifico los resultados y contesto el mensaje.
 					 */					
 				} else {
 					block();

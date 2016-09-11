@@ -34,6 +34,7 @@ public class KnowledgeScoreAgent extends GestacAgent {
 	
 	@Override
 	protected void setup() {
+		super.setup();
 		if (mode.equals("ticker")) {
 			addBehaviour(new SearchKnowledgesToUpdateBehaviour(this, tickerInterval));
 			addBehaviour(new SearchBestKnowledgeBehaviour(this, tickerInterval));
@@ -44,12 +45,13 @@ public class KnowledgeScoreAgent extends GestacAgent {
 	
 	class UpdateKnowledgeBehaviour extends OneShotBehaviour {
 		/**
-		 * para todo este proceso no espero respuestas, solo mando cosas y asumo que se hacen.
+		 * para todo este proceso no espero respuestas, solo envío los mensajes para que se procesen.
 		 */
 		
 		@Override
 		public void action() {
 			ACLMessage request = blockingReceive(MessageTemplate.MatchReplyWith("updatedScore"));
+			agentsLogger.debug(this.myAgent.getName() + ", message recieved: " + request.getContent() + ", conversationId:" + request.getConversationId());
 			try {
 				Knowledge knowledge = getJsonMapper().readValue(request.getContent(), Knowledge.class);
 				knowledge.setKnowledgeScore(KnowledgeScoreHelper.calculateScore(knowledge));
@@ -59,17 +61,20 @@ public class KnowledgeScoreAgent extends GestacAgent {
 				ACLMessage updateKnowledge = createMessage("KnowledgeDBAgent");
 				updateKnowledge.setContent(DBAgentOperations.UPDATE_KNOWLEDGE+
 						"&"+getJsonMapper().writeValueAsString(knowledge));
+				agentsLogger.debug(this.myAgent.getName() + ", send message to KnowledgeDBAgent: " + updateKnowledge.getContent() + ", conversationId:" + updateKnowledge.getConversationId());
 				send(updateKnowledge);
 				
 				//enviar mensaje a fuente para actualizarse.
 				ACLMessage updateSource = createMessage("SourceScoreAgent");
 				updateSource.setContent("updateSourceOnEvaluation"+"&"+
 						getJsonMapper().writeValueAsString(knowledge));
+				agentsLogger.debug(this.myAgent.getName() + ", send message to SourceScoreAgent: " + updateSource.getContent() + ", conversationId:" + updateSource.getConversationId());
 				send(updateSource);
 				
 			} catch (Exception e) {
 				logger.error("Error updating knowledge, " + request.getContent(), e);
 			} finally {
+				agentsLogger.debug(this.myAgent.getName() + ", deleted itself from the container");
 				this.myAgent.doDelete();				
 			}
 		}
@@ -83,15 +88,17 @@ public class KnowledgeScoreAgent extends GestacAgent {
 		}
 		
 		@Override
-		protected void onTick() {			
-			//System.out.println("################### tick, " + new Timestamp(System.currentTimeMillis()));
+		protected void onTick() {
 			try {
 				ACLMessage message = createMessage("KnowledgeDBAgent");
 				message.setContent(DBAgentOperations.SEARCH_KNOWLEDGES_TO_UPDATE);
+				agentsLogger.debug(this.myAgent.getName() + " ticking, searching knowledges to update, send message to KnowledgeDBAgent: " + message.getContent() + ", conversationId:" + message.getConversationId());
 				send(message);
 				ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
+				agentsLogger.debug(this.myAgent.getName() + ", reply from KnowledgeDBAgent: " + reply.getContent() + ", conversationId:" + reply.getConversationId());
 				if (reply.getContent()!=null) {
 					List<Knowledge> toUpdate = Arrays.asList(getJsonMapper().readValue(reply.getContent(), Knowledge[].class));
+					agentsLogger.debug(this.myAgent.getName() + " there are " + toUpdate.size() + "knowledge/s to update");
 					for (Knowledge knowledge : toUpdate) {
 						
 						KnowledgeScoreAgent scoreAgent = new KnowledgeScoreAgent("update");
@@ -100,6 +107,7 @@ public class KnowledgeScoreAgent extends GestacAgent {
 						ACLMessage scoreMessage = createMessage("KnowledgeScoreAgent"+knowledge.getId());
 						scoreMessage.setContent(getJsonMapper().writeValueAsString(knowledge));
 						scoreMessage.setReplyWith("updatedScore");
+						agentsLogger.debug(this.myAgent.getName() + ", message to a new KnowledgeScoreAgent for update: " + scoreMessage.getContent() + ", conversationId:" + scoreMessage.getConversationId());
 						send(scoreMessage);
 					}
 				}
@@ -129,10 +137,9 @@ public class KnowledgeScoreAgent extends GestacAgent {
 		
 		@Override
 		protected void onTick() {			
-			//System.out.println("################### tick best, " + new Timestamp(System.currentTimeMillis()));
-			
 			ACLMessage message = createMessage("KnowledgeDBAgent");
 			message.setContent(DBAgentOperations.SEARCH_AND_UPDATE_BEST_KNOWLEDGES_FOR_ISSUES);
+			agentsLogger.debug(this.myAgent.getName() + " ticking, searching for best knowledge, send message to KnowledgeDBAgent: " + message.getContent() + ", conversationId:" + message.getConversationId());
 			send(message);				
 		}
 		

@@ -15,13 +15,13 @@ angular.module('app')
 	  };
 	  
 	  $scope.refreshRows=function(){
-//		  $scope.data.areas = Areas.query();
-		  Areas.query().$promise.then(function(result){
-			  $scope.data.areas = result;
-			  $scope.data.selectedArea = $scope.data.areas[0];
+		  $scope.data.areas = Areas.query();
+//		  Areas.query().$promise.then(function(result){
+//			  $scope.data.areas = result;
+//			  $scope.data.selectedArea = $scope.data.areas[0];
 //			  $scope.gridOptions.data = $scope.data.selectedArea.incidents;
-			  $scope.areaChanged();
-		  });
+//			  $scope.areaChanged();
+//		  });
 	  }
 	  
 	  $scope.data.selectedArea = $scope.data.areas[0];		  
@@ -60,10 +60,10 @@ angular.module('app')
 			    modalInstance.result.then(function (item) {
 			    	item.area=$scope.data.selectedArea;
 			    	item.$save().then(function (incident) {
-//			    		 $scope.data.selectedArea.incidents.push(incident);
+			    		 $scope.data.selectedArea.incidents.push(incident);
 			    		 $scope.refreshRows();
-//			    		 $scope.data.selectedArea = $scope.data.areas[0];
-//			    		 $window.location.reload();
+			    		 $scope.data.selectedArea = $scope.data.areas[0];
+			    		 $window.location.reload();
 					  },function(gravity){
 						  $scope.open("Incidente", "Ya existe un incidente con esos datos, ingrese otros.");
 					  });

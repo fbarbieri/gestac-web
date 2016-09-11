@@ -51,6 +51,14 @@ public class IssueBestKnowledge {
 		this.knowledge = knowledge;
 	}
 
+	public Timestamp getDate() {
+		return date;
+	}
+
+	public void setDate(Timestamp date) {
+		this.date = date;
+	}
+
 	
 
 }

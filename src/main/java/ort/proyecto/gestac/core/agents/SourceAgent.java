@@ -14,7 +14,8 @@ public class SourceAgent extends GestacAgent {
 	private Logger agentsLogger = LoggerFactory.getLogger("agents-activity");
 	
 	@Override
-	protected void setup() {	
+	protected void setup() {
+		super.setup();
 		addBehaviour(new QueryBehaviour());
 	}
 
@@ -25,16 +26,19 @@ public class SourceAgent extends GestacAgent {
 			ACLMessage message = receive();
 			if (message!=null) {
 				try {
+					agentsLogger.debug(this.myAgent.getName() + ", message recieved: " + message.getContent() + ", conversationId:" + message.getConversationId());
 					String[] parameters = message.getContent().split("&");
 					String operation = parameters[0];
 					switch (operation){
 					case "getAreaIfSourceIsBest":
 						ACLMessage bestSourceMessage = createMessage("SourceDBAgent");
 						bestSourceMessage.setContent(DBAgentOperations.GET_AREA_FOR_BEST_SOURCE+"&"+parameters[1]);
+						agentsLogger.debug(this.myAgent.getName() + ", message to SourceDBAgent: " + bestSourceMessage.getContent() + ", conversationId:" + bestSourceMessage.getConversationId());
 						send(bestSourceMessage);
 						ACLMessage fromDB = blockingReceive(MessageTemplate.
 								MatchConversationId(bestSourceMessage.getConversationId()));
 						//source
+						agentsLogger.debug(this.myAgent.getName() + ", reply from SourceDBAgent: " + fromDB.getContent() + ", conversationId:" + fromDB.getConversationId());
 						sendReply(fromDB.getContent(), message);
 						break;
 					}

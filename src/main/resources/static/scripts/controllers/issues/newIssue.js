@@ -11,6 +11,10 @@ angular.module('app')
   .controller('NewIssueCtrl', function ($scope,$rootScope,$uibModal,$http,$location,$window,areasList,Sources,Areas) {
 	  
 	  $scope.areas = areasList;
+	  $scope.areas.$promise.then(function(result){
+		  $scope.selectedArea=$scope.areas[0];
+		  $scope.areaSelected();
+	  });
 	  
 	  $scope.selectedArea=$scope.areas[0];
 	  //como selecciono recién cuando el promise ya se cumplió?
@@ -21,9 +25,14 @@ angular.module('app')
 		  $scope.selectedSubject=sa.subjects[0];
 		  
 		  $scope.incidents=sa.incidents;
-		  $scope.selectedIncident=sa.incidents[0];
-		  $scope.gravities=$scope.selectedIncident.gravities;
-		  $scope.selectedGravity=$scope.selectedIncident.gravities[0];
+		  $scope.selectedIncident=sa.incidents[0];	  
+		  if (typeof $scope.selectedIncident != 'undefined') {
+			  $scope.gravities=$scope.selectedIncident.gravities;
+			  $scope.selectedGravity=$scope.selectedIncident.gravities[0];			  
+		  }else{
+			  $scope.gravities=undefined;
+		  }
+		  
 	  };
 	  
 	  $scope.incidentSelected = function() {

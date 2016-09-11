@@ -16,39 +16,14 @@ public class KnowledgeAgent extends GestacAgent {
 	
 	private Logger logger = LoggerFactory.getLogger(KnowledgeAgent.class);
 	private Logger agentsLogger = LoggerFactory.getLogger("agents-activity");
-	
-//	public final String SEARCH_TO_UPDATE = "searchToUpdate";
-//	public final String UPDATE = "update";
-//	public final String QUERY = "query";
-
-	private List<String> modes;
-	
-	//un comportamiento que reciba la consulta de mejor conocimiento.
-	//aparte, el conocimiento que hace refresh
-	//y el otro que hace update.
 
 	public KnowledgeAgent() {
 		super();
 	}
 	
-//	public KnowledgeAgent(String... modes) {
-//		super();
-//		this.modes = Arrays.asList(modes);
-//	}
-	
 	@Override
 	protected void setup() {
-//		if (modes!=null && modes.size()>0) {
-//			if (modes.contains(SEARCH_TO_UPDATE)) {
-//				addBehaviour(new SearchKnowledgesToUpdateBehaviour(this, tickerInterval));
-//			}
-//			if (modes.contains(QUERY)) {
-//				addBehaviour(new QueryBehaviour());
-//			}
-//			if (mode.equals(UPDATE)) {
-//				addBehaviour(b);
-//			}
-//		}
+		super.setup();
 		addBehaviour(new QueryBehaviour());
 	}
 	
@@ -59,27 +34,33 @@ public class KnowledgeAgent extends GestacAgent {
 			ACLMessage message = receive();
 			if (message!=null) {
 				try {
+					agentsLogger.debug(this.myAgent.getName() + ", message recieved: " + message.getContent() + ", conversationId:" + message.getConversationId());
 					String[] parameters = message.getContent().split("&");
 					String operation = parameters[0];
 					switch (operation){
 					case "getBestKnowledge":
 						ACLMessage bestKnowledgeMessage = createMessage("KnowledgeDBAgent");
 						bestKnowledgeMessage.setContent(DBAgentOperations.GET_BEST_KNOWLEDGE_FOR_ISSUE+"&"+parameters[1]);
+						agentsLogger.debug(this.myAgent.getName() + ", message to KnowledgeDBAgent: " + bestKnowledgeMessage.getContent() + ", conversationId:" + bestKnowledgeMessage.getConversationId());
 						send(bestKnowledgeMessage);
 						ACLMessage fromDB = blockingReceive(MessageTemplate.MatchConversationId(bestKnowledgeMessage.getConversationId()));
+						agentsLogger.debug(this.myAgent.getName() + ", reply from KnowledgeDBAgent: " + fromDB.getContent() + ", conversationId:" + fromDB.getConversationId());
 						sendReply(fromDB.getContent(), message);
 						break;
 					case "addKnowledgeEvaluation":
-						ACLMessage addKnowledgeMessage = createMessage("KnowledgeDBAgent");
-						addKnowledgeMessage.setContent(DBAgentOperations.ADD_KNOWLEDGE_EVALUATION+
+						ACLMessage addKnowledgeEvaluationMessage = createMessage("KnowledgeDBAgent");
+						addKnowledgeEvaluationMessage.setContent(DBAgentOperations.ADD_KNOWLEDGE_EVALUATION+
 								"&"+parameters[1]+"&"+parameters[2]+"&"+parameters[3]+"&"+parameters[4]);
-						send(addKnowledgeMessage);
+						agentsLogger.debug(this.myAgent.getName() + ", message to KnowledgeDBAgent: " + addKnowledgeEvaluationMessage.getContent() + ", conversationId:" + addKnowledgeEvaluationMessage.getConversationId());
+						send(addKnowledgeEvaluationMessage);
 						break;
 					case "addKnowledge":
 						ACLMessage addKnowledge = createMessage("KnowledgeDBAgent");
 						addKnowledge.setContent(DBAgentOperations.ADD_KNOWLEDGE + "&" + parameters[1]);
+						agentsLogger.debug(this.myAgent.getName() + ", message to KnowledgeDBAgent: " + addKnowledge.getContent() + ", conversationId:" + addKnowledge.getConversationId());
 						send(addKnowledge);
 						ACLMessage addKnowledgeReply = blockingReceive(MessageTemplate.MatchConversationId(addKnowledge.getConversationId()));
+						agentsLogger.debug(this.myAgent.getName() + ", reply from KnowledgeDBAgent: " + addKnowledgeReply.getContent() + ", conversationId:" + addKnowledgeReply.getConversationId());
 						sendReply(addKnowledgeReply.getContent(), message);
 						break;
 					}
@@ -89,6 +70,7 @@ public class KnowledgeAgent extends GestacAgent {
 					sendEmptyReply(message);
 				}
 			} else {
+				agentsLogger.debug(this.myAgent.getName() + ", called block(), waiting for messages");
 				block();
 			}
 		}

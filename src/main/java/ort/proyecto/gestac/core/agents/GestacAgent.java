@@ -79,7 +79,7 @@ public class GestacAgent extends Agent {
 	protected void setup() {
 		super.setup();
 		try {
-			agentsLogger.info("Agente " + this.getName() + " iniciado, contenedor: " + this.getContainerController().getContainerName());
+			agentsLogger.info(this.getName() + " started, container: " + this.getContainerController().getContainerName());
 		} catch (ControllerException e) {
 		}
 	}

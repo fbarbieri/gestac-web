@@ -29,6 +29,7 @@ import ort.proyecto.gestac.core.entities.repository.SubjectRepository;
 public class DBAgent extends GestacAgent {
 	
 	private Logger logger = LoggerFactory.getLogger(DBAgent.class);
+	private Logger agentsLogger = LoggerFactory.getLogger("agents-activity");
 	
 	@Autowired
 	private AreaRepository areaRepository;
@@ -53,7 +54,6 @@ public class DBAgent extends GestacAgent {
 	@Override
 	protected void setup() {
 		super.setup();
-		//Thread.currentThread().setContextClassLoader(classLoader);
 		addBehaviour(new DBAgentBehaviour());
 	}
 	
@@ -65,6 +65,7 @@ public class DBAgent extends GestacAgent {
 			
 			ACLMessage message = blockingReceive();
 			try {
+				agentsLogger.debug(this.myAgent.getName() + ", message recieved: " + message.getContent() + ", conversationId:" + message.getConversationId());
 				String content = message.getContent();
 	            String[] parameters = content.split("&");
 	            String operation = parameters[0];

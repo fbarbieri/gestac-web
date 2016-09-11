@@ -2,9 +2,7 @@ package ort.proyecto.gestac.core.entities;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -15,7 +13,6 @@ import javax.persistence.OrderBy;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id", scope = Area.class)
 @Entity
 public class Area implements Serializable {
 	

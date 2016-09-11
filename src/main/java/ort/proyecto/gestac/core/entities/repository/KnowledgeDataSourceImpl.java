@@ -24,9 +24,6 @@ public class KnowledgeDataSourceImpl implements KnowledgeDataSource {
 				getSingleResult();
 		
 		return best.getKnowledge();
-		/**
-		 * TODO seguir acá!
-		 */
 	}
 	
 	@SuppressWarnings("unchecked")
