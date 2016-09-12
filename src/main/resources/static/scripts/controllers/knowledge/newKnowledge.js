@@ -27,9 +27,9 @@ angular.module('app')
 		  $http.get('/sources/isBestSource/'+urlParams).then(function(data) {
 			  if (data.data==='') {
 				  //no es la mejor fuente para el área, mensaje y volver
-				  $scope.noBestSource = "No es la mejor fuente para su área, no puede ingresar conocimientos";
+				  $scope.noBestSource = "Ud. no es la mejor fuente para ningun area, no puede ingresar conocimientos";
 			  } else if (data.data.length==0) {
-				  $scope.noIssuesWithoutKnowledge = "No hay problemas sin conocimiento para solucionar";
+				  $scope.noIssuesWithoutKnowledge = "No hay problemas sin conocimientos";
 				  $scope.issuesNoKnowledge = data.data;
 				  for (var i=0;i<areasList.length;i++) {
 					  var area = areasList[i];

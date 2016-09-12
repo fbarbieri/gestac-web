@@ -8,13 +8,14 @@
  * Controller of the gestacWebApp
  */
 angular.module('app')
-  .controller('SourcesNewCtrl', function ($scope,item,areas,$uibModalInstance) {
+  .controller('SourcesNewCtrl', function ($scope,item,areas,disabled,$uibModalInstance) {
 	  $scope.title="Fuentes";
 	  $scope.item=item;
 	  $scope.areas=areas;
 	  $scope.data={
 			  errorMessage:null
-	  }
+	  };
+	  $scope.areaDisabled = disabled;
 	  
 	  var setAreaToSource = function() {
 		  for (var i=0;i<areas.length;i++) {

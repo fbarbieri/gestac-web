@@ -36,7 +36,7 @@
 			<div class="col-sm-12">
 				<div class="input-group">
 					<span class="input-group-addon" id="basic-addon3">Password</span>
-					<input type="text" class="form-control"
+					<input type="password" class="form-control"
 						aria-describedby="basic-addon3" ng-model="item.password">
 				</div>
 			</div>
@@ -46,7 +46,7 @@
 			<div class="col-sm-12">
 				<div class="input-group">
 					<span class="input-group-addon" id="basic-addon3">&Aacute;rea</span>
-					<select class="form-control" ng-model="item.area" ng-options="a as a.name for a in areas"></select>
+					<select class="form-control" ng-disabled="areaDisabled" ng-model="item.area" ng-options="a as a.name for a in areas"></select>
 				</div>
 			</div>
 		</div>

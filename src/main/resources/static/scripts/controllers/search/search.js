@@ -10,7 +10,7 @@
 angular.module('app')
   .controller('SearchCtrl', function ($scope,$rootScope,$uibModal,$http,areasList,Areas,Subjects,$location,$window) {
 	  
-	  $rootScope.entity="Gestac v2";
+	  $rootScope.entity="GESTACv2";
 	  
 	  $scope.isActive = function (viewLocation) {
 		     var active = (viewLocation === $location.path());
@@ -69,8 +69,10 @@ angular.module('app')
 			  if ($scope.data.searchedIssues!=null && $scope.data.searchedIssues!='') {
 				    $scope.data.searchError = null; 
 					$scope.data.displayIssue = $scope.data.searchedIssues[0];
+					$scope.data.displayKnowledge = null;
 				} else {
 					$scope.data.searchError = 'No hay problemas para esta búsqueda';
+					$scope.data.displayKnowledge = null;
 					$scope.data.displayIssue = null;
 				}
 	        });  	  

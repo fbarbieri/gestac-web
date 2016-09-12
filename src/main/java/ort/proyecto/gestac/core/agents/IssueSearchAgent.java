@@ -173,10 +173,23 @@ public class IssueSearchAgent extends GestacAgent {
 		List<Long> addedIds = new ArrayList<>();
 		
 		HashMap<String, List<Issue>> results = new HashMap<>();
-		results.put(conversationId, firstResults.get(conversationId));
-		results.get(conversationId).addAll(secondResults.get(conversationId));
-		results.get(conversationId).addAll(thirdResults.get(conversationId));
-		
+		if (firstResults.get(conversationId).size()>0) {
+			results.put(conversationId, firstResults.get(conversationId));			
+		}
+		if (secondResults.get(conversationId).size()>0) {
+			if (results.get(conversationId)!=null) {
+				results.get(conversationId).addAll(secondResults.get(conversationId));							
+			} else {
+				results.put(conversationId, secondResults.get(conversationId));
+			}
+		}
+		if (thirdResults.get(conversationId).size()>0) {
+			if (results.get(conversationId)!=null) {
+				results.get(conversationId).addAll(thirdResults.get(conversationId));							
+			} else {
+				results.put(conversationId, thirdResults.get(conversationId));
+			}
+		}
 		for (Issue i : results.get(conversationId)) {
 			if (!addedIds.contains(i.getId())) {
 				merged.add(i);

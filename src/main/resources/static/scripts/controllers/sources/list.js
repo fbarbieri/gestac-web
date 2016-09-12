@@ -43,6 +43,9 @@ angular.module('app')
 			  			},
 			  			areas : function(Areas) {
 			  				return areasList;
+			  			},
+			  			disabled : function() {
+			  				return false;
 			  			}
 			  		}
 			  	});
@@ -71,6 +74,9 @@ angular.module('app')
 	  			},
 	  			areas : function(Areas) {
 	  				return areasList;
+	  			},
+	  			disabled : function() {
+	  				return true;
 	  			}
 		      }
 		    });

@@ -64,7 +64,7 @@
 			<div class="panel-body" align="left">
 				<em>Sujeto: {{data.displayIssue.subjects[0].name}}</em><br>
 				<em>Incidente: {{data.displayIssue.incidents[0].name}}</em><br>
-				<em>Gravedad: {{data.displayIssue.gravity.name}}</em><br>
+				<em>Gravedad: {{data.displayIssue.gravity.description}}</em><br>
 				<br>
 				{{data.displayIssue.description}}
 			</div>
@@ -87,7 +87,7 @@
 				<br><br>
 				<em>Creado por: {{data.displayKnowledge.source.name}}</em><br>
 				<em>Cantidad de evaluaciones: {{data.displayKnowledge.totalEvaluations}}</em><br>
-				<em>Calificaci&oacute;n actual: {{data.displayKnowledge.knowledgeScore}}</em><br>
+				<em>Calificaci&oacute;n actual del conocimiento: {{data.displayKnowledge.knowledgeScore}}</em><br>
 			</div>
 		</div>
 

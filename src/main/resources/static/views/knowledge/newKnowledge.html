@@ -9,14 +9,15 @@
 
 <div ng-if="noBestSource!=null">
 	<div>
-		<p class="bg-danger">No es la mejor fuente, no puede ingresar conocimientos</p>
+		<p class="bg-danger">Ud. no es la mejor fuente para ning&uacute;n &aacute;rea, no puede ingresar conocimientos</p>
 		<br>
 		<button type="button" class='btn btn-link btn-lg' ng-click="back()">Volver</button>
 	</div>
 </div>
 <div ng-if="noIssuesWithoutKnowledge!=null">
 	<div>
-		<p class="bg-warning">No hay problemas que no tengan conocimientos</p>
+		<br>
+		<p class="bg-warning">No hay problemas sin conocimientos</p>
 		<br>
 	</div>
 </div>
@@ -25,7 +26,7 @@
 		<br><br><br>
 		<div ng-if="noIssuesWithoutKnowledge==null">
 			<div class="panel panel-default" align="left">
-				<div class="panel-heading" align="left">Problemas <mark>sin</mark> conocimiento asociado</a>
+				<div class="panel-heading" align="left">Problemas sin conocimiento asociado</a>
 				</div>
 				<div class="panel-body" align="left">
 					<div class="list-group" align="left">
@@ -39,7 +40,7 @@
 			<br>
 		</div>
 		<div class="panel panel-default" align="left">
-			<div class="panel-heading" align="left">Problemas con conocimiento asociado por otra fuente</a>
+			<div class="panel-heading" align="left">Problemas con conocimiento de otra fuente</a>
 			</div>
 			<div class="panel-body" align="left">
 				<div class="list-group" align="left">
@@ -47,7 +48,7 @@
 						<button type="button" class='btn btn-link btn-sm' ng-click="getIssuesWithKnowledge()">Ver</button>
 					</div>
 					<div ng-if="noIssuesWithKnowledgeByOthers==true">
-						<p>No hay problemas con conocimientos dados por otras fuentes</p>
+						<p>No hay problemas con conocimientos de otras fuentes</p>
 					</div>
 					<div ng-if="issuesWithKnowledgeByOthers!=null">
 						<a ng-repeat="itemWK in issuesWithKnowledgeByOthers" ng-click="selectIssue(itemWK)" class="list-group-item">
@@ -125,7 +126,7 @@
 				</div>
 				<div ng-if="newKnowledgeError==true">
 					<br>	
-					<p class="bg-danger">Falta ingresar datos para poder agregar el conocimiento</p>
+					<p class="bg-danger">Faltan datos para poder agregar el conocimiento</p>
 				</div>
 				<br>
 				<button type="button" class='btn btn-success btn-lg' ng-click="saveKnowledge()">Agregar conocimiento</button>
