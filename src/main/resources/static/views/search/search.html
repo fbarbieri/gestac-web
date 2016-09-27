@@ -73,6 +73,8 @@
 		<br><br>
 		<button type="button" class='btn btn-primary btn-lg'
 			ng-click="getBestKnowledgeForIssue()">Ver mejor conocimiento asociado</button>
+		<button type="button" class='btn btn-default btn-lg'
+			ng-click="getAllKnowledges()">Ver todos los conocimientos</button>
 		<br>
 	</div>
 	
@@ -92,60 +94,6 @@
 		</div>
 
 		<br><br>	
-		
-<!-- 		<form name="evaluationSimplicity"> -->
-<!-- 			<div class="form-group"> -->
-<!-- 				<label>Simplicidad:</label><br> -->
-<!-- 				<label> -->
-<!-- 					<input type="radio" value="0.25" ng-model="data.selectedSimplicity">Baja				 -->
-<!-- 				</label><br> -->
-<!-- 				<label> -->
-<!-- 					<input type="radio" value="0.5" ng-model="data.selectedSimplicity">Media Baja				 -->
-<!-- 				</label><br> -->
-<!-- 				<label> -->
-<!-- 					<input type="radio" value="0.75" ng-model="data.selectedSimplicity">Media Alta				 -->
-<!-- 				</label><br> -->
-<!-- 				<label> -->
-<!-- 					<input type="radio" value="1" ng-model="data.selectedSimplicity">Alta	 -->
-<!-- 				</label><br> -->
-<!-- 			</div> -->
-<!-- 		</form> -->
-		
-<!-- 		<form name="evaluationUsedTime"> -->
-<!-- 			<div class="form-group"> -->
-<!-- 				<label>Tiempo utilizado:</label><br> -->
-<!-- 				<label> -->
-<!-- 					<input type="radio" value="0.25" ng-model="data.selectedUsedTime"><15 min.				 -->
-<!-- 				</label><br> -->
-<!-- 				<label> -->
-<!-- 					<input type="radio" value="0.5" ng-model="data.selectedUsedTime">15 min - 1 hora				 -->
-<!-- 				</label><br> -->
-<!-- 				<label> -->
-<!-- 					<input type="radio" value="0.75" ng-model="data.selectedUsedTime">1 - 2 horas				 -->
-<!-- 				</label><br> -->
-<!-- 				<label> -->
-<!-- 					<input type="radio" value="1" ng-model="data.selectedUsedTime">>2 horas	 -->
-<!-- 				</label><br> -->
-<!-- 			</div> -->
-<!-- 		</form> -->
-		
-<!-- 		<form name="evaluationReuse"> -->
-<!-- 			<div class="form-group"> -->
-<!-- 				<label>Reuso:</label><br> -->
-<!-- 				<label> -->
-<!-- 					<input type="radio" value="0.25" ng-model="data.selectedReuse" required="required">0 - 1 vez				 -->
-<!-- 				</label><br> -->
-<!-- 				<label> -->
-<!-- 					<input type="radio" value="0.5" ng-model="data.selectedReuse" required="required">2 - 5 veces				 -->
-<!-- 				</label><br> -->
-<!-- 				<label> -->
-<!-- 					<input type="radio" value="0.75" ng-model="data.selectedReuse" required="required">6 - 10 veces				 -->
-<!-- 				</label><br> -->
-<!-- 				<label> -->
-<!-- 					<input type="radio" value="1" ng-model="data.selectedReuse" required="required">>10 veces	 -->
-<!-- 				</label><br> -->
-<!-- 			</div> -->
-<!-- 		</form> -->
 		
 		<div>Por favor, evalue el conocimiento</div>
 		<br>
@@ -207,9 +155,28 @@
 			<button type="button" class='btn btn-success btn-lg' ng-click="doEvaluation()">Evaluar</button>
 			<br><br>
 		</form>
-			
 		
 	</div>
+	
+	
+	<br><br>
+	<div ng-if="data.allKnowledges!=null">
+		<div ng-repeat="k in data.allKnowledges">
+			<div class="panel panel-default">
+			<div class="panel-heading">
+				<h3 class="panel-title" align="left">Conocimiento {{$index + 1}}</h3>
+			</div>
+			<div class="panel-body" align="left">
+				{{k.description}}
+				<br><br>
+				<em>Creado por: {{k.source.name}}</em><br>
+				<em>Cantidad de evaluaciones: {{k.totalEvaluations}}</em><br>
+				<em>Calificaci&oacute;n actual del conocimiento: {{k.knowledgeScore}}</em><br>
+			</div>
+		</div>
+		</div>
+	</div>
+	
 		
 		
 	

@@ -79,7 +79,7 @@ angular.module('app')
 	  }
 	  
 	  $scope.getBestKnowledgeForIssue = function() {
-		  //$http.get('/search/test').then(function(data) {
+		  $scope.data.allKnowledges = null;
 		  var urlParams = ''+$scope.data.displayIssue.id;
 		  $http.get('/knowledge/bestForIssue/'+urlParams).then(function(data) {
 			  if (data.status=='204') {
@@ -88,6 +88,18 @@ angular.module('app')
 				  $scope.data.displayKnowledge = data.data;				  
 			  }
 	        });  	  
+	  }
+	  
+	  $scope.getAllKnowledges = function() {
+		  $scope.data.displayKnowledge = null;
+		  var urlParams = ''+$scope.data.displayIssue.id;
+		  $http.get('/knowledge/allForIssue/'+urlParams).then(function(data) {
+			  if (data.status=='204') {
+				  $scope.open("Problema", 'No hay conocimentos para este problema');
+			  } else {
+				  $scope.data.allKnowledges = data.data;				  
+			  }
+	        });
 	  }
 	  
 	  $scope.doEvaluation = function() {

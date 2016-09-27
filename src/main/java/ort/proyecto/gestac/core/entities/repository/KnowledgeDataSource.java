@@ -18,4 +18,6 @@ public interface KnowledgeDataSource {
 	
 	public void addAsBestIfNull(Knowledge knowledge);
 
+	public List<Knowledge> getAllKnowledgesForIssue(String string);
+
 }

@@ -79,6 +79,10 @@ public class KnowledgeDBAgent extends GestacAgent {
 								logger.error("Error parsing json to Knowledge, " + parameters[1], e);
 							}
 		            		break;
+		            	case DBAgentOperations.FIND_ALL_KNOWLEDGES_FOR_ISSUE:
+		            		List<Knowledge> list = dataSource.getAllKnowledgesForIssue(parameters[1]);
+		            		sendReply(list, message);
+		            		break;
 		            }
 				} catch (Exception e) {
 					String operation = message.getContent()!=null?message.getContent():"";

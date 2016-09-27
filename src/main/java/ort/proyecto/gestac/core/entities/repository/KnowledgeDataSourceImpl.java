@@ -27,6 +27,18 @@ public class KnowledgeDataSourceImpl implements KnowledgeDataSource {
 	}
 	
 	@SuppressWarnings("unchecked")
+	public List<Knowledge> getAllKnowledgesForIssue(String issueId) {
+		List<Knowledge> result = null;
+		result = em.createQuery("from Knowledge as k "
+				+ "where k.issue.id=?1 order by k.knowledgeScore desc").
+				setParameter(1,  Long.parseLong(issueId)).getResultList();
+		if (result.size()==0) {
+			result = null;
+		}
+		return result;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Knowledge> searchKnowledgesToUpdate() {
 		//SEARCH_KNOWLEDGES_TO_UPDATE
 		List<Knowledge> result = null;

@@ -64,4 +64,6 @@ public class DBAgentOperations {
 
 	public static final String DELETE_GRAVITY = "deleteGravity";
 	
+	public static final String FIND_ALL_KNOWLEDGES_FOR_ISSUE = "findAllKnowledgesForIssue";
+	
 }

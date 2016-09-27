@@ -8,8 +8,11 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.concurrent.ListenableFutureTask;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jade.core.AID;
@@ -388,6 +391,24 @@ public class InterfaceAgent extends GuiAgent {
 	protected void onGuiEvent(GuiEvent ev) {
 		System.out.println(ev.getType());
 		System.out.println(ev.getSource());
+	}
+
+	public List<Knowledge> getAllKnowledgesForIssue(String issueId) {
+		List<Knowledge> list = null;
+		try {
+			ACLMessage message = createMessage("KnowledgeDBAgent", String.valueOf(DBAgentOperations.FIND_ALL_KNOWLEDGES_FOR_ISSUE + "&" + issueId));
+	        send(message);
+	        ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
+	        Knowledge[] array;
+			array = jsonMapper.readValue(reply.getContent(), Knowledge[].class);
+			if (array!=null && array.length>0) {
+				list = Arrays.asList(array);
+			}
+		} catch (Exception e) {
+			logger.error("Error getting knowledges for issue " + issueId, e);
+			return null;
+		}        
+        return list;
 	}
 
 //	public void setClassLoader(ClassLoader classLoader) {

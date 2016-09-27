@@ -1,6 +1,7 @@
 package ort.proyecto.gestac.web.controllers;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,6 +36,16 @@ public class KnowledgeController {
 			return new ResponseEntity<Knowledge>(best, HttpStatus.ACCEPTED);
 		} else {
 			return new ResponseEntity<Knowledge>(HttpStatus.NO_CONTENT);
+		}
+	}
+	
+	@RequestMapping(value = "/allForIssue/{issueId}", method = RequestMethod.GET)
+	public ResponseEntity<List<Knowledge>> getAllKnowledgesForIssue(@PathVariable("issueId") String issueId) {
+		List<Knowledge> all = interfaceAgent.getAllKnowledgesForIssue(issueId);
+		if (all!=null) {
+			return new ResponseEntity<List<Knowledge>>(all, HttpStatus.ACCEPTED);
+		} else {
+			return new ResponseEntity<List<Knowledge>>(HttpStatus.NO_CONTENT);
 		}
 	}
 	
