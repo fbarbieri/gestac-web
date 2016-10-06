@@ -28,20 +28,8 @@ angular.module('app')
 			  if (data.data==='') {
 				  //no es la mejor fuente para el área, mensaje y volver
 				  $scope.noBestSource = "Ud. no es la mejor fuente para ningun area, no puede ingresar conocimientos";
-			  } else if (data.data.length==0) {
-				  $scope.noIssuesWithoutKnowledge = "No hay problemas sin conocimientos";
-				  $scope.issuesNoKnowledge = data.data;
-				  for (var i=0;i<areasList.length;i++) {
-					  var area = areasList[i];
-					  for (var j=0;j<area.sources.length;j++) {
-						  if ($scope.currentSource.id == area.sources[j].id) {
-							  $scope.currentSource.area = area;
-							  break;
-						  }
-					  }
-				  }
 			  } else {
-				  $scope.issuesNoKnowledge = data.data;
+				  //es la mejor fuente
 				  for (var i=0;i<areasList.length;i++) {
 					  var area = areasList[i];
 					  for (var j=0;j<area.sources.length;j++) {
@@ -51,8 +39,68 @@ angular.module('app')
 						  }
 					  }
 				  }
-			  }
-	        });
+				  if (data.data.length==0) {
+					  $scope.noIssuesWithoutKnowledge = "No hay problemas sin conocimientos";
+					  $scope.issuesNoKnowledge = data.data;
+				  } else {
+					  $scope.issuesNoKnowledge = data.data;
+				  }
+				  
+				  var urlParams = ''+$scope.currentSource.id+'/'+$scope.currentSource.area.id+'/';
+				  $http.get('/sources/getIssuesWithKnowledgeBySource/'+urlParams).then(function(data) {
+					 if (data.data!='') {
+						 $scope.issuesKnowledgeBySource = data.data;
+					 }
+			        }); 
+				  
+				  $scope.noIssuesWithKnowledgeByOthers = false;
+				  var urlParams = ''+$scope.currentSource.id+'/'+$scope.currentSource.area.id+'/';
+				  $http.get('/sources/getIssuesWithKnowledge/'+urlParams).then(function(data) {
+					 if (data.data!='') {
+						 $scope.issuesWithKnowledgeByOthers = data.data;
+					 } else {
+						 $scope.noIssuesWithKnowledgeByOthers = true;
+					 }
+			        });
+			  } 
+		  });	  
+//				  if (data.data.length==0) {
+//				  $scope.noIssuesWithoutKnowledge = "No hay problemas sin conocimientos";
+//				  $scope.issuesNoKnowledge = data.data;
+//				  for (var i=0;i<areasList.length;i++) {
+//					  var area = areasList[i];
+//					  for (var j=0;j<area.sources.length;j++) {
+//						  if ($scope.currentSource.id == area.sources[j].id) {
+//							  $scope.currentSource.area = area;
+//							  break;
+//						  }
+//					  }
+//				  }
+//			  } else {
+//				  $scope.issuesNoKnowledge = data.data;
+//				  for (var i=0;i<areasList.length;i++) {
+//					  var area = areasList[i];
+//					  for (var j=0;j<area.sources.length;j++) {
+//						  if ($scope.currentSource.id == area.sources[j].id) {
+//							  $scope.currentSource.area = area;
+//							  break;
+//						  }
+//					  }
+//				  }
+//			  }
+//	        });
+//		  if (typeof $scope.noBestSource == 'undefined') {
+//			  $scope.noIssuesWithKnowledgeByOthers = false;
+//			  var urlParams = ''+$scope.currentSource.id+'/'+$scope.currentSource.area.id+'/';
+//			  $http.get('/sources/getIssuesWithKnowledge/'+urlParams).then(function(data) {
+//				 if (data.data!='') {
+//					 $scope.issuesWithKnowledgeByOthers = data.data;
+//				 } else {
+//					 $scope.noIssuesWithKnowledgeByOthers = true;
+//				 }
+//		        });
+//		  }
+			  
 	  }
 	  
 	  $scope.getIssuesWithKnowledge = function() {

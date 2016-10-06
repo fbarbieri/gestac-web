@@ -21,5 +21,7 @@ public interface IssueSearchDataSource {
 	public List<Issue> getIssuesByIncident(long incidentId);
 	
 	public List<Issue> getIssuesByGravity(long gravityId);
+
+	public List<Issue> getIssuesWithKnowledgeBySource(long parseLong, long parseLong2);
 	
 }

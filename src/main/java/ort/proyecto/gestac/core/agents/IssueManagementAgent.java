@@ -52,6 +52,17 @@ public class IssueManagementAgent extends GestacAgent {
 						agentsLogger.debug(this.myAgent.getName() + ", reply from IssueDBAgent: " + issuesForSourceWithKnowledgeReply.getContent() + ", conversationId:" + issuesForSourceWithKnowledgeReply.getConversationId());
 						sendReply(issuesForSourceWithKnowledgeReply.getContent(), message);
 						break;
+					case "getIssuesWithKnowledgeBySource":
+						ACLMessage issuesWithKnowledgeByTheSource = createMessage("IssueDBAgent");
+						issuesWithKnowledgeByTheSource.setContent(DBAgentOperations.GET_ISSUES_WITH_KNOWLEDGE_BY_SOURCE+
+								"&"+parameters[1]+"&"+parameters[2]);
+						send(issuesWithKnowledgeByTheSource);
+						agentsLogger.debug(this.myAgent.getName() + ", message to IssueDBAgent: " + issuesWithKnowledgeByTheSource.getContent() + ", conversationId:" + issuesWithKnowledgeByTheSource.getConversationId());
+						ACLMessage issuesWithKnowledgeByTheSourceReply = blockingReceive(MessageTemplate.MatchConversationId(
+								issuesWithKnowledgeByTheSource.getConversationId()));
+						agentsLogger.debug(this.myAgent.getName() + ", reply from IssueDBAgent: " + issuesWithKnowledgeByTheSourceReply.getContent() + ", conversationId:" + issuesWithKnowledgeByTheSourceReply.getConversationId());
+						sendReply(issuesWithKnowledgeByTheSourceReply.getContent(), message);
+						break;
 					}
 				} catch (Exception e) {
 					String operation = message.getContent()!=null?message.getContent():"";

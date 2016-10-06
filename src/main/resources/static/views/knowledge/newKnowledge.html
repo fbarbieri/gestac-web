@@ -39,14 +39,28 @@
 			</div>
 			<br>
 		</div>
+<!-- 		<div ng-if="issuesWithKnowledgeByTheSource==null"> -->
+			<div class="panel panel-default" align="left">
+				<div class="panel-heading" align="left">Problemas con conocimientos de {{currentSource.name}}</a>
+				</div>
+				<div class="panel-body" align="left">
+					<div class="list-group" align="left">
+						<a ng-repeat="item in issuesKnowledgeBySource" ng-click="selectIssue(item)" class="list-group-item">
+							<div>{{item.title}}</div>
+						</a>
+					</div>
+				</div>
+			</div>
+			<br>
+<!-- 		</div> -->
 		<div class="panel panel-default" align="left">
 			<div class="panel-heading" align="left">Problemas con conocimiento de otra fuente</a>
 			</div>
 			<div class="panel-body" align="left">
 				<div class="list-group" align="left">
-					<div ng-if="issuesWithKnowledgeByOthers==null">
-						<button type="button" class='btn btn-link btn-sm' ng-click="getIssuesWithKnowledge()">Ver</button>
-					</div>
+<!-- 					<div ng-if="issuesWithKnowledgeByOthers==null"> -->
+<!-- 						<button type="button" class='btn btn-link btn-sm' ng-click="getIssuesWithKnowledge()">Ver</button> -->
+<!-- 					</div> -->
 					<div ng-if="noIssuesWithKnowledgeByOthers==true">
 						<p>No hay problemas con conocimientos de otras fuentes</p>
 					</div>

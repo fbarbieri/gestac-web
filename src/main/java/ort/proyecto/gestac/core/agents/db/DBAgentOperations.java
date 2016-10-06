@@ -36,6 +36,8 @@ public class DBAgentOperations {
 	
 	public static final String GET_ISSUES_FOR_SOURCE_WITHOUT_KNOWLEDGE = "getIssuesForSourceWithoutKnowledge";
 	
+	public static final String GET_ISSUES_WITH_KNOWLEDGE_BY_SOURCE = "getIssuesWithKnowledgeBySource";
+	
 	public static final String ADD_KNOWLEDGE = "addKnowledge";
 	
 	public static final String GET_ISSUES_WITH_KNOWLEDGE_BY_OTHER_SOURCE = "getIssuesWithKnowledgeByOtherSource";

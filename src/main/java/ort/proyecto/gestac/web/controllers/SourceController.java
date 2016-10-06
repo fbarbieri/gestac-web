@@ -30,6 +30,19 @@ public class SourceController {
 	private ObjectMapper jsonMapper = new ObjectMapper();
 	
 	
+	@RequestMapping(value = "/getIssuesWithKnowledgeBySource/{sourceId}/{areaId}", method = RequestMethod.GET)
+	public Collection<Issue> getIssuesWithKnowledgeBySource(@PathVariable("sourceId") String sourceId, 
+			@PathVariable("areaId") String areaId) {
+		if(sourceId==null || sourceId.equals("") || areaId==null || areaId.equals("")) {
+        	return null;
+        }
+        
+        List<Issue> issuesToAnswer = interfaceAgent.getIssuesWithKnowledgeBySource(sourceId, areaId);
+        
+        return issuesToAnswer;
+	}
+	
+	
 	@RequestMapping(value = "/getIssuesWithKnowledge/{sourceId}/{areaId}", method = RequestMethod.GET)
 	public Collection<Issue> getIssuesWithKnowledge(@PathVariable("sourceId") String sourceId, 
 			@PathVariable("areaId") String areaId) {

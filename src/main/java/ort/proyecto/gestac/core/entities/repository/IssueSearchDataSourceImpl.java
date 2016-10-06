@@ -69,6 +69,19 @@ public class IssueSearchDataSourceImpl implements IssueSearchDataSource {
 	}
 	
 	@SuppressWarnings("unchecked")
+	@Override
+	public List<Issue> getIssuesWithKnowledgeBySource(long sourceId, long areaId) {
+		List<Issue> list = em.createQuery("select issue from Issue as issue join issue.subjects subjects "
+				+ "where subjects.area.id=?1 "
+				+ " and issue.id in (select k.issue.id from Knowledge as k where k.issue is not null and k.source.id=?2)")
+				//+ " and issue.id not in (select k.issue.id from Knowledge as k where k.issue is not null and k.source.id=?2)")
+				.setParameter(1, new Long(areaId))
+				.setParameter(2, new Long(sourceId))
+				.getResultList();
+		return list;
+	}
+	
+	@SuppressWarnings("unchecked")
 	public List<Issue> getIssuesWithKnowledgeByOther(long sourceId, long areaId) {
 		List<Issue> list = em.createQuery("select issue from Issue as issue join issue.subjects subjects "
 				+ "where subjects.area.id=?1 "
@@ -114,4 +127,5 @@ public class IssueSearchDataSourceImpl implements IssueSearchDataSource {
 		
 		return list;
 	}
+
 }

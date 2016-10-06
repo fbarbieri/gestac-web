@@ -145,6 +145,21 @@ public class InterfaceAgent extends GuiAgent {
 		return list;
 	}
 	
+	public List<Issue> getIssuesWithKnowledgeBySource(String sourceId, String areaId) {
+		List<Issue> result = null;
+		ACLMessage message = createMessage("IssueManagementAgent", "getIssuesWithKnowledgeBySource"+"&"+sourceId+"&"+areaId);
+		send(message);
+		ACLMessage reply = blockingReceive(MessageTemplate.MatchConversationId(message.getConversationId()));
+		try {
+			if (reply.getContent()!=null) {
+				result = Arrays.asList(jsonMapper.readValue(reply.getContent(), Issue[].class));				
+			}
+		} catch (Exception e) {
+			logger.error("Error getting issues for source with knowledge itself, source: " + sourceId, e);
+		}
+		return result;
+	}
+	
 	public List<Issue> getIssuesWithKnowledgeForSourceArea(String sourceId, String areaId) {
 		List<Issue> result = null;
 		ACLMessage message = createMessage("IssueManagementAgent", "getIssuesForSourceWithKnowledgeByOtherSource"+"&"+sourceId+"&"+areaId);
